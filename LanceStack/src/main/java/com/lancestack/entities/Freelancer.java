@@ -1,14 +1,20 @@
 package com.lancestack.entities;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
-import jakarta.persistence.EnumType;
-import jakarta.persistence.Enumerated;
+import jakarta.persistence.FetchType;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 
@@ -18,6 +24,8 @@ import lombok.ToString;
 @Setter
 @ToString
 @AllArgsConstructor
+@NoArgsConstructor
+@JsonIgnoreProperties("bids") // if this making problem in future write fetchtype = EAGER on List<bids>
 public class Freelancer extends BaseEntity {
 	@Column(length = 40)
 	private String freelancerName;
@@ -32,7 +40,9 @@ public class Freelancer extends BaseEntity {
 	private String mobileNumber;
 	@Column
 	private String profileDescription;
-	@Enumerated(EnumType.STRING)
 	@Column
-	private Skills skills;
+	private String skills;
+	
+	@OneToMany(mappedBy = "freelancer")
+    private List<Bid> bids = new ArrayList<>();
 }
