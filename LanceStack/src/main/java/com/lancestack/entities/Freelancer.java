@@ -2,6 +2,8 @@ package com.lancestack.entities;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
@@ -28,6 +30,9 @@ public class Freelancer extends BaseEntity {
 	private String password;
 	@Column
 	private String mobileNumber;
-	@Column(nullable = true)
+	@Column
 	private String profileDescription;
+	@Enumerated(EnumType.STRING)
+	@Column
+	private Skills skills;
 }

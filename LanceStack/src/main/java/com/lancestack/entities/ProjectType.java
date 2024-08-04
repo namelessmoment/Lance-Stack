@@ -1,0 +1,5 @@
+package com.lancestack.entities;
+
+public enum ProjectType {
+	WEB_APPLICATION, ANDROID_APPLICATION , DESKTOP_APPLICATION ,GAME_DEVELOPMENT , ENTERPRISE_SOFTWARE;
+}
