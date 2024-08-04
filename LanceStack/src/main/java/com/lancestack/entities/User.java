@@ -3,6 +3,8 @@ package com.lancestack.entities;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -25,8 +27,9 @@ import lombok.ToString;
 public class User extends BaseEntity {
 	@Column(length = 40)
 	private String userName;
-//	@OneToMany(mappedBy = "chosenUser", cascade = CascadeType.ALL ,orphanRemoval = true)
-//	private List<Project> projects = new ArrayList<>();
+	@JsonIgnore
+	@OneToMany(mappedBy = "user", cascade = CascadeType.ALL ,orphanRemoval = true)
+	private List<Project> projects = new ArrayList<>();
 	@Column
 //	@Email(message = "Please enter a valid email address")
 //	@NotBlank(message = "Enter Email")

@@ -16,7 +16,7 @@ import com.lancestack.entities.Project;
 import com.lancestack.service.ProjectService;
 
 @RestController
-@RequestMapping("projects")
+@RequestMapping("/projects")
 public class ProjectController {
 	@Autowired
 	ProjectService projectService;

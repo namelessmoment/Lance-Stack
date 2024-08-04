@@ -1,5 +1,6 @@
 package com.lancestack.entities;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
@@ -33,7 +34,7 @@ public class Project extends BaseEntity {
 	private ProjectStatus status;
 	@Column
 	private double budget;
-	@ManyToOne 
+	@ManyToOne
 	@JoinColumn(name = "user_id", nullable = false)
 	private User user;
 }
