@@ -11,7 +11,6 @@ import com.lancestack.dto.ApiResponse;
 import com.lancestack.dto.UserDTO;
 import com.lancestack.dto.UserLoginDTO;
 import com.lancestack.dto.UserRegistrationDTO;
-import com.lancestack.entities.Freelancer;
 import com.lancestack.entities.User;
 import com.lancestack.repository.UserRepository;
 
@@ -73,6 +72,9 @@ public class UserServiceImpl implements UserService {
 	@Override
 	public UserDTO getUserByEmailAndPassword(UserLoginDTO userLoginDTO) {
 		User user = userRepo.findByEmail(userLoginDTO.getEmail());
+		if(user == null) {
+			return null;
+		}
 		if(!user.getPassword().equals(userLoginDTO.getPassword())) {
 			throw new ResourceNotFound("Incorrect User Password!");
 		}

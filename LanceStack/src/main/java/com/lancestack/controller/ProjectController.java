@@ -17,7 +17,6 @@ import com.lancestack.dto.ApiResponse;
 import com.lancestack.dto.PostProjectDTO;
 import com.lancestack.dto.ProjectDTO;
 import com.lancestack.dto.ProjectFilterRangeDTO;
-import com.lancestack.entities.Bid;
 import com.lancestack.entities.Project;
 import com.lancestack.service.ProjectService;
 
@@ -28,7 +27,7 @@ public class ProjectController {
 	ProjectService projectService;
 	
 	@GetMapping
-	public ResponseEntity<?> getAllProjects(){
+	public ResponseEntity<List<ProjectDTO>> getAllProjects(){
 		return ResponseEntity
 				.ok(projectService.getAllProjects());
 	}
@@ -43,7 +42,7 @@ public class ProjectController {
 		}
 	}
 	
-	@PostMapping
+	@PostMapping("/postProject")
 	public ResponseEntity<?> postProject(@RequestBody PostProjectDTO projectDTO){
 		return ResponseEntity
 				.status(HttpStatus.CREATED)

@@ -27,6 +27,7 @@ import lombok.ToString;
 @ToString
 @AllArgsConstructor
 @NoArgsConstructor
+//@JsonIgnoreProperties("contracts")
 public class Project extends BaseEntity {
 	@Column
 	private String title;
@@ -43,6 +44,14 @@ public class Project extends BaseEntity {
 	
 	@OneToMany(mappedBy = "project",fetch = FetchType.EAGER)
     private List<Bid> bids = new ArrayList<>();
+	
+//	@OneToMany(mappedBy = "project")
+//	private List<Contract> contracts = new ArrayList<>();
+	
+//	@OneToOne(mappedBy = "project")
+//	@JoinColumn(name = "contract_id", nullable = true)
+//	@JsonIgnore
+//	private Contract contract;
 	
 	@ManyToOne
 	@JoinColumn(name = "user_id", nullable = false)

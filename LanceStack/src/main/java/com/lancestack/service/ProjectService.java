@@ -12,7 +12,7 @@ import com.lancestack.entities.ProjectStatus;
 public interface ProjectService {
 //	ApiResponse createProject(Project proj);
 	
-	List<Project> getAllProjects();
+	List<ProjectDTO> getAllProjects();
 	
 	Project getProjectById(Long id);
 	

@@ -2,7 +2,6 @@ package com.lancestack.dto;
 
 import com.lancestack.entities.ProjectStatus;
 import com.lancestack.entities.ProjectType;
-import com.lancestack.entities.User;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -21,5 +20,6 @@ public class PostProjectDTO {
     private String description;
     private ProjectStatus status;
     private double budget;
-    private User user;
+    private UserDTO user;
+
 }

@@ -10,9 +10,9 @@ import org.springframework.stereotype.Service;
 import com.lancestack.custom_exception.ResourceNotFound;
 import com.lancestack.dto.ApiResponse;
 import com.lancestack.dto.PostProjectDTO;
-import com.lancestack.dto.ProjectByUserIdDTO;
 import com.lancestack.dto.ProjectDTO;
 import com.lancestack.dto.ProjectFilterRangeDTO;
+import com.lancestack.dto.UserDTO;
 import com.lancestack.entities.Project;
 import com.lancestack.entities.ProjectStatus;
 import com.lancestack.entities.User;
@@ -33,32 +33,33 @@ public class ProjectServiceImpl implements ProjectService {
 	@Autowired
 	ModelMapper modelMapper;
 	
-//	@Override
-//	public ApiResponse createProject(Project proj) {
-//		User existingUser = userRepo.findByMobileNumber(proj.getUser().getMobileNumber());
-//		if(existingUser==null) {
-//			throw new ResourceNotFound("No such user exists");
-//		}
-//		else {
-//		proj.setUser(existingUser);
-//		projectRepo.save(proj);
-//		return new ApiResponse("Project created successfully");
-//		}
-//	}
-	
+	// Need to look when integrating if we need user ID then provide it.
 	@Override
 	public ApiResponse postProject(PostProjectDTO projectDTO) {
 //		User user = projectDTO.getUser();
+//		User user = userRepo.findByEmail(projectDTO.getUser().getEmail());
+//		projectDTO.setUser(user);
+//		Project project = modelMapper.map(projectDTO, Project.class);
+//		projectRepo.save(project);
+//		return new ApiResponse("Project Successfully Added.");
+		
+//		UserDTO userDTO = projectDTO.getUser();
 		User user = userRepo.findByEmail(projectDTO.getUser().getEmail());
-		projectDTO.setUser(user);
-		Project project = modelMapper.map(projectDTO, Project.class);
-		projectRepo.save(project);
-		return new ApiResponse("Project Successfully Added.");
+		UserDTO userDTO1 = modelMapper.map(user, UserDTO.class);
+	    projectDTO.setUser(userDTO1);
+	    Project project = modelMapper.map(projectDTO, Project.class);
+	    projectRepo.save(project);
+	    return new ApiResponse("Project Successfully Added.");
+
 	}
 
 	@Override
-	public List<Project> getAllProjects() {
-		return projectRepo.findAll();
+	public List<ProjectDTO> getAllProjects() {
+		List<Project> projects = projectRepo.findAll();
+	    List<ProjectDTO> projectDTOs = projects.stream()
+	            .map(project -> modelMapper.map(project, ProjectDTO.class))
+	            .collect(Collectors.toList());
+	    return projectDTOs;
 	}
 
 	@Override
@@ -96,23 +97,6 @@ public class ProjectServiceImpl implements ProjectService {
 		}
 		return new ApiResponse(msg);
 	}
-
-//	@Override
-//	public List<Project> getAllProjectsByUser(Long userId) {
-//		User user = userRepo.findById(userId)
-//				.orElseThrow(() -> new RuntimeException("Project not found"));
-////		ProjectsByUserDTO project = modelMapper.map(Project.class,project);
-//		return user.getAllProjects();
-//	}
-	
-//	@Override
-//	public List<ProjectDTO> getAllProjectsByUser(Long userId) {
-//		if(userRepo.existsById(userId)) {
-//			ProjectByUserIdDTO user = userRepo.findById(userId)
-//					.orElseThrow(() -> new RuntimeException("Projects not found"));
-////			return user.getAllProjects();
-//		}
-//	}
 	
 	@Override
 	public List<ProjectDTO> getAllProjectsByUser(Long userId) {
