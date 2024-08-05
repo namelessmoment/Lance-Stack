@@ -8,9 +8,21 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import com.lancestack.entities.Project;
+import com.lancestack.entities.ProjectType;
 
 @Repository
 public interface ProjectRepository extends JpaRepository<Project, Long>{
 	@Query("Select p from Project p where p.budget between :startRange and :endRange")
 	List<Project> findProjectsByBudgetRange(double startRange, double endRange);
+	
+//	@Query("Select p from Project p where p.projType = :projectType")
+//	List<Project> findProjectsByProjectType(ProjectType projectType);
+	
+	@Query("Select p from Project p where p.status = 'COMPLETED'")
+	List<Project> findProjectsWhereStatusCompleted();
+	
+	@Query("Select p from Project p where p.status = 'IN_PROGRESS'")
+	List<Project> findProjectsWhereStatusInprogress();
+	
+	List<Project> findByProjType(ProjectType projType);
 }
