@@ -11,4 +11,5 @@ public interface BidService {
 	
 	List<Bid> getAllBidsByProject(Long projectId);
 	
+	
 }

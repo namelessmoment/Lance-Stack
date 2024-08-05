@@ -10,7 +10,9 @@ import com.lancestack.custom_exception.ResourceNotFound;
 import com.lancestack.dto.ApiResponse;
 import com.lancestack.dto.PostProjectDTO;
 import com.lancestack.dto.ProjectDTO;
+import com.lancestack.dto.ProjectFilterRangeDTO;
 import com.lancestack.entities.Project;
+import com.lancestack.entities.ProjectStatus;
 import com.lancestack.entities.User;
 import com.lancestack.repository.ProjectRepository;
 import com.lancestack.repository.UserRepository;
@@ -93,4 +95,26 @@ public class ProjectServiceImpl implements ProjectService {
 		return new ApiResponse(msg);
 	}
 
+	@Override
+	public List<Project> getAllProjectsByUser(Long userId) {
+		User user = userRepo.findById(userId)
+				.orElseThrow(() -> new RuntimeException("Project not found"));
+//		ProjectsByUserDTO project = modelMapper.map(Project.class,project);
+		return user.getAllProjects();
+	}
+
+	@Override
+	public ApiResponse updateStatus(Long projecId) {
+			Project proj = projectRepo.findById(projecId).orElseThrow(()-> new ResourceNotFound("Invalid ProjectId"));
+			proj.setStatus(ProjectStatus.COMPLETED);
+			projectRepo.save(proj);
+		return new ApiResponse("Project Status Updated Successfully");
+	}
+
+	@Override
+	public List<Project> filterRange(ProjectFilterRangeDTO filterDTO) {
+		
+		return projectRepo.findProjectsByBudgetRange(filterDTO.getStartRange() , filterDTO.getEndRange());
+	}
+	
 }

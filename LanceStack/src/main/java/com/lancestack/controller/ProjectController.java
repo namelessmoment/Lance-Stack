@@ -1,5 +1,7 @@
 package com.lancestack.controller;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -14,6 +16,9 @@ import org.springframework.web.bind.annotation.RestController;
 import com.lancestack.dto.ApiResponse;
 import com.lancestack.dto.PostProjectDTO;
 import com.lancestack.dto.ProjectDTO;
+import com.lancestack.dto.ProjectFilterRangeDTO;
+import com.lancestack.entities.Bid;
+import com.lancestack.entities.Project;
 import com.lancestack.service.ProjectService;
 
 @RestController
@@ -59,4 +64,24 @@ public class ProjectController {
 			return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new ApiResponse(e.getMessage()));
 		}
 	}
+	
+	@GetMapping("/user/{userId}")
+	public ResponseEntity<List<Project>> getProjectsByUser(@PathVariable Long userId){
+        List<Project> projs = projectService.getAllProjectsByUser(userId);
+        return ResponseEntity.ok(projs);
+	}
+	
+	@GetMapping("/projectStatus/{projectId}")
+	public ResponseEntity<ApiResponse> updateProjectStatus(@PathVariable Long projectId){
+		return ResponseEntity.status(HttpStatus.OK).body(projectService.updateStatus(projectId));
+	}
+	
+	@PostMapping("/filterByRange")
+	public ResponseEntity<List<Project>> getProjectsByRange(@RequestBody ProjectFilterRangeDTO filterDTO){
+		List<Project> projects = projectService.filterRange(filterDTO);
+		return ResponseEntity.ok(projects);
+	}
+	
+	
+	
 }
