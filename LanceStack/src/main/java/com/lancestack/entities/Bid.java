@@ -24,6 +24,10 @@ public class Bid extends BaseEntity {
     private String bidDescription;
     
     @ManyToOne
+    @JoinColumn(name = "project_id")
+    private Project project;
+    
+    @ManyToOne
     @JoinColumn(name = "freelancer_id")
     private Freelancer freelancer;
 }

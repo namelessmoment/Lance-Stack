@@ -1,12 +1,15 @@
 package com.lancestack.entities;
 
-import jakarta.persistence.CascadeType;
+import java.util.ArrayList;
+import java.util.List;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -34,7 +37,13 @@ public class Project extends BaseEntity {
 	private ProjectStatus status;
 	@Column
 	private double budget;
+	
+	@OneToMany(mappedBy = "project")
+    private List<Bid> bids = new ArrayList<>();
+	
 	@ManyToOne
 	@JoinColumn(name = "user_id", nullable = false)
 	private User user;
+	
+	
 }

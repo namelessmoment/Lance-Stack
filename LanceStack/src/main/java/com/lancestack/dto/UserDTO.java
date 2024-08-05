@@ -5,7 +5,7 @@ import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Pattern;
 
-public class UserDTO {
+public class UserDTO extends BaseEntity{
 
 	@Column(length = 40)
 	private String userName;

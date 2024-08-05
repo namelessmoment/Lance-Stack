@@ -1,21 +1,24 @@
 package com.lancestack.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.system.ApplicationPid;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.bind.annotation.RequestBody;
 
 import com.lancestack.dto.ApiResponse;
 import com.lancestack.dto.UserDTO;
 import com.lancestack.dto.UserLoginDTO;
 import com.lancestack.dto.UserRegistrationDTO;
-import com.lancestack.entities.User;
 import com.lancestack.service.UserService;
+
+import jakarta.validation.Valid;
 
 @RestController
 @RequestMapping("users")
@@ -66,9 +69,11 @@ public class UserController {
 			return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new ApiResponse(e.getMessage()));
 		}
 	}
-	@PostMapping(value ="/userLogin")
-	public ResponseEntity<UserDTO> userLogin(@RequestBody UserLoginDTO userLoginDTO){
-		UserDTO user = userService.userLogin(userLoginDTO);
-		return ResponseEntity.ok(user);
+	
+	@PostMapping("/userLogin")
+	public ResponseEntity<UserDTO> userLogin(@RequestBody @Valid UserLoginDTO userLoginDTO){
+	        UserDTO user = userService.userLogin(userLoginDTO);
+	        return ResponseEntity.ok(user);
 	}
+
 }

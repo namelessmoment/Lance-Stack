@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.lancestack.dto.ApiResponse;
+import com.lancestack.dto.PostProjectDTO;
 import com.lancestack.entities.Project;
 import com.lancestack.service.ProjectService;
 
@@ -21,7 +22,7 @@ public class ProjectController {
 	@Autowired
 	ProjectService projectService;
 	
-	@GetMapping()
+	@GetMapping
 	public ResponseEntity<?> getAllProjects(){
 		return ResponseEntity
 				.ok(projectService.getAllProjects());
@@ -38,9 +39,16 @@ public class ProjectController {
 	}
 	
 	@PostMapping
-	public ResponseEntity<?> createProject(@RequestBody Project project){
-		return ResponseEntity.status(HttpStatus.CREATED).body(projectService.createProject(project));
+	public ResponseEntity<?> postProject(@RequestBody PostProjectDTO projectDTO){
+		return ResponseEntity
+				.status(HttpStatus.CREATED)
+				.body(projectService.postProject(projectDTO));
 	}
+	
+//	@PostMapping
+//	public ResponseEntity<?> createProject(@RequestBody Project project){
+//		return ResponseEntity.status(HttpStatus.CREATED).body(projectService.createProject(project));
+//	}
 	
 	@PutMapping("/{projectId}")
 	public ResponseEntity<?> updateProject(@PathVariable Long projectId , @RequestBody Project proj){

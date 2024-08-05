@@ -2,11 +2,13 @@ package com.lancestack.service;
 
 import java.util.List;
 
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.lancestack.custom_exception.ResourceNotFound;
 import com.lancestack.dto.ApiResponse;
+import com.lancestack.dto.PostProjectDTO;
 import com.lancestack.entities.Project;
 import com.lancestack.entities.User;
 import com.lancestack.repository.ProjectRepository;
@@ -23,19 +25,31 @@ public class ProjectServiceImpl implements ProjectService {
 	@Autowired
 	UserRepository userRepo;
 	
-	@Override
-	public ApiResponse createProject(Project proj) {
-		User existingUser = userRepo.findByMobileNumber(proj.getUser().getMobileNumber());
-		if(existingUser==null) {
-			throw new ResourceNotFound("No such user exists");
-		}
-		else {
-		proj.setUser(existingUser);
-		projectRepo.save(proj);
-		return new ApiResponse("Project created successfully");
-		}
-	}
+	@Autowired
+	ModelMapper modelMapper;
 	
+//	@Override
+//	public ApiResponse createProject(Project proj) {
+//		User existingUser = userRepo.findByMobileNumber(proj.getUser().getMobileNumber());
+//		if(existingUser==null) {
+//			throw new ResourceNotFound("No such user exists");
+//		}
+//		else {
+//		proj.setUser(existingUser);
+//		projectRepo.save(proj);
+//		return new ApiResponse("Project created successfully");
+//		}
+//	}
+	
+	@Override
+	public ApiResponse postProject(PostProjectDTO projectDTO) {
+//		User user = projectDTO.getUser();
+		User user = userRepo.findByEmail(projectDTO.getUser().getEmail());
+		projectDTO.setUser(user);
+		Project project = modelMapper.map(projectDTO, Project.class);
+		projectRepo.save(project);
+		return new ApiResponse("Project Successfully Added.");
+	}
 
 	@Override
 	public List<Project> getAllProjects() {

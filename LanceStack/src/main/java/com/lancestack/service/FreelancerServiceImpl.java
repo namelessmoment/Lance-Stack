@@ -33,9 +33,15 @@ public class FreelancerServiceImpl implements FreelancerService {
 
 	@Override
 	public ApiResponse registerFreelancer(FreelancerRegistrationDTO freelancer) {
+		String msg = "Freelancer not valid!";
+		if(freelancer == null) {
+			msg = "Freelancer contains Null!";
+			throw new ResourceNotFound("Freelancer is Invalid!");
+		}
 		Freelancer freelancer1 = modelMapper.map(freelancer, Freelancer.class);
 		freelancerRepo.save(freelancer1);
-		return new ApiResponse("Freelancer Registered Successfully.");
+		msg = "Freelancer Registered Successfully.";
+		return new ApiResponse(msg);
 	}
 
 	@Override
