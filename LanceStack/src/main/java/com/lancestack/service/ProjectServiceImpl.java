@@ -1,6 +1,7 @@
 package com.lancestack.service;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,6 +10,7 @@ import org.springframework.stereotype.Service;
 import com.lancestack.custom_exception.ResourceNotFound;
 import com.lancestack.dto.ApiResponse;
 import com.lancestack.dto.PostProjectDTO;
+import com.lancestack.dto.ProjectByUserIdDTO;
 import com.lancestack.dto.ProjectDTO;
 import com.lancestack.dto.ProjectFilterRangeDTO;
 import com.lancestack.entities.Project;
@@ -96,13 +98,33 @@ public class ProjectServiceImpl implements ProjectService {
 		return new ApiResponse(msg);
 	}
 
+//	@Override
+//	public List<Project> getAllProjectsByUser(Long userId) {
+//		User user = userRepo.findById(userId)
+//				.orElseThrow(() -> new RuntimeException("Project not found"));
+////		ProjectsByUserDTO project = modelMapper.map(Project.class,project);
+//		return user.getAllProjects();
+//	}
+	
+//	@Override
+//	public List<ProjectDTO> getAllProjectsByUser(Long userId) {
+//		if(userRepo.existsById(userId)) {
+//			ProjectByUserIdDTO user = userRepo.findById(userId)
+//					.orElseThrow(() -> new RuntimeException("Projects not found"));
+////			return user.getAllProjects();
+//		}
+//	}
+	
 	@Override
-	public List<Project> getAllProjectsByUser(Long userId) {
-		User user = userRepo.findById(userId)
-				.orElseThrow(() -> new RuntimeException("Project not found"));
-//		ProjectsByUserDTO project = modelMapper.map(Project.class,project);
-		return user.getAllProjects();
+	public List<ProjectDTO> getAllProjectsByUser(Long userId) {
+	    User user = userRepo.findById(userId)
+	            .orElseThrow(() -> new ResourceNotFound("User not found"));
+	    List<Project> projects = user.getAllProjects();
+	    return projects.stream()
+	            .map(project -> modelMapper.map(project, ProjectDTO.class))
+	            .collect(Collectors.toList());
 	}
+
 
 	@Override
 	public ApiResponse updateStatus(Long projecId) {
@@ -131,6 +153,5 @@ public class ProjectServiceImpl implements ProjectService {
 	@Override
 	public List<Project> projectsWhereStatusInprogress() {
 		return projectRepo.findProjectsWhereStatusInprogress();
-	}
-	
+	}	
 }

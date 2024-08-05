@@ -66,11 +66,26 @@ public class ProjectController {
 		}
 	}
 	
-	@GetMapping("/user/{userId}")
-	public ResponseEntity<List<Project>> getProjectsByUser(@PathVariable Long userId){
-        List<Project> projs = projectService.getAllProjectsByUser(userId);
-        return ResponseEntity.ok(projs);
+	// All Projects by User ID
+//	@GetMapping("/user/{userId}")
+//	public ResponseEntity<List<Project>> getProjectsByUser(@PathVariable Long userId){
+//        List<Project> projs = projectService.getAllProjectsByUser(userId);
+//        return ResponseEntity.ok(projs);
+//	}
+	
+//	@GetMapping("/userId/{userId}")
+//	public ResponseEntity<List<ProjectDTO>> getProjectsByUser(@PathVariable Long userId){
+//        List<ProjectDTO> projs = projectService.getAllProjectsByUser(userId);
+//        return ResponseEntity.ok(projs);
+//	}
+	
+	// Getting the project by userId
+	@GetMapping("/user/{userId}/projects")
+	public ResponseEntity<List<ProjectDTO>> getAllProjectsByUser(@PathVariable Long userId) {
+	    List<ProjectDTO> projectDTOs = projectService.getAllProjectsByUser(userId);
+	    return ResponseEntity.ok(projectDTOs);
 	}
+
 	
 	@GetMapping("/projectStatus/{projectId}")
 	public ResponseEntity<ApiResponse> updateProjectStatus(@PathVariable Long projectId){

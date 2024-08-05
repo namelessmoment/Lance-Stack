@@ -21,8 +21,9 @@ public interface ProjectService {
 
 	ApiResponse postProject(PostProjectDTO projectDTO);
 	
-	List<Project> getAllProjectsByUser(Long userId);
-	
+//	List<Project> getAllProjectsByUser(Long userId);
+	List<ProjectDTO> getAllProjectsByUser(Long userId);
+
 	ApiResponse updateStatus(Long projecId);
 	
 	List<Project> filterRange(ProjectFilterRangeDTO filterDTO);
