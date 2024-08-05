@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 import com.lancestack.custom_exception.ResourceNotFound;
 import com.lancestack.dto.ApiResponse;
 import com.lancestack.dto.PostProjectDTO;
+import com.lancestack.dto.ProjectDTO;
 import com.lancestack.entities.Project;
 import com.lancestack.entities.User;
 import com.lancestack.repository.ProjectRepository;
@@ -63,7 +64,7 @@ public class ProjectServiceImpl implements ProjectService {
 	}
 
 	@Override
-	public ApiResponse updateProject(Long id, Project proj) {
+	public ApiResponse updateProject(Long id, ProjectDTO proj) {
 //		Optional<Project> existingProject = projectRepo.findById(id);
 		String msg = "Updation Failed";
 		Project existingProject = projectRepo.findById(id).orElse(null);

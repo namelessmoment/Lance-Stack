@@ -45,4 +45,10 @@ public class Freelancer extends BaseEntity {
 	
 	@OneToMany(mappedBy = "freelancer")
     private List<Bid> bids = new ArrayList<>();
+	
+	//helper method : to add bid
+		public void addBid(Bid b) {
+			this.bids.add(b);
+			b.setFreelancer(this);
+		}
 }

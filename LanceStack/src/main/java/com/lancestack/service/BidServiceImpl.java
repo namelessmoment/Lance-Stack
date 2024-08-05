@@ -1,5 +1,7 @@
 package com.lancestack.service;
 
+import java.util.List;
+
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -37,17 +39,27 @@ public class BidServiceImpl implements BidService {
 	    
 	    Project project = projectRepo.findById(bidDTO.getProjectId())
 	            .orElseThrow(() -> new ResourceNotFound("Project not found"));
-	    bid.setProject(project);
+//	    bid.setProject(project);
+	    project.addBid(bid);
 	    
 	    Freelancer freelancer = freelancerRepo.findById(bidDTO.getFreelancerId())
 	            .orElseThrow(() -> new ResourceNotFound("Freelancer not found"));
-	    bid.setFreelancer(freelancer);
+//	    bid.setFreelancer(freelancer);
+	    freelancer.addBid(bid);
 	    
 	    Bid savedBid = bidRepo.save(bid);
 	    return modelMapper.map(savedBid, BidDTO.class);
-
 	}
 
+
+	@Override
+	public List<Bid> getAllBidsByProject(Long projectId) {
+		Project proj = projectRepo.findById(projectId)
+				.orElseThrow(() -> new RuntimeException("Project not found"));
+		return proj.getAllBids();
+	}
+
+	
 //	@Override
 //	public ApiResponse postBid(Bid bid) {
 //		String msg = "Bid Post failed!";

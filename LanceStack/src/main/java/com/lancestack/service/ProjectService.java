@@ -4,6 +4,7 @@ import java.util.List;
 
 import com.lancestack.dto.ApiResponse;
 import com.lancestack.dto.PostProjectDTO;
+import com.lancestack.dto.ProjectDTO;
 import com.lancestack.entities.Project;
 
 public interface ProjectService {
@@ -13,7 +14,7 @@ public interface ProjectService {
 	
 	Project getProjectById(Long id);
 	
-	ApiResponse updateProject(Long id, Project proj);
+	ApiResponse updateProject(Long id, ProjectDTO proj);
 
 	ApiResponse postProject(PostProjectDTO projectDTO);
 }

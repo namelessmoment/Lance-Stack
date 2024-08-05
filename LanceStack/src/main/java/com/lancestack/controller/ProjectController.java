@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.lancestack.dto.ApiResponse;
 import com.lancestack.dto.PostProjectDTO;
-import com.lancestack.entities.Project;
+import com.lancestack.dto.ProjectDTO;
 import com.lancestack.service.ProjectService;
 
 @RestController
@@ -51,7 +51,7 @@ public class ProjectController {
 //	}
 	
 	@PutMapping("/{projectId}")
-	public ResponseEntity<?> updateProject(@PathVariable Long projectId , @RequestBody Project proj){
+	public ResponseEntity<?> updateProject(@PathVariable Long projectId , @RequestBody ProjectDTO proj){
 		try {
 			return ResponseEntity.status(HttpStatus.OK).body(projectService.updateProject(projectId, proj));
 		}

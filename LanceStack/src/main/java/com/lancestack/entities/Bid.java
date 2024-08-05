@@ -1,5 +1,8 @@
 package com.lancestack.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
@@ -19,12 +22,16 @@ import lombok.ToString;
 @NoArgsConstructor
 public class Bid extends BaseEntity {
 	
+	@Column
     private double bidAmount;
-    private int daysWillTake;
-    private String bidDescription;
+	@Column
+	private int daysWillTake;
+	@Column
+	private String bidDescription;
     
     @ManyToOne
     @JoinColumn(name = "project_id")
+    @JsonIgnore
     private Project project;
     
     @ManyToOne

@@ -7,6 +7,7 @@ import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
@@ -38,12 +39,22 @@ public class Project extends BaseEntity {
 	@Column
 	private double budget;
 	
-	@OneToMany(mappedBy = "project")
+	@OneToMany(mappedBy = "project",fetch = FetchType.EAGER)
     private List<Bid> bids = new ArrayList<>();
 	
 	@ManyToOne
 	@JoinColumn(name = "user_id", nullable = false)
 	private User user;
 	
+	//helper method : to add bid
+	public void addBid(Bid b) {
+		this.bids.add(b);
+		b.setProject(this);
+	}
+	
+	//helper method : to get bids of the given project
+	public List<Bid> getAllBids() {
+        return this.bids;
+    }
 	
 }
