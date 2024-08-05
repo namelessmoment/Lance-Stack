@@ -70,10 +70,16 @@ public class UserController {
 		}
 	}
 	
+//	@PostMapping("/userLogin")
+//	public ResponseEntity<UserDTO> userLogin(@RequestBody @Valid UserLoginDTO userLoginDTO){
+//	        UserDTO user = userService.userLogin(userLoginDTO);
+//	        return ResponseEntity.ok(user);
+//	}
+	
 	@PostMapping("/userLogin")
-	public ResponseEntity<UserDTO> userLogin(@RequestBody @Valid UserLoginDTO userLoginDTO){
-	        UserDTO user = userService.userLogin(userLoginDTO);
-	        return ResponseEntity.ok(user);
+	public ResponseEntity<UserDTO> userLogin(@RequestBody UserLoginDTO userLoginDTO){
+		UserDTO userDTO = userService.getUserByEmailAndPassword(userLoginDTO);
+		return ResponseEntity.ok(userDTO);
 	}
 
 }

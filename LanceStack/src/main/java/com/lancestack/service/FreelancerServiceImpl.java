@@ -87,7 +87,7 @@ public class FreelancerServiceImpl implements FreelancerService {
 		Freelancer freelancer = freelancerRepo.findByEmail(freelancerLoginDTO.getEmail());
 		if(!freelancer.getPassword().equals(freelancerLoginDTO.getPassword())) {
 //			msg = "Incorrect Password!";
-			throw new ResourceNotFound("Incorrect Password!");
+			throw new ResourceNotFound("Incorrect Freelancer Password!");
 		}
 		FreelancerDTO freelancerDto = modelMapper.map(freelancer, FreelancerDTO.class);
 		

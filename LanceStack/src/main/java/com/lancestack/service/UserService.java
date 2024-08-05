@@ -18,6 +18,6 @@ public interface UserService {
 	ApiResponse updateUser(Long id, UserRegistrationDTO user);
 	
 	ApiResponse deleteUser(Long id);
-	
-	UserDTO userLogin(UserLoginDTO userLoginDTO);
+
+	UserDTO getUserByEmailAndPassword(UserLoginDTO userLoginDTO);
 }
