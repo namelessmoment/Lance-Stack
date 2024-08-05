@@ -71,14 +71,24 @@ public class UserServiceImpl implements UserService {
 	}
 
 	@Override
-	public UserDTO userLogin(UserLoginDTO userLoginDTO) {
+	public UserDTO getUserByEmailAndPassword(UserLoginDTO userLoginDTO) {
 		User user = userRepo.findByEmail(userLoginDTO.getEmail());
 		if(!user.getPassword().equals(userLoginDTO.getPassword())) {
-//			msg = "Incorrect Password!";
-			throw new ResourceNotFound("Incorrect Password!");
+			throw new ResourceNotFound("Incorrect User Password!");
 		}
-		UserDTO userDTO = modelMapper.map(user, UserDTO.class);
-		return userDTO;
+		UserDTO userDto = modelMapper.map(user, UserDTO.class);
+		return userDto;
 	}
+
+//	@Override
+//	public UserDTO userLogin(UserLoginDTO userLoginDTO) {
+//		User user = userRepo.findByEmail(userLoginDTO.getEmail());
+//		if(!user.getPassword().equals(userLoginDTO.getPassword())) {
+////			msg = "Incorrect Password!";
+//			throw new ResourceNotFound("Incorrect Password!");
+//		}
+//		UserDTO userDTO = modelMapper.map(user, UserDTO.class);
+//		return userDTO;
+//	}
 	
 }

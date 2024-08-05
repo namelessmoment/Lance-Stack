@@ -3,11 +3,15 @@ package com.lancestack.service;
 import java.util.List;
 
 import org.modelmapper.ModelMapper;
+import org.modelmapper.TypeToken;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.lancestack.custom_exception.ResourceNotFound;
+import com.lancestack.dto.ApiResponse;
 import com.lancestack.dto.BidDTO;
+import com.lancestack.dto.FreelancerBidDTO;
+import com.lancestack.dto.UpdateBidDTO;
 import com.lancestack.entities.Bid;
 import com.lancestack.entities.Freelancer;
 import com.lancestack.entities.Project;
@@ -57,6 +61,51 @@ public class BidServiceImpl implements BidService {
 		Project proj = projectRepo.findById(projectId)
 				.orElseThrow(() -> new RuntimeException("Project not found"));
 		return proj.getAllBids();
+	}
+
+
+	@Override
+	public ApiResponse updateBid(Long bidId, UpdateBidDTO updatedBid) {
+		String msg = "Bid Update Failed!";
+		if(updatedBid == null) {
+			throw new ResourceNotFound("Bid is Null");
+		}
+		
+		Bid existingBid = bidRepo.findById(bidId)
+	            .orElseThrow(() -> new ResourceNotFound("Bid not found"));
+	    if(existingBid == null) {
+	    	throw new ResourceNotFound("Bid not found");
+	    }
+	    modelMapper.map(updatedBid, existingBid);
+	    bidRepo.save(existingBid);
+
+		return new ApiResponse(msg);
+	}
+
+
+	@Override
+	public ApiResponse deleteBid(Long bidId) {
+		String msg = "Bid Not Found!";
+		if(bidRepo.existsById(bidId)) {
+			Bid deleteBid = bidRepo.findById(bidId)
+		            .orElseThrow(() -> new ResourceNotFound("Bid not found"));
+			bidRepo.delete(deleteBid);
+			msg = "Bid is Deleted";
+		}
+		return new ApiResponse(msg);
+	}
+
+
+	@Override
+	public List<FreelancerBidDTO> getAllBidsByFreelancerId(Long freelancerId) {
+		List<Bid> freelancerAssocaitedBids = null;
+		if(freelancerRepo.existsById(freelancerId)) {
+			Freelancer freelancer = freelancerRepo.findById(freelancerId)
+		            .orElseThrow(() -> new ResourceNotFound("Freelancer not found"));
+			freelancerAssocaitedBids = bidRepo.findByFreelancer(freelancer);
+		}
+		return modelMapper.map(freelancerAssocaitedBids, new TypeToken<List<FreelancerBidDTO>>() {}.getType());
+
 	}
 
 	
