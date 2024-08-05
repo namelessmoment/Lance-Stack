@@ -8,6 +8,7 @@ import com.lancestack.dto.ProjectDTO;
 import com.lancestack.dto.ProjectFilterRangeDTO;
 import com.lancestack.entities.Project;
 import com.lancestack.entities.ProjectStatus;
+import com.lancestack.entities.ProjectType;
 
 public interface ProjectService {
 //	ApiResponse createProject(Project proj);
@@ -26,5 +27,10 @@ public interface ProjectService {
 	ApiResponse updateStatus(Long projecId);
 	
 	List<Project> filterRange(ProjectFilterRangeDTO filterDTO);
-
+	
+	List<Project> filterProjectType(ProjectType projectType);
+	
+	List<Project> projectsWhereStatusCompleted();
+	
+	List<Project> projectsWhereStatusInprogress();
 }

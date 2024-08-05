@@ -18,6 +18,7 @@ import com.lancestack.dto.PostProjectDTO;
 import com.lancestack.dto.ProjectDTO;
 import com.lancestack.dto.ProjectFilterRangeDTO;
 import com.lancestack.entities.Project;
+import com.lancestack.entities.ProjectType;
 import com.lancestack.service.ProjectService;
 
 @RestController
@@ -96,6 +97,23 @@ public class ProjectController {
 		return ResponseEntity.ok(projects);
 	}
 	
+	@GetMapping("/filterByProjectType/{projectType}")
+	public ResponseEntity<List<Project>> getProjectsByProjectType(@PathVariable ProjectType projectType){
+		List<Project> projects = projectService.filterProjectType(projectType);
+		return ResponseEntity.ok(projects);
+	}
+	
+	@GetMapping("/completedProjects")
+	public ResponseEntity<List<Project>> getProjectsWhereStatusCompleted(){ 
+		List<Project> projects = projectService.projectsWhereStatusCompleted();
+		return ResponseEntity.ok(projects);
+	}
+	
+	@GetMapping("/InprogressProjects")
+	public ResponseEntity<List<Project>> getProjectsWhereStatusInprogress(){ 
+		List<Project> projects = projectService.projectsWhereStatusInprogress();
+		return ResponseEntity.ok(projects);
+	}
 	
 	
 }

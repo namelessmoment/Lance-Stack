@@ -15,6 +15,7 @@ import com.lancestack.dto.ProjectFilterRangeDTO;
 import com.lancestack.dto.UserDTO;
 import com.lancestack.entities.Project;
 import com.lancestack.entities.ProjectStatus;
+import com.lancestack.entities.ProjectType;
 import com.lancestack.entities.User;
 import com.lancestack.repository.ProjectRepository;
 import com.lancestack.repository.UserRepository;
@@ -121,5 +122,20 @@ public class ProjectServiceImpl implements ProjectService {
 	public List<Project> filterRange(ProjectFilterRangeDTO filterDTO) {
 		
 		return projectRepo.findProjectsByBudgetRange(filterDTO.getStartRange() , filterDTO.getEndRange());
+	}
+
+	@Override
+	public List<Project> filterProjectType(ProjectType projectType) {
+		return projectRepo.findByProjType(projectType);
+	}
+
+	@Override
+	public List<Project> projectsWhereStatusCompleted() {
+		return projectRepo.findProjectsWhereStatusCompleted();
+	}
+
+	@Override
+	public List<Project> projectsWhereStatusInprogress() {
+		return projectRepo.findProjectsWhereStatusInprogress();
 	}	
 }
