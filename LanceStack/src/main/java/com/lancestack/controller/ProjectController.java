@@ -21,18 +21,22 @@ import com.lancestack.entities.Project;
 import com.lancestack.entities.ProjectType;
 import com.lancestack.service.ProjectService;
 
+import io.swagger.v3.oas.annotations.Operation;
+
 @RestController
 @RequestMapping("/projects")
 public class ProjectController {
 	@Autowired
 	ProjectService projectService;
 	
+	@Operation(description = "Get All projects.")
 	@GetMapping
 	public ResponseEntity<List<ProjectDTO>> getAllProjects(){
 		return ResponseEntity
 				.ok(projectService.getAllProjects());
 	}
 	
+	@Operation(description = "Get Project By Project ID.")
 	@GetMapping("/{projectId}")
 	public ResponseEntity<?> getProjectById(@PathVariable Long projectId){
 		try {
@@ -43,6 +47,7 @@ public class ProjectController {
 		}
 	}
 	
+	@Operation(description = "Post the Project")
 	@PostMapping("/postProject")
 	public ResponseEntity<?> postProject(@RequestBody PostProjectDTO projectDTO){
 		return ResponseEntity
@@ -55,6 +60,7 @@ public class ProjectController {
 //		return ResponseEntity.status(HttpStatus.CREATED).body(projectService.createProject(project));
 //	}
 	
+	@Operation(description = "Update Project details Endpoint.")
 	@PutMapping("/{projectId}")
 	public ResponseEntity<?> updateProject(@PathVariable Long projectId , @RequestBody ProjectDTO proj){
 		try {
@@ -79,36 +85,41 @@ public class ProjectController {
 //	}
 	
 	// Getting the project by userId
+	@Operation(description = "Get Project by User ID.")
 	@GetMapping("/user/{userId}/projects")
 	public ResponseEntity<List<ProjectDTO>> getAllProjectsByUser(@PathVariable Long userId) {
 	    List<ProjectDTO> projectDTOs = projectService.getAllProjectsByUser(userId);
 	    return ResponseEntity.ok(projectDTOs);
 	}
 
-	
+	@Operation(description = "Updating Project Status.")
 	@GetMapping("/projectStatus/{projectId}")
 	public ResponseEntity<ApiResponse> updateProjectStatus(@PathVariable Long projectId){
 		return ResponseEntity.status(HttpStatus.OK).body(projectService.updateStatus(projectId));
 	}
 	
+	@Operation(description = "Filter Project by the range on Budget.")
 	@PostMapping("/filterByRange")
 	public ResponseEntity<List<Project>> getProjectsByRange(@RequestBody ProjectFilterRangeDTO filterDTO){
 		List<Project> projects = projectService.filterRange(filterDTO);
 		return ResponseEntity.ok(projects);
 	}
 	
+	@Operation(description = "Filter Project by Project Type.")
 	@GetMapping("/filterByProjectType/{projectType}")
 	public ResponseEntity<List<Project>> getProjectsByProjectType(@PathVariable ProjectType projectType){
 		List<Project> projects = projectService.filterProjectType(projectType);
 		return ResponseEntity.ok(projects);
 	}
 	
+	@Operation(description = "Completed Project Endpoint.")
 	@GetMapping("/completedProjects")
 	public ResponseEntity<List<Project>> getProjectsWhereStatusCompleted(){ 
 		List<Project> projects = projectService.projectsWhereStatusCompleted();
 		return ResponseEntity.ok(projects);
 	}
 	
+	@Operation(description = "In Progress Project Endpoint.")
 	@GetMapping("/InprogressProjects")
 	public ResponseEntity<List<Project>> getProjectsWhereStatusInprogress(){ 
 		List<Project> projects = projectService.projectsWhereStatusInprogress();

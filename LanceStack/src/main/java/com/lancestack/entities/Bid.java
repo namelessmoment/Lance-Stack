@@ -31,7 +31,7 @@ public class Bid extends BaseEntity {
     
     @ManyToOne
     @JoinColumn(name = "project_id")
-    @JsonIgnore
+//    @JsonIgnore
     private Project project;
     
     @ManyToOne

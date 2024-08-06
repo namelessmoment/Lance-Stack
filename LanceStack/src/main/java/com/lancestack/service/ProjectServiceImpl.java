@@ -64,9 +64,10 @@ public class ProjectServiceImpl implements ProjectService {
 	}
 
 	@Override
-	public Project getProjectById(Long id) {
+	public ProjectDTO getProjectById(Long id) {
 		Project project = projectRepo.findById(id).orElseThrow(()-> new ResourceNotFound("Invalid Id"));
-		return project;
+		ProjectDTO projectDTO = modelMapper.map(project, ProjectDTO.class);
+		return projectDTO;
 	}
 
 	@Override

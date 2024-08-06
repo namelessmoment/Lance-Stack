@@ -18,7 +18,7 @@ import com.lancestack.dto.UserLoginDTO;
 import com.lancestack.dto.UserRegistrationDTO;
 import com.lancestack.service.UserService;
 
-import jakarta.validation.Valid;
+import io.swagger.v3.oas.annotations.Operation;
 
 @RestController
 @RequestMapping("users")
@@ -27,6 +27,7 @@ public class UserController {
 	@Autowired
 	UserService userService;
 	
+	@Operation(description = "Registration of User Endpoint.")
 	@PostMapping
 	public ResponseEntity<?> registerUser(@RequestBody UserRegistrationDTO user){
 		return ResponseEntity
@@ -34,12 +35,14 @@ public class UserController {
 				.body(userService.registerUser(user));
 	}
 	
+	@Operation(description = "Get All users.")
 	@GetMapping()
 	public ResponseEntity<?> getAllUsers(){
 		return ResponseEntity
 				.ok(userService.getAllUsers());
 	}
 	
+	@Operation(description = "Get user by user ID.")
 	@GetMapping("/{userId}")
 	public ResponseEntity<?> getUserById(@PathVariable Long userId){
 		try {
@@ -50,6 +53,7 @@ public class UserController {
 		}
 	}
 	
+	@Operation(description = "Updating the user by using userID and UserResgistrationDTO.")
 	@PutMapping("/{userId}")
 	public ResponseEntity<?> updateUser(@PathVariable Long userId , @RequestBody UserRegistrationDTO user){
 		try {
@@ -60,6 +64,7 @@ public class UserController {
 		}
 	}
 	
+	@Operation(description = "Delete user by user ID")
 	@DeleteMapping("/{userId}")
 	public ResponseEntity<?> removeUser(@PathVariable Long userId){
 		try {
@@ -76,6 +81,7 @@ public class UserController {
 //	        return ResponseEntity.ok(user);
 //	}
 	
+	@Operation(description = "User Login Endpoint.")
 	@PostMapping("/userLogin")
 	public ResponseEntity<UserDTO> userLogin(@RequestBody UserLoginDTO userLoginDTO){
 		UserDTO userDTO = userService.getUserByEmailAndPassword(userLoginDTO);

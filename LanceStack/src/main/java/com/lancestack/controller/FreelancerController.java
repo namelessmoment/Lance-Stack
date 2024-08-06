@@ -16,6 +16,8 @@ import com.lancestack.dto.FreelancerLoginDTO;
 import com.lancestack.dto.FreelancerRegistrationDTO;
 import com.lancestack.service.FreelancerService;
 
+import io.swagger.v3.oas.annotations.Operation;
+
 @RestController
 @RequestMapping("freelancers")
 public class FreelancerController {
@@ -23,12 +25,14 @@ public class FreelancerController {
 	@Autowired
 	FreelancerService freelancerService;
 	
+	@Operation(description = "Get List of All Freelancers.")
 	@GetMapping
 	public ResponseEntity<?> getAllFreelancers(){
 		return ResponseEntity
 				.ok(freelancerService.getAllFreelancers());
 	}
 	
+	@Operation(description = "Registeration Endpoint for Freelancer.")
 	@PostMapping
 	public ResponseEntity<?> registerFreelancer(@RequestBody FreelancerRegistrationDTO freelancer){
 			return ResponseEntity
@@ -36,6 +40,7 @@ public class FreelancerController {
 				.body(freelancerService.registerFreelancer(freelancer));
 	}
 	
+	@Operation(description = "Updating Freelancer Details.")
 	@PutMapping("/{id}")
 	public ResponseEntity<?> updateFreelancer(@PathVariable Long id , @RequestBody FreelancerRegistrationDTO freelancerDTO){
 		return ResponseEntity
@@ -43,18 +48,21 @@ public class FreelancerController {
 				.body(freelancerService.updateFreelancerDetails(id, freelancerDTO));
 	}
 	
+	@Operation(description = "Get Freelancer Details By their ID.")
 	@GetMapping("/{id}")
     public ResponseEntity<FreelancerDTO> getFreelancerById(@PathVariable Long id) {
         FreelancerDTO freelancer = freelancerService.getFreelancerById(id);
         return ResponseEntity.ok(freelancer);
     }
 	
+	@Operation(description = "Get Freelancer by Email.")
 	@GetMapping("/email/{fEmail}")
 	public ResponseEntity<FreelancerDTO> getFreelancerByEmail(@PathVariable String fEmail){
 		FreelancerDTO freelancer = freelancerService.getFreelancerByEmail(fEmail);
 		return ResponseEntity.ok(freelancer);
 	}
 	
+	@Operation(description = "Freelancer Login Endpoint.")
 	@PostMapping("/freelancerLogin")
 	public ResponseEntity<FreelancerDTO> getFreelancerByEmailAndPassword(@RequestBody FreelancerLoginDTO freelancerLoginDTO){
 	    FreelancerDTO freelancer = freelancerService.getFreelancerByEmailAndPassword(freelancerLoginDTO);

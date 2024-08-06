@@ -15,7 +15,7 @@ public interface ProjectService {
 	
 	List<ProjectDTO> getAllProjects();
 	
-	Project getProjectById(Long id);
+	ProjectDTO getProjectById(Long id);
 	
 	ApiResponse updateProject(Long id, ProjectDTO proj);
 
