@@ -1,4 +1,4 @@
-package com.lancestack.dto;
+package com.lancestack.dto.Freelancer;
 
 import jakarta.persistence.Column;
 import jakarta.validation.constraints.Email;
@@ -8,7 +8,7 @@ import lombok.Setter;
 
 @Getter
 @Setter
-public class FreelancerDTO extends BaseEntity {
+public class FreelancerRegistrationDTO {
 	@Column(length = 40)
 	private String freelancerName;
 	@Column

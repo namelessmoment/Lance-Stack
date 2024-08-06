@@ -1,4 +1,4 @@
-package com.lancestack.dto;
+package com.lancestack.dto.Freelancer;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

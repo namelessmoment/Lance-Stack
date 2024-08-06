@@ -1,4 +1,6 @@
-package com.lancestack.dto;
+package com.lancestack.dto.User;
+
+import com.lancestack.dto.BaseEntity;
 
 import lombok.Getter;
 import lombok.Setter;

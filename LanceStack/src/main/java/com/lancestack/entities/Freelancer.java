@@ -45,9 +45,26 @@ public class Freelancer extends BaseEntity {
 	@OneToMany(mappedBy = "freelancer")
     private List<Bid> bids = new ArrayList<>();
 	
+	@OneToMany(mappedBy = "freelancer")
+	private List<Contract> contracts = new ArrayList<>();
+	
+	
 	//helper method : to add bid
-		public void addBid(Bid b) {
-			this.bids.add(b);
-			b.setFreelancer(this);
-		}
+	public void addBid(Bid bid) {
+		this.bids.add(bid);
+		bid.setFreelancer(this);
+	}
+	
+	// Helper Add method for Contract list.
+	public void addContract(Contract contract) {
+		this.contracts.add(contract);
+		contract.setFreelancer(this);
+	}
+		
+	//helper method : to get all contracts of the given project
+	public List<Contract> getAllBids() {
+        return this.contracts;
+    }
+		
+		
 }

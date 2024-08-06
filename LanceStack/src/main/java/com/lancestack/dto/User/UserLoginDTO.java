@@ -1,4 +1,4 @@
-package com.lancestack.dto;
+package com.lancestack.dto.User;
 
 import jakarta.persistence.Column;
 import jakarta.validation.constraints.Email;
@@ -8,9 +8,7 @@ import lombok.Setter;
 
 @Getter
 @Setter
-public class FreelancerRegistrationDTO {
-	@Column(length = 40)
-	private String freelancerName;
+public class UserLoginDTO {
 	@Column
 	@Email(message = "Please enter a valid email address")
 	@NotBlank(message = "Enter Email")
@@ -18,10 +16,4 @@ public class FreelancerRegistrationDTO {
 	@Column
 	@NotBlank(message = "Enter Password")
 	private String password;
-	@Column
-	private String mobileNumber;
-	@Column
-	private String profileDescription;
-	@Column
-	private String skills;
-}
+}	

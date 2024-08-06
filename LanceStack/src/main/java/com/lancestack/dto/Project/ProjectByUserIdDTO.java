@@ -1,4 +1,4 @@
-package com.lancestack.dto;
+package com.lancestack.dto.Project;
 
 import java.util.ArrayList;
 import java.util.List;

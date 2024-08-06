@@ -1,4 +1,6 @@
-package com.lancestack.dto;
+package com.lancestack.dto.Bid;
+
+import com.lancestack.dto.BaseEntity;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

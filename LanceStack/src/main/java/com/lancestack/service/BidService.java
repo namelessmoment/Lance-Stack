@@ -3,9 +3,9 @@ package com.lancestack.service;
 import java.util.List;
 
 import com.lancestack.dto.ApiResponse;
-import com.lancestack.dto.BidDTO;
-import com.lancestack.dto.FreelancerBidDTO;
-import com.lancestack.dto.UpdateBidDTO;
+import com.lancestack.dto.Bid.BidDTO;
+import com.lancestack.dto.Bid.UpdateBidDTO;
+import com.lancestack.dto.Freelancer.FreelancerBidDTO;
 import com.lancestack.entities.Bid;
 
 public interface BidService {

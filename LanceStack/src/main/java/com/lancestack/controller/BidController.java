@@ -14,9 +14,9 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.lancestack.dto.BidDTO;
-import com.lancestack.dto.FreelancerBidDTO;
-import com.lancestack.dto.UpdateBidDTO;
+import com.lancestack.dto.Bid.BidDTO;
+import com.lancestack.dto.Bid.UpdateBidDTO;
+import com.lancestack.dto.Freelancer.FreelancerBidDTO;
 import com.lancestack.entities.Bid;
 import com.lancestack.service.BidService;
 

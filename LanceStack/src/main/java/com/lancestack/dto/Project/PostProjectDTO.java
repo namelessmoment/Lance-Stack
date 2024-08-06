@@ -1,5 +1,6 @@
-package com.lancestack.dto;
+package com.lancestack.dto.Project;
 
+import com.lancestack.dto.User.UserDTO;
 import com.lancestack.entities.ProjectStatus;
 import com.lancestack.entities.ProjectType;
 

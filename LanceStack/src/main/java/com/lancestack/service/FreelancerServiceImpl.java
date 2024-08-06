@@ -1,6 +1,7 @@
 package com.lancestack.service;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -8,9 +9,10 @@ import org.springframework.stereotype.Service;
 
 import com.lancestack.custom_exception.ResourceNotFound;
 import com.lancestack.dto.ApiResponse;
-import com.lancestack.dto.FreelancerDTO;
-import com.lancestack.dto.FreelancerLoginDTO;
-import com.lancestack.dto.FreelancerRegistrationDTO;
+import com.lancestack.dto.Contract.ContractDTO;
+import com.lancestack.dto.Freelancer.FreelancerDTO;
+import com.lancestack.dto.Freelancer.FreelancerLoginDTO;
+import com.lancestack.dto.Freelancer.FreelancerRegistrationDTO;
 import com.lancestack.entities.Freelancer;
 import com.lancestack.repository.FreelancerRepository;
 
@@ -27,8 +29,11 @@ public class FreelancerServiceImpl implements FreelancerService {
 	ModelMapper modelMapper;
 
 	@Override
-	public List<Freelancer> getAllFreelancers() {
-		return freelancerRepo.findAll();
+	public List<FreelancerDTO> getAllFreelancers() {
+		List<Freelancer> freelancers = freelancerRepo.findAll();
+		return freelancers.stream()
+	            .map(freelancer -> modelMapper.map(freelancer, FreelancerDTO.class))
+	            .collect(Collectors.toList());
 	}
 
 	@Override

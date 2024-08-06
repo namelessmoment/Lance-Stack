@@ -3,9 +3,9 @@ package com.lancestack.service;
 import java.util.List;
 
 import com.lancestack.dto.ApiResponse;
-import com.lancestack.dto.UserDTO;
-import com.lancestack.dto.UserLoginDTO;
-import com.lancestack.dto.UserRegistrationDTO;
+import com.lancestack.dto.User.UserDTO;
+import com.lancestack.dto.User.UserLoginDTO;
+import com.lancestack.dto.User.UserRegistrationDTO;
 import com.lancestack.entities.User;
 
 public interface UserService {

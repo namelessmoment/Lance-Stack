@@ -9,10 +9,10 @@ import org.springframework.stereotype.Service;
 
 import com.lancestack.custom_exception.ResourceNotFound;
 import com.lancestack.dto.ApiResponse;
-import com.lancestack.dto.PostProjectDTO;
-import com.lancestack.dto.ProjectDTO;
-import com.lancestack.dto.ProjectFilterRangeDTO;
-import com.lancestack.dto.UserDTO;
+import com.lancestack.dto.Project.PostProjectDTO;
+import com.lancestack.dto.Project.ProjectDTO;
+import com.lancestack.dto.Project.ProjectFilterRangeDTO;
+import com.lancestack.dto.User.UserDTO;
 import com.lancestack.entities.Project;
 import com.lancestack.entities.ProjectStatus;
 import com.lancestack.entities.ProjectType;

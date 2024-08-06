@@ -13,9 +13,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.lancestack.dto.ApiResponse;
-import com.lancestack.dto.UserDTO;
-import com.lancestack.dto.UserLoginDTO;
-import com.lancestack.dto.UserRegistrationDTO;
+import com.lancestack.dto.User.UserDTO;
+import com.lancestack.dto.User.UserLoginDTO;
+import com.lancestack.dto.User.UserRegistrationDTO;
 import com.lancestack.service.UserService;
 
 import io.swagger.v3.oas.annotations.Operation;

@@ -8,9 +8,9 @@ import org.springframework.stereotype.Service;
 
 import com.lancestack.custom_exception.ResourceNotFound;
 import com.lancestack.dto.ApiResponse;
-import com.lancestack.dto.UserDTO;
-import com.lancestack.dto.UserLoginDTO;
-import com.lancestack.dto.UserRegistrationDTO;
+import com.lancestack.dto.User.UserDTO;
+import com.lancestack.dto.User.UserLoginDTO;
+import com.lancestack.dto.User.UserRegistrationDTO;
 import com.lancestack.entities.User;
 import com.lancestack.repository.UserRepository;
 

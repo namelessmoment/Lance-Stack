@@ -1,4 +1,4 @@
-package com.lancestack.dto;
+package com.lancestack.dto.User;
 
 import jakarta.persistence.Column;
 import jakarta.validation.constraints.Pattern;
