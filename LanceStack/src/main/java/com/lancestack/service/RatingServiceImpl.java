@@ -1,9 +1,13 @@
 package com.lancestack.service;
 
+import java.math.BigDecimal;
+
+import org.apache.catalina.mapper.Mapper;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.lancestack.custom_exception.ResourceNotFound;
 import com.lancestack.dto.ApiResponse;
 import com.lancestack.dto.Rating.FreelancerToUserRatingDTO;
 import com.lancestack.dto.Rating.UserToFreelancerRatingDTO;
@@ -83,4 +87,19 @@ public class RatingServiceImpl implements RatingService {
 		}
 		return new ApiResponse(msg);
 	}
+
+	@Override
+	public BigDecimal getAverageRatingOfFreelancer(Long freelancerId) {
+			Freelancer freelancer = freelancerRepo.findById(freelancerId).orElseThrow(()-> new ResourceNotFound("No user found"));
+//			modelMapper()
+			
+//		if(userId==null) {
+//			throw new RuntimeException("Invalid UserId");
+//		}
+//		else {
+			return ratingRepo.findAverageRatingByFreelancerId(freelancer);
+//		}
+	}
+	
+	
 }

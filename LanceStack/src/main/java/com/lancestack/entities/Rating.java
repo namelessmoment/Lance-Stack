@@ -37,6 +37,7 @@ public class Rating extends BaseEntity {
     @ManyToOne
     @JoinColumn(name = "rater_id")
     private User rater;
+    
     @ManyToOne
     @JoinColumn(name = "ratee_id")
     private Freelancer ratee;

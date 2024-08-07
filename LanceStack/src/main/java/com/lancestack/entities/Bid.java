@@ -15,7 +15,7 @@ import lombok.ToString;
 @Table(name = "bids")
 @Getter
 @Setter
-@ToString
+@ToString(exclude = "project")  // Exclude project to prevent circular reference
 @AllArgsConstructor
 @NoArgsConstructor
 public class Bid extends BaseEntity {
@@ -24,7 +24,7 @@ public class Bid extends BaseEntity {
     private double bidAmount;
 	@Column
 	private int daysWillTake;
-	@Column
+	@Column	
 	private String bidDescription;
     
     @ManyToOne

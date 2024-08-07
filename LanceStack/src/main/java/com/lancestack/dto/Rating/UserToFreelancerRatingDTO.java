@@ -12,6 +12,6 @@ public class UserToFreelancerRatingDTO {
 	private BigDecimal  rating;
 	private String feedback;
     private Long contract;
-    private Long rater;
-    private Long ratee;
+    private Long rater;  //User
+    private Long ratee;		//Freelancer
 }

@@ -24,7 +24,7 @@ import lombok.ToString;
 @Table(name = "projects")
 @Getter
 @Setter
-@ToString
+@ToString(exclude = "bids")  // Exclude bids to prevent circular reference
 @AllArgsConstructor
 @NoArgsConstructor
 //@JsonIgnoreProperties("contracts")

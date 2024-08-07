@@ -24,10 +24,10 @@ import lombok.ToString;
 @Table(name = "users")
 @Getter
 @Setter
-@ToString
+@ToString(exclude = {"projects", "ratingsGiven"})  // Exclude fields that can cause circular references
 @AllArgsConstructor
 @NoArgsConstructor
-@JsonIgnoreProperties("projects")
+@JsonIgnoreProperties({"projects","ratingsGiven"})
 public class User extends BaseEntity {
 	@Column(length = 40)
 	private String userName;

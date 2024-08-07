@@ -90,8 +90,8 @@ public class ContractServiceImpl implements ContractService {
 		else {
 			Contract contract = contractRepo.findById(contractId)
 		            .orElseThrow(() -> new ResourceNotFound("Contract not found!"));
-			contract.setStatus(ContractStatus.COMPLETED);
-			msg = "Contract Status change Success";
+			contract.setEndDate(contract.getStartDate().plusDays(days));
+			msg = "Contract Duration change Success";
 		}
 		return new ApiResponse(msg);
 	}
