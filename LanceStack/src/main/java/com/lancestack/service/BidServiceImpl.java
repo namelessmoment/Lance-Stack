@@ -48,7 +48,7 @@ public class BidServiceImpl implements BidService {
 		    
 		    Project project = projectRepo.findById(bidDTO.getProjectId())
 		            .orElseThrow(() -> new ResourceNotFound("Project not found"));
-//		    bid.setProject(project);
+//		    bid.setProject(project);    //If not used Helper methods
 		    project.addBid(bid);
 		    
 		    Freelancer freelancer = freelancerRepo.findById(bidDTO.getFreelancerId())

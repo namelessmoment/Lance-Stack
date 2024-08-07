@@ -30,7 +30,6 @@ public class ProjectServiceImpl implements ProjectService {
 	ProjectRepository projectRepo;
 	@Autowired
 	UserRepository userRepo;
-	
 	@Autowired
 	ModelMapper modelMapper;
 	

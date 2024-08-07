@@ -50,9 +50,14 @@ public class ProjectController {
 	@Operation(description = "Post the Project")
 	@PostMapping("/postProject")
 	public ResponseEntity<?> postProject(@RequestBody PostProjectDTO projectDTO){
+		try {
 		return ResponseEntity
 				.status(HttpStatus.CREATED)
 				.body(projectService.postProject(projectDTO));
+		}
+		catch (RuntimeException e) {
+			return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new ApiResponse(e.getMessage()));
+		}
 	}
 	
 //	@PostMapping
@@ -95,7 +100,12 @@ public class ProjectController {
 	@Operation(description = "Updating Project Status.")
 	@GetMapping("/projectStatus/{projectId}")
 	public ResponseEntity<ApiResponse> updateProjectStatus(@PathVariable Long projectId){
+		try {
 		return ResponseEntity.status(HttpStatus.OK).body(projectService.updateStatus(projectId));
+		}
+		catch (RuntimeException e) {
+			return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new ApiResponse(e.getMessage()));
+		}
 	}
 	
 	@Operation(description = "Filter Project by the range on Budget.")

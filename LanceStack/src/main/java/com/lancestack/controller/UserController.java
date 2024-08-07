@@ -32,9 +32,14 @@ public class UserController {
 	@Operation(description = "Registration of User Endpoint.")
 	@PostMapping
 	public ResponseEntity<?> registerUser(@RequestBody UserRegistrationDTO user){
+		try {
 		return ResponseEntity
 				.status(HttpStatus.CREATED)
 				.body(userService.registerUser(user));
+		}
+		catch (RuntimeException e) {
+			return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new ApiResponse(e.getMessage()));
+		}
 	}
 	
 	@Operation(description = "Get All users.")

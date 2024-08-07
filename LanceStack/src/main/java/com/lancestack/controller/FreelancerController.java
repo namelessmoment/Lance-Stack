@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.lancestack.dto.ApiResponse;
 import com.lancestack.dto.Freelancer.FreelancerDTO;
 import com.lancestack.dto.Freelancer.FreelancerLoginDTO;
 import com.lancestack.dto.Freelancer.FreelancerRegistrationDTO;
@@ -37,17 +38,27 @@ public class FreelancerController {
 	@Operation(description = "Registeration Endpoint for Freelancer.")
 	@PostMapping
 	public ResponseEntity<?> registerFreelancer(@RequestBody FreelancerRegistrationDTO freelancer){
+		try {
 			return ResponseEntity
 				.status(HttpStatus.CREATED)
 				.body(freelancerService.registerFreelancer(freelancer));
+		}
+		catch (RuntimeException e) {
+			return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new ApiResponse(e.getMessage()));
+		}
 	}
 	
 	@Operation(description = "Updating Freelancer Details.")
 	@PutMapping("/{id}")
 	public ResponseEntity<?> updateFreelancer(@PathVariable Long id , @RequestBody FreelancerRegistrationDTO freelancerDTO){
+		try {
 		return ResponseEntity
 				.status(HttpStatus.OK)
 				.body(freelancerService.updateFreelancerDetails(id, freelancerDTO));
+		}
+		catch (RuntimeException e) {
+			return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new ApiResponse(e.getMessage()));
+		}
 	}
 	
 	@Operation(description = "Get Freelancer Details By their ID.")
