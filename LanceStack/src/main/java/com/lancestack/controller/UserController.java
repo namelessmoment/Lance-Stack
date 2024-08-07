@@ -1,5 +1,7 @@
 package com.lancestack.controller;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -37,9 +39,9 @@ public class UserController {
 	
 	@Operation(description = "Get All users.")
 	@GetMapping()
-	public ResponseEntity<?> getAllUsers(){
-		return ResponseEntity
-				.ok(userService.getAllUsers());
+	public ResponseEntity<List<UserDTO>> getAllUsers(){
+		return ResponseEntity.status(HttpStatus.OK)
+				.body(userService.getAllUsers());
 	}
 	
 	@Operation(description = "Get user by user ID.")

@@ -6,14 +6,13 @@ import com.lancestack.dto.ApiResponse;
 import com.lancestack.dto.User.UserDTO;
 import com.lancestack.dto.User.UserLoginDTO;
 import com.lancestack.dto.User.UserRegistrationDTO;
-import com.lancestack.entities.User;
 
 public interface UserService {
 	ApiResponse registerUser(UserRegistrationDTO user);
 	
-	List<User> getAllUsers();
+	List<UserDTO> getAllUsers();
 	
-	User getUser(Long id);
+	UserDTO getUser(Long id);
 	
 	ApiResponse updateUser(Long id, UserRegistrationDTO user);
 	

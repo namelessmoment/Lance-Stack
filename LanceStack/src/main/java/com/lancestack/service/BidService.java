@@ -10,7 +10,7 @@ import com.lancestack.entities.Bid;
 
 public interface BidService {
 
-	BidDTO postBid(BidDTO bidDTO);
+	ApiResponse postBid(BidDTO bidDTO);
 	
 	List<Bid> getAllBidsByProject(Long projectId);
 

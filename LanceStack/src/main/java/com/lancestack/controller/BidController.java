@@ -31,9 +31,11 @@ public class BidController {
 	
 	@Operation(description = "Posting a Bid.")
 	@PostMapping("/postBid")
-    public ResponseEntity<BidDTO> postBid(@RequestBody BidDTO bidDTO) {
-        BidDTO savedBid = bidService.postBid(bidDTO);
-        return ResponseEntity.ok(savedBid);
+    public ResponseEntity<?> postBid(@RequestBody BidDTO bidDTO) {
+//        BidDTO savedBid = bidService.postBid(bidDTO);
+//        return ResponseEntity.ok(savedBid);
+		return ResponseEntity.status(HttpStatus.CREATED)
+				.body(bidService.postBid(bidDTO));
     }
 
 	@Operation(description = "For get the bids by Project ID.")

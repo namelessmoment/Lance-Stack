@@ -31,7 +31,8 @@ import lombok.ToString;
 public class User extends BaseEntity {
 	@Column(length = 40)
 	private String userName;
-	@OneToMany(mappedBy = "user", cascade = CascadeType.ALL ,orphanRemoval = true,fetch = FetchType.EAGER)
+	// if any issue occur after then look for LAZY TO EAGER Once.
+	@OneToMany(mappedBy = "user", cascade = CascadeType.ALL ,orphanRemoval = true,fetch = FetchType.LAZY)
 	private List<Project> projects = new ArrayList<>();
 	@Column
 	@Email(message = "Please enter a valid email address")
@@ -44,8 +45,24 @@ public class User extends BaseEntity {
 	@Pattern(regexp = "^\\d{10}$", message = "Invalid mobile number. It must be a 10-digit number.")
 	private String mobileNumber;
 	
+	// Check endpoints.
+	@OneToMany(mappedBy = "rater")
+	private List<Rating> ratingsGiven;
+
+	
 	//helper method to get all projects by user
 	public List<Project> getAllProjects() {
         return this.projects;
     }
+	
+	// Helper method to add the rater for user.
+	public void addRating(Rating rating) {
+		this.ratingsGiven.add(rating);
+		rating.setRater(this);
+	}
+	
+	// Helper method to get all the rate for user.
+	public List<Rating> getAllRatings(){
+		return this.ratingsGiven;
+	}
 }

@@ -1,6 +1,6 @@
 package com.lancestack.entities;
 
-import java.math.BigDecimal;
+import java.time.LocalDate;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -16,33 +16,29 @@ import lombok.Setter;
 import lombok.ToString;
 
 @Entity
-@Table(name = "ratings")
+@Table(name = "payments")
 @Getter
 @Setter
 @ToString
 @AllArgsConstructor
 @NoArgsConstructor
-public class Rating extends BaseEntity {
+public class Payment extends BaseEntity {
+	
+	@ManyToOne
+	@JoinColumn(name = "contract_id", nullable = false)
+	private Contract contract;
 	
 	@Column
-	private BigDecimal  rating;
-	 
+	private LocalDate paymentDate;
+	
 	@Column
-	private String feedback;
-	 
-	@ManyToOne
-    @JoinColumn(name = "contract_id")
-    private Contract contract;
-	 
-    @ManyToOne
-    @JoinColumn(name = "rater_id")
-    private User rater;
-    @ManyToOne
-    @JoinColumn(name = "ratee_id")
-    private Freelancer ratee;
-
-    @Column
-    @Enumerated(EnumType.STRING)
-    private RatingType ratingType;
-    
+	private double paymentAmount;
+	
+	@Column
+	@Enumerated(EnumType.STRING)
+	private PaymentMethod paymentMethod;
+	
+	@Column
+	@Enumerated(EnumType.STRING)
+	private PaymentStatus paymentStatus;
 }

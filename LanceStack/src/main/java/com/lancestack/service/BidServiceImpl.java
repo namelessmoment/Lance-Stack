@@ -38,21 +38,30 @@ public class BidServiceImpl implements BidService {
 	ModelMapper modelMapper;
 
 	@Override
-	public BidDTO postBid(BidDTO bidDTO) {
-		Bid bid = modelMapper.map(bidDTO, Bid.class);
-	    
-	    Project project = projectRepo.findById(bidDTO.getProjectId())
-	            .orElseThrow(() -> new ResourceNotFound("Project not found"));
-//	    bid.setProject(project);
-	    project.addBid(bid);
-	    
-	    Freelancer freelancer = freelancerRepo.findById(bidDTO.getFreelancerId())
-	            .orElseThrow(() -> new ResourceNotFound("Freelancer not found"));
-//	    bid.setFreelancer(freelancer);
-	    freelancer.addBid(bid);
-	    
-	    Bid savedBid = bidRepo.save(bid);
-	    return modelMapper.map(savedBid, BidDTO.class);
+	public ApiResponse postBid(BidDTO bidDTO) {
+		String msg = "Bid Not Posted!";
+		if(bidDTO == null) {
+			msg = "Bid is Null!";
+		}
+		else {
+			Bid bid = modelMapper.map(bidDTO, Bid.class);
+		    
+		    Project project = projectRepo.findById(bidDTO.getProjectId())
+		            .orElseThrow(() -> new ResourceNotFound("Project not found"));
+//		    bid.setProject(project);
+		    project.addBid(bid);
+		    
+		    Freelancer freelancer = freelancerRepo.findById(bidDTO.getFreelancerId())
+		            .orElseThrow(() -> new ResourceNotFound("Freelancer not found"));
+//		    bid.setFreelancer(freelancer);
+		    freelancer.addBid(bid);
+		    
+		    bidRepo.save(bid);
+		    msg = "Bid is Posted successfully";
+		}
+		
+//	    return modelMapper.map(savedBid, BidDTO.class);
+	    return new ApiResponse(msg);
 	}
 
 

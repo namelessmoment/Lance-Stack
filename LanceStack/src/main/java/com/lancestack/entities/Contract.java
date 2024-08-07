@@ -1,6 +1,8 @@
 package com.lancestack.entities;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.hibernate.annotations.CreationTimestamp;
 
@@ -11,6 +13,7 @@ import jakarta.persistence.Enumerated;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
@@ -48,6 +51,11 @@ public class Contract extends BaseEntity {
 	@ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "freelancer_id", nullable = false)
     private Freelancer freelancer;
+	
+	// Check endpoints if directly Contract Entity used.
+	@OneToMany(mappedBy = "contract")
+	private List<Rating> ratings = new ArrayList<>();
+
 	
 //	@ManyToOne(fetch = FetchType.LAZY)
 //	@JoinColumn(name = "user_id", nullable = false)

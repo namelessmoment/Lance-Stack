@@ -1,6 +1,7 @@
 package com.lancestack.service;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,15 +35,18 @@ public class UserServiceImpl implements UserService {
 	}
 
 	@Override
-	public List<User> getAllUsers() {
-		return userRepo.findAll();
+	public List<UserDTO> getAllUsers() {
+		List<User> users = userRepo.findAllUsersNative();
+		return users.stream()
+				.map(user -> modelMapper.map(user, UserDTO.class))
+				.collect(Collectors.toList());
 	}
 
 	@Override
-	public User getUser(Long id) {
+	public UserDTO getUser(Long id) {
 		User user = userRepo.findById(id).orElseThrow(() -> new ResourceNotFound("Invalid Id"));
 			
-		return user;
+		return modelMapper.map(user, UserDTO.class);
 	}
 
 	@Override
