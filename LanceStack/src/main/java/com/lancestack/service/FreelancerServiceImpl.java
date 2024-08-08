@@ -10,16 +10,13 @@ import org.springframework.stereotype.Service;
 
 import com.lancestack.custom_exception.ResourceNotFound;
 import com.lancestack.dto.ApiResponse;
-import com.lancestack.dto.Contract.ContractDTO;
 import com.lancestack.dto.Freelancer.ForgetPassFreelancerDTO;
 import com.lancestack.dto.Freelancer.FreelancerDTO;
 import com.lancestack.dto.Freelancer.FreelancerLoginDTO;
 import com.lancestack.dto.Freelancer.FreelancerRegistrationDTO;
 import com.lancestack.entities.Freelancer;
-import com.lancestack.entities.User;
 import com.lancestack.repository.FreelancerRepository;
 
-import jakarta.servlet.http.HttpSession;
 import jakarta.transaction.Transactional;
 
 @Service
@@ -47,7 +44,8 @@ public class FreelancerServiceImpl implements FreelancerService {
 			msg = "Freelancer contains Null!";
 			throw new ResourceNotFound(HttpStatus.BAD_REQUEST,"Freelancer is Invalid!");
 		}
-		if(freelancerRepo.existsById(freelancerRepo.findByEmail(freelancer.getEmail()).getId())) {
+		Freelancer existingFreelancer = freelancerRepo.findByEmail(freelancer.getEmail());
+		if(existingFreelancer != null && freelancerRepo.existsById(existingFreelancer.getId())) {
 			throw new ResourceNotFound(HttpStatus.BAD_REQUEST, "Freelancer Already Exists!");
 		}
 		Freelancer freelancer1 = modelMapper.map(freelancer, Freelancer.class);
