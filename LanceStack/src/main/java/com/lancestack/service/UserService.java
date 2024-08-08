@@ -4,6 +4,7 @@ import java.util.List;
 
 import com.lancestack.dto.ApiResponse;
 import com.lancestack.dto.User.UserDTO;
+import com.lancestack.dto.User.UserForgetPassword;
 import com.lancestack.dto.User.UserLoginDTO;
 import com.lancestack.dto.User.UserRegistrationDTO;
 
@@ -19,4 +20,6 @@ public interface UserService {
 	ApiResponse deleteUser(Long id);
 
 	UserDTO getUserByEmailAndPassword(UserLoginDTO userLoginDTO);
+
+	ApiResponse forgetPassword(UserForgetPassword user);
 }

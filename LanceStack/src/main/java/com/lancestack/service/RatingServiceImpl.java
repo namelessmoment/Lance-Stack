@@ -8,7 +8,6 @@ import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.lancestack.custom_exception.ResourceNotFound;
 import com.lancestack.dto.ApiResponse;
 import com.lancestack.dto.Rating.FreelancerToUserRatingDTO;
 import com.lancestack.dto.Rating.UserToFreelancerRatingDTO;
@@ -113,7 +112,7 @@ public class RatingServiceImpl implements RatingService {
 	    return calculateAverageRating(ratings);
 	}
 
-	// to calculate rating
+	// to calculate rating average
 	private BigDecimal calculateAverageRating(List<Rating> ratings) {
 	    if (ratings.isEmpty()) {
 	        return BigDecimal.ZERO;

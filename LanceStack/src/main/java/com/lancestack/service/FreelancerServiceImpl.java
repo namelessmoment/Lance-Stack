@@ -5,15 +5,18 @@ import java.util.stream.Collectors;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import com.lancestack.custom_exception.ResourceNotFound;
 import com.lancestack.dto.ApiResponse;
 import com.lancestack.dto.Contract.ContractDTO;
+import com.lancestack.dto.Freelancer.ForgetPassFreelancerDTO;
 import com.lancestack.dto.Freelancer.FreelancerDTO;
 import com.lancestack.dto.Freelancer.FreelancerLoginDTO;
 import com.lancestack.dto.Freelancer.FreelancerRegistrationDTO;
 import com.lancestack.entities.Freelancer;
+import com.lancestack.entities.User;
 import com.lancestack.repository.FreelancerRepository;
 
 import jakarta.transaction.Transactional;
@@ -41,7 +44,10 @@ public class FreelancerServiceImpl implements FreelancerService {
 		String msg = "Freelancer not valid!";
 		if(freelancer == null) {
 			msg = "Freelancer contains Null!";
-			throw new ResourceNotFound("Freelancer is Invalid!");
+			throw new ResourceNotFound(HttpStatus.BAD_REQUEST,"Freelancer is Invalid!");
+		}
+		if(freelancerRepo.existsById(freelancerRepo.findByEmail(freelancer.getEmail()).getId())) {
+			throw new ResourceNotFound(HttpStatus.BAD_REQUEST, "Freelancer Already Exists!");
 		}
 		Freelancer freelancer1 = modelMapper.map(freelancer, Freelancer.class);
 		freelancerRepo.save(freelancer1);
@@ -97,6 +103,19 @@ public class FreelancerServiceImpl implements FreelancerService {
 		FreelancerDTO freelancerDto = modelMapper.map(freelancer, FreelancerDTO.class);
 		
 		return freelancerDto;
+	}
+
+	@Override
+	public ApiResponse forgetPassWord(ForgetPassFreelancerDTO freelancerDTO) {
+		String msg = "Password Not Changed!";
+	    Freelancer existingUser = freelancerRepo.findByEmail(freelancerDTO.getEmail());
+	    if (existingUser == null) {
+	        throw new ResourceNotFound(HttpStatus.BAD_REQUEST, "User Not Exists!");
+	    }
+	    existingUser.setPassword(freelancerDTO.getPassword());
+	    freelancerRepo.save(existingUser);
+	    msg = "Password Changed Successfully!";
+	    return new ApiResponse(msg);
 	}
 	
 //	// Method to convert Freelancer entity to FreelancerDTO
