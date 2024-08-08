@@ -19,6 +19,7 @@ import com.lancestack.entities.Freelancer;
 import com.lancestack.entities.User;
 import com.lancestack.repository.FreelancerRepository;
 
+import jakarta.servlet.http.HttpSession;
 import jakarta.transaction.Transactional;
 
 @Service
@@ -77,7 +78,6 @@ public class FreelancerServiceImpl implements FreelancerService {
 	@Override
 	public FreelancerDTO getFreelancerById(Long id) {
 		Freelancer freelancer = freelancerRepo.findById(id).orElseThrow(() -> new ResourceNotFound("Freelancer Id Not Found!"));
-
 		FreelancerDTO freelancerDto = modelMapper.map(freelancer, FreelancerDTO.class);
 		return freelancerDto;
 	}
