@@ -7,6 +7,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -15,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.lancestack.dto.ApiResponse;
+import com.lancestack.dto.Freelancer.ForgetPassFreelancerDTO;
 import com.lancestack.dto.Freelancer.FreelancerDTO;
 import com.lancestack.dto.Freelancer.FreelancerLoginDTO;
 import com.lancestack.dto.Freelancer.FreelancerRegistrationDTO;
@@ -85,5 +87,16 @@ public class FreelancerController {
 	    return ResponseEntity.ok(freelancer);
 	}
 	
-	
+	@Operation(description = "Freelancer Forget Password Endpoint.")
+	@PatchMapping("/forgetPassword")
+	public ResponseEntity<?> forgetPassword(@RequestBody ForgetPassFreelancerDTO freelancerDTO){
+		try {
+			return ResponseEntity
+					.status(HttpStatus.CREATED)
+					.body(freelancerService.forgetPassWord(freelancerDTO));
+		}
+		catch (RuntimeException e) {
+			return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new ApiResponse(e.getMessage()));
+		}
+	}
 }

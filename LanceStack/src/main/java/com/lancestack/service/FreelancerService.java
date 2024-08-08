@@ -3,6 +3,7 @@ package com.lancestack.service;
 import java.util.List;
 
 import com.lancestack.dto.ApiResponse;
+import com.lancestack.dto.Freelancer.ForgetPassFreelancerDTO;
 import com.lancestack.dto.Freelancer.FreelancerDTO;
 import com.lancestack.dto.Freelancer.FreelancerLoginDTO;
 import com.lancestack.dto.Freelancer.FreelancerRegistrationDTO;
@@ -15,4 +16,5 @@ public interface FreelancerService {
 	public FreelancerDTO getFreelancerById(Long id);
 	public FreelancerDTO getFreelancerByEmail(String fEmail);
 	public FreelancerDTO getFreelancerByEmailAndPassword(FreelancerLoginDTO freelancerLoginDTO);
+	public ApiResponse forgetPassWord(ForgetPassFreelancerDTO freelancerDTO);
 }

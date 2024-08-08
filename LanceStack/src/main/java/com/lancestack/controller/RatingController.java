@@ -50,11 +50,23 @@ public class RatingController {
 		}
 	}
 	
-	@Operation(description = "Getting Average Rating of User.")
-	@GetMapping("/ratingOfUser/{freelancerId}")
-	public ResponseEntity<?> gettingAverageRatingOfUser(@PathVariable Long freelancerId){
+	@Operation(description = "Getting Average Rating of Freelancer.")
+	@GetMapping("/ratingOfFreelancer/{freelancerId}")
+	public ResponseEntity<?> gettingAverageRatingOfFreelancer(@PathVariable Long freelancerId){
 		try {
 		return  ResponseEntity.ok(ratingService.getAverageRatingOfFreelancer(freelancerId));
+		}
+		catch (RuntimeException e) {
+			return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new ApiResponse(e.getMessage()));
+		}
+	}
+	
+	
+	@Operation(description = "Getting Average Rating of User.")
+	@GetMapping("/ratingOfUser/{userId}")
+	public ResponseEntity<?> gettingAverageRatingOfUser(@PathVariable Long userId){
+		try {
+		return  ResponseEntity.ok(ratingService.getAverageRatingForUser(userId));
 		}
 		catch (RuntimeException e) {
 			return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new ApiResponse(e.getMessage()));

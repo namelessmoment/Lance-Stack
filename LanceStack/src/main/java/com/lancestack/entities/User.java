@@ -46,7 +46,7 @@ public class User extends BaseEntity {
 	private String mobileNumber;
 	
 	// Check endpoints.
-	@OneToMany(mappedBy = "rater")
+	@OneToMany(mappedBy = "user")
 	private List<Rating> ratingsGiven;
 
 	
@@ -58,7 +58,7 @@ public class User extends BaseEntity {
 	// Helper method to add the rater for user.
 	public void addRating(Rating rating) {
 		this.ratingsGiven.add(rating);
-		rating.setRater(this);
+		rating.setUser(this);
 	}
 	
 	// Helper method to get all the rate for user.

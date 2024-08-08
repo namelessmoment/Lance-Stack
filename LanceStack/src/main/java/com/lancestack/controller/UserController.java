@@ -8,6 +8,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -15,8 +16,10 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.lancestack.custom_exception.ResourceNotFound;
 import com.lancestack.dto.ApiResponse;
 import com.lancestack.dto.User.UserDTO;
+import com.lancestack.dto.User.UserForgetPassword;
 import com.lancestack.dto.User.UserLoginDTO;
 import com.lancestack.dto.User.UserRegistrationDTO;
 import com.lancestack.service.UserService;
@@ -35,13 +38,19 @@ public class UserController {
 	@PostMapping
 	public ResponseEntity<?> registerUser(@RequestBody UserRegistrationDTO user){
 		try {
-		return ResponseEntity
-				.status(HttpStatus.CREATED)
-				.body(userService.registerUser(user));
-		}
-		catch (RuntimeException e) {
-			return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new ApiResponse(e.getMessage()));
-		}
+	        return ResponseEntity
+	                .status(HttpStatus.CREATED)
+	                .body(userService.registerUser(user));
+	    } catch (ResourceNotFound e) {
+	        return ResponseEntity
+	                .status(HttpStatus.BAD_REQUEST)
+	                .body(new ApiResponse(e.getMessage()));
+	    } catch (RuntimeException e) {
+	        return ResponseEntity
+	                .status(HttpStatus.BAD_REQUEST)
+	                .body(new ApiResponse("Internal Server Error"));
+	    }
+
 	}
 	
 	@Operation(description = "Get All users.")
@@ -84,17 +93,24 @@ public class UserController {
 		}
 	}
 	
-//	@PostMapping("/userLogin")
-//	public ResponseEntity<UserDTO> userLogin(@RequestBody @Valid UserLoginDTO userLoginDTO){
-//	        UserDTO user = userService.userLogin(userLoginDTO);
-//	        return ResponseEntity.ok(user);
-//	}
-	
 	@Operation(description = "User Login Endpoint.")
 	@PostMapping("/userLogin")
 	public ResponseEntity<UserDTO> userLogin(@RequestBody UserLoginDTO userLoginDTO){
 		UserDTO userDTO = userService.getUserByEmailAndPassword(userLoginDTO);
 		return ResponseEntity.ok(userDTO);
+	}
+	
+	@Operation(description = "Forget Password User")
+	@PatchMapping("/forgetPassword")
+	public ResponseEntity<?> userForgetpassword(@RequestBody UserForgetPassword user){
+		try {
+			return ResponseEntity
+					.status(HttpStatus.CREATED)
+					.body(userService.forgetPassword(user));
+		}
+		catch (RuntimeException e) {
+			return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new ApiResponse(e.getMessage()));
+		}
 	}
 
 }

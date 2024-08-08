@@ -49,7 +49,7 @@ public class Freelancer extends BaseEntity {
 	private List<Contract> contracts = new ArrayList<>();
 	
 	// Check endpoints if there is directly Freelancer used.
-	@OneToMany(mappedBy = "ratee")
+	@OneToMany(mappedBy = "freelancer")
 	private List<Rating> ratingsReceived;
 
 	

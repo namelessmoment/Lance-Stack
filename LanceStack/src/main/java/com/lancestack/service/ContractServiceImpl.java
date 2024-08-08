@@ -13,6 +13,8 @@ import com.lancestack.dto.Contract.ContractDTO;
 import com.lancestack.dto.Contract.ContractRegistrationDTO;
 import com.lancestack.entities.Contract;
 import com.lancestack.entities.ContractStatus;
+import com.lancestack.entities.Project;
+import com.lancestack.entities.ProjectStatus;
 import com.lancestack.repository.ContractRepository;
 import com.lancestack.repository.FreelancerRepository;
 import com.lancestack.repository.ProjectRepository;
@@ -75,6 +77,8 @@ public class ContractServiceImpl implements ContractService {
 		else {
 			Contract contract = contractRepo.findById(contractId)
 		            .orElseThrow(() -> new ResourceNotFound("Contract not found!"));
+			Project project = contract.getProject();
+			project.setStatus(ProjectStatus.COMPLETED);
 			contract.setStatus(ContractStatus.COMPLETED);
 			msg = "Contract Status change Success";
 		}

@@ -36,11 +36,11 @@ public class Rating extends BaseEntity {
 	 
     @ManyToOne
     @JoinColumn(name = "rater_id")
-    private User rater;
+    private User user;
     
     @ManyToOne
     @JoinColumn(name = "ratee_id")
-    private Freelancer ratee;
+    private Freelancer freelancer;
 
     @Column
     @Enumerated(EnumType.STRING)
