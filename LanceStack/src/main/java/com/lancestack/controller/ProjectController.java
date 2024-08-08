@@ -136,5 +136,11 @@ public class ProjectController {
 		return ResponseEntity.ok(projects);
 	}
 	
-	
+	@Operation(description = "Fetch list of Projects which completed by specific freelancer using freelancer ID")
+	@GetMapping("/completed/{freelancerId}")
+	public ResponseEntity<List<ProjectDTO>> getCompletedProjectsByFreelancerId(@PathVariable Long freelancerId) {
+	    List<ProjectDTO> projects = projectService.getCompletedProjectsByFreelancerId(freelancerId);
+	    return ResponseEntity.ok(projects);
+	}
+
 }

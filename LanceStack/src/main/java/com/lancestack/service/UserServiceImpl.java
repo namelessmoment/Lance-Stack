@@ -16,6 +16,8 @@ import com.lancestack.dto.User.UserLoginDTO;
 import com.lancestack.dto.User.UserRegistrationDTO;
 import com.lancestack.entities.User;
 import com.lancestack.repository.UserRepository;
+//import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+
 
 import jakarta.transaction.Transactional;
 
@@ -114,6 +116,13 @@ public class UserServiceImpl implements UserService {
 	    return new ApiResponse(msg);
 	}
 
+	
+//	private String hashPassword(String password) {
+//	    BCryptPasswordEncoder bCryptPasswordEncoder = new BCryptPasswordEncoder();
+//	    return bCryptPasswordEncoder.encode(password);
+//	}
+
+	
 //	@Override
 //	public UserDTO userLogin(UserLoginDTO userLoginDTO) {
 //		User user = userRepo.findByEmail(userLoginDTO.getEmail());

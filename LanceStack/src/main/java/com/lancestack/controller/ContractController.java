@@ -16,7 +16,9 @@ import org.springframework.web.bind.annotation.RestController;
 import com.lancestack.dto.ApiResponse;
 import com.lancestack.dto.Contract.ContractDTO;
 import com.lancestack.dto.Contract.ContractRegistrationDTO;
+import com.lancestack.dto.Project.ProjectDTO;
 import com.lancestack.service.ContractService;
+import com.lancestack.service.ProjectService;
 
 import io.swagger.v3.oas.annotations.Operation;
 
@@ -26,6 +28,9 @@ public class ContractController {
 	
 	@Autowired
 	ContractService contractService;
+	
+	@Autowired
+	ProjectService projectService;
 	
 	@Operation(description = "Create Contract Endpoint")
 	@PostMapping("/createContract")
@@ -40,7 +45,7 @@ public class ContractController {
 		}
 	}
 	
-	@Operation(description = "Change Status Contract Endpoint")
+	@Operation(description = "Change Status Contract to completed Endpoint")
 	@PatchMapping("/changeStatus/{contractId}")
 	public ResponseEntity<?> changeContractStatusToCompleted(@PathVariable Long contractId){
 		try {
@@ -73,4 +78,12 @@ public class ContractController {
 				.status(HttpStatus.OK)
 				.body(contractService.getAllInProcessContracts());
 	}
+	
+	@Operation(description = "Get Completed Contracts's Project Details")
+	@GetMapping("/projects/completed-contracts")
+	public ResponseEntity<List<ProjectDTO>> getProjectsByCompletedContracts() {
+	    List<ProjectDTO> projects = projectService.getProjectsByCompletedContracts();
+	    return ResponseEntity.ok(projects);
+	}
+
 }

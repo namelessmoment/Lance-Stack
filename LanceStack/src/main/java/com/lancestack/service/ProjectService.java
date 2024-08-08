@@ -7,11 +7,9 @@ import com.lancestack.dto.Project.PostProjectDTO;
 import com.lancestack.dto.Project.ProjectDTO;
 import com.lancestack.dto.Project.ProjectFilterRangeDTO;
 import com.lancestack.entities.Project;
-import com.lancestack.entities.ProjectStatus;
 import com.lancestack.entities.ProjectType;
 
 public interface ProjectService {
-//	ApiResponse createProject(Project proj);
 	
 	List<ProjectDTO> getAllProjects();
 	
@@ -21,7 +19,6 @@ public interface ProjectService {
 
 	ApiResponse postProject(PostProjectDTO projectDTO);
 	
-//	List<Project> getAllProjectsByUser(Long userId);
 	List<ProjectDTO> getAllProjectsByUser(Long userId);
 
 	ApiResponse updateStatus(Long projecId);
@@ -33,4 +30,8 @@ public interface ProjectService {
 	List<Project> projectsWhereStatusCompleted();
 	
 	List<Project> projectsWhereStatusInprogress();
+
+	List<ProjectDTO> getProjectsByCompletedContracts();
+
+	List<ProjectDTO> getCompletedProjectsByFreelancerId(Long freelancerId);
 }

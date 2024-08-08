@@ -13,10 +13,13 @@ import com.lancestack.dto.Project.PostProjectDTO;
 import com.lancestack.dto.Project.ProjectDTO;
 import com.lancestack.dto.Project.ProjectFilterRangeDTO;
 import com.lancestack.dto.User.UserDTO;
+import com.lancestack.entities.Contract;
+import com.lancestack.entities.ContractStatus;
 import com.lancestack.entities.Project;
 import com.lancestack.entities.ProjectStatus;
 import com.lancestack.entities.ProjectType;
 import com.lancestack.entities.User;
+import com.lancestack.repository.ContractRepository;
 import com.lancestack.repository.ProjectRepository;
 import com.lancestack.repository.UserRepository;
 
@@ -30,6 +33,8 @@ public class ProjectServiceImpl implements ProjectService {
 	ProjectRepository projectRepo;
 	@Autowired
 	UserRepository userRepo;
+	@Autowired
+	ContractRepository contractRepo;
 	@Autowired
 	ModelMapper modelMapper;
 	
@@ -137,5 +142,32 @@ public class ProjectServiceImpl implements ProjectService {
 	@Override
 	public List<Project> projectsWhereStatusInprogress() {
 		return projectRepo.findProjectsWhereStatusInprogress();
+	}
+
+	// Get Project list whose contracts are completed.
+	@Override
+	public List<ProjectDTO> getProjectsByCompletedContracts() {
+		List<Contract> completedContracts = contractRepo.findByStatus(ContractStatus.COMPLETED);
+	    List<Project> projects = completedContracts.stream()
+	            .map(Contract::getProject)
+	            .distinct()
+	            .collect(Collectors.toList());
+	    return projects.stream()
+	            .map(project -> modelMapper.map(project, ProjectDTO.class))
+	            .collect(Collectors.toList());
+
+	}
+
+	@Override
+	public List<ProjectDTO> getCompletedProjectsByFreelancerId(Long freelancerId) {
+		ModelMapper modelMapper = new ModelMapper();
+	    List<Contract> completedContracts = contractRepo.findByFreelancerIdAndStatus(freelancerId, ContractStatus.COMPLETED);
+	    List<Project> projects = completedContracts.stream()
+	            .map(Contract::getProject)
+	            .distinct()
+	            .collect(Collectors.toList());
+	    return projects.stream()
+	            .map(project -> modelMapper.map(project, ProjectDTO.class))
+	            .collect(Collectors.toList());
 	}	
 }
