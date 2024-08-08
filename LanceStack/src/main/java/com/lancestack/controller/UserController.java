@@ -93,9 +93,14 @@ public class UserController {
 	
 	@Operation(description = "User Login Endpoint.")
 	@PostMapping("/userLogin")
-	public ResponseEntity<UserDTO> userLogin(@RequestBody UserLoginDTO userLoginDTO){
-		UserDTO userDTO = userService.getUserByEmailAndPassword(userLoginDTO);
-		return ResponseEntity.ok(userDTO);
+	public ResponseEntity<?> userLogin(@RequestBody UserLoginDTO userLoginDTO){
+		try {
+			UserDTO userDTO = userService.getUserByEmailAndPassword(userLoginDTO);
+			return ResponseEntity.ok(userDTO);
+		}
+		catch (RuntimeException e) {
+			return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new ApiResponse(e.getMessage()));
+		} 
 	}
 	
 	@Operation(description = "Forget Password User")

@@ -93,14 +93,15 @@ public class UserServiceImpl implements UserService {
 	@Override
 	public UserDTO getUserByEmailAndPassword(UserLoginDTO userLoginDTO) {
 		User user = userRepo.findByEmail(userLoginDTO.getEmail());
-		if(user == null) {
-			return null;
-		}
-		if(!user.getPassword().equals(userLoginDTO.getPassword())) {
-			throw new ResourceNotFound("Incorrect User Password!");
-		}
-		UserDTO userDto = modelMapper.map(user, UserDTO.class);
-		return userDto;
+	    if(user == null) {
+	        throw new ResourceNotFound(HttpStatus.NOT_FOUND, "User not found with email: " + userLoginDTO.getEmail());
+	    }
+	    if(!user.getPassword().equals(userLoginDTO.getPassword())) {
+	        throw new ResourceNotFound(HttpStatus.NOT_FOUND, "Incorrect User Password!");
+	    }
+	    UserDTO userDto = modelMapper.map(user, UserDTO.class);
+	    return userDto;
+
 	}
 
 	@Override

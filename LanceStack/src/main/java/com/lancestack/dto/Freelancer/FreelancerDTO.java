@@ -10,7 +10,6 @@ import lombok.Setter;
 public class FreelancerDTO extends BaseEntity {
 	private String freelancerName;
 	private String email;
-	private String password;
 	private String profileDescription;
 	private String skills;
 }

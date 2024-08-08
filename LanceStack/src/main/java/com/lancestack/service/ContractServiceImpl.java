@@ -45,19 +45,11 @@ public class ContractServiceImpl implements ContractService {
 		if(contractDTO == null) {
 			throw new ResourceNotFound("Contract is Null!");
 		}
-//		else {
-//			Contract contract = modelMapper.map(contractDTO, Contract.class);
-//			contract.setStatus(ContractStatus.IN_PROGRESS);
-//			Freelancer freelancer = freelancerRepo.findById(contractDTO.getFreelancerId())
-//		            .orElseThrow(() -> new ResourceNotFound("Freelancer not found"));
-//			// used helper method to add contract in freelancer side.
-//			freelancer.addContract(contract);
-//			contractRepo.save(contract);
-//			msg = "Contract Created Successfully.";
-//		}
 		else {
 			Contract contract = modelMapper.map(contractDTO, Contract.class);
 		    contract.setStatus(ContractStatus.IN_PROGRESS);
+		    Project project = projectRepo.findById(contractDTO.getProjectId()).orElseThrow();
+		    project.setStatus(ProjectStatus.IN_PROGRESS);
 		    contract.setProject(projectRepo.findById(contractDTO.getProjectId()).orElseThrow());
 		    contract.setFreelancer(freelancerRepo.findById(contractDTO.getFreelancerId()).orElseThrow());
 		    contractRepo.save(contract);

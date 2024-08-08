@@ -21,7 +21,7 @@ public interface ProjectService {
 	
 	List<ProjectDTO> getAllProjectsByUser(Long userId);
 
-	ApiResponse updateStatus(Long projecId);
+	ApiResponse updateStatusToCompleted(Long projecId);
 	
 	List<Project> filterRange(ProjectFilterRangeDTO filterDTO);
 	
@@ -34,4 +34,8 @@ public interface ProjectService {
 	List<ProjectDTO> getProjectsByCompletedContracts();
 
 	List<ProjectDTO> getCompletedProjectsByFreelancerId(Long freelancerId);
+
+	List<ProjectDTO> getOnGoingProjectsByFreelancerId(Long freelancerId);
+
+	ApiResponse updateStatusToInProcess(Long projectId);
 }

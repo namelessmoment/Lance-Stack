@@ -94,15 +94,16 @@ public class FreelancerServiceImpl implements FreelancerService {
 
 	@Override
 	public FreelancerDTO getFreelancerByEmailAndPassword(FreelancerLoginDTO freelancerLoginDTO) {
-//		String msg = "Login Failed!";
 		Freelancer freelancer = freelancerRepo.findByEmail(freelancerLoginDTO.getEmail());
-		if(!freelancer.getPassword().equals(freelancerLoginDTO.getPassword())) {
-//			msg = "Incorrect Password!";
-			throw new ResourceNotFound("Incorrect Freelancer Password!");
-		}
-		FreelancerDTO freelancerDto = modelMapper.map(freelancer, FreelancerDTO.class);
-		
-		return freelancerDto;
+	    if(freelancer == null) {
+	        throw new ResourceNotFound(HttpStatus.NOT_FOUND, "Freelancer not found with email: " + freelancerLoginDTO.getEmail());
+	    }
+	    if(!freelancer.getPassword().equals(freelancerLoginDTO.getPassword())) {
+	        throw new ResourceNotFound(HttpStatus.NOT_FOUND, "Incorrect Freelancer Password!");
+	    }
+	    FreelancerDTO freelancerDto = modelMapper.map(freelancer, FreelancerDTO.class);
+	    return freelancerDto;
+
 	}
 
 	@Override

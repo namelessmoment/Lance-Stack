@@ -79,9 +79,15 @@ public class FreelancerController {
 	
 	@Operation(description = "Freelancer Login Endpoint.")
 	@PostMapping("/freelancerLogin")
-	public ResponseEntity<FreelancerDTO> getFreelancerByEmailAndPassword(@RequestBody FreelancerLoginDTO freelancerLoginDTO){
-	    FreelancerDTO freelancer = freelancerService.getFreelancerByEmailAndPassword(freelancerLoginDTO);
-	    return ResponseEntity.ok(freelancer);
+	public ResponseEntity<?> getFreelancerByEmailAndPassword(@RequestBody FreelancerLoginDTO freelancerLoginDTO){
+		try {
+			FreelancerDTO freelancer = freelancerService.getFreelancerByEmailAndPassword(freelancerLoginDTO);
+		    return ResponseEntity.ok(freelancer);
+		}
+		catch (RuntimeException e) {
+			return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new ApiResponse(e.getMessage()));
+		}
+	    
 	}
 	
 	@Operation(description = "Freelancer Forget Password Endpoint.")

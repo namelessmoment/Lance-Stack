@@ -116,7 +116,15 @@ public class ProjectServiceImpl implements ProjectService {
 
 
 	@Override
-	public ApiResponse updateStatus(Long projecId) {
+	public ApiResponse updateStatusToInProcess(Long projectId) {
+		Project proj = projectRepo.findById(projectId).orElseThrow(()-> new ResourceNotFound("Invalid ProjectId"));
+		proj.setStatus(ProjectStatus.IN_PROGRESS);
+		projectRepo.save(proj);
+		return new ApiResponse("Project Status Updated Successfully");
+	}
+	
+	@Override
+	public ApiResponse updateStatusToCompleted(Long projecId) {
 			Project proj = projectRepo.findById(projecId).orElseThrow(()-> new ResourceNotFound("Invalid ProjectId"));
 			proj.setStatus(ProjectStatus.COMPLETED);
 			projectRepo.save(proj);
@@ -160,8 +168,20 @@ public class ProjectServiceImpl implements ProjectService {
 
 	@Override
 	public List<ProjectDTO> getCompletedProjectsByFreelancerId(Long freelancerId) {
-		ModelMapper modelMapper = new ModelMapper();
 	    List<Contract> completedContracts = contractRepo.findByFreelancerIdAndStatus(freelancerId, ContractStatus.COMPLETED);
+	    List<Project> projects = completedContracts.stream()
+	            .map(Contract::getProject)
+	            .distinct()
+	            .collect(Collectors.toList());
+	    return projects.stream()
+	            .map(project -> modelMapper.map(project, ProjectDTO.class))
+	            .collect(Collectors.toList());
+	}
+
+	@Override
+	public List<ProjectDTO> getOnGoingProjectsByFreelancerId(Long freelancerId) {
+		List<Contract> completedContracts = contractRepo
+				.findByFreelancerIdAndStatus(freelancerId, ContractStatus.IN_PROGRESS);
 	    List<Project> projects = completedContracts.stream()
 	            .map(Contract::getProject)
 	            .distinct()

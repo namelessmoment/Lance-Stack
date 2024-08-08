@@ -96,12 +96,23 @@ public class ProjectController {
 	    List<ProjectDTO> projectDTOs = projectService.getAllProjectsByUser(userId);
 	    return ResponseEntity.ok(projectDTOs);
 	}
-
-	@Operation(description = "Updating Project Status.")
-	@GetMapping("/projectStatus/{projectId}")
-	public ResponseEntity<ApiResponse> updateProjectStatus(@PathVariable Long projectId){
+	
+	@Operation(description = "Updating Project Status to Completed.")
+	@GetMapping("/projectStatusToInProgress/{projectId}")
+	public ResponseEntity<ApiResponse> updateStatusToInProcess(@PathVariable Long projectId){
 		try {
-		return ResponseEntity.status(HttpStatus.OK).body(projectService.updateStatus(projectId));
+		return ResponseEntity.status(HttpStatus.OK).body(projectService.updateStatusToInProcess(projectId));
+		}
+		catch (RuntimeException e) {
+			return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new ApiResponse(e.getMessage()));
+		}
+	}
+
+	@Operation(description = "Updating Project Status to Completed.")
+	@GetMapping("/projectStatusToCompleted/{projectId}")
+	public ResponseEntity<ApiResponse> updateStatusToCompleted(@PathVariable Long projectId){
+		try {
+		return ResponseEntity.status(HttpStatus.OK).body(projectService.updateStatusToCompleted(projectId));
 		}
 		catch (RuntimeException e) {
 			return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new ApiResponse(e.getMessage()));
@@ -140,6 +151,13 @@ public class ProjectController {
 	@GetMapping("/completed/{freelancerId}")
 	public ResponseEntity<List<ProjectDTO>> getCompletedProjectsByFreelancerId(@PathVariable Long freelancerId) {
 	    List<ProjectDTO> projects = projectService.getCompletedProjectsByFreelancerId(freelancerId);
+	    return ResponseEntity.ok(projects);
+	}
+	
+	@Operation(description = "Fetch list of Projects which On Going/ in process by specific freelancer using freelancer ID")
+	@GetMapping("/onGoing/{freelancerId}")
+	public ResponseEntity<List<ProjectDTO>> getOnGoingProjectsByFreelancerId(@PathVariable Long freelancerId) {
+	    List<ProjectDTO> projects = projectService.getOnGoingProjectsByFreelancerId(freelancerId);
 	    return ResponseEntity.ok(projects);
 	}
 
