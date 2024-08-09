@@ -13,7 +13,6 @@ import com.lancestack.dto.ApiResponse;
 import com.lancestack.dto.Project.PostProjectDTO;
 import com.lancestack.dto.Project.ProjectDTO;
 import com.lancestack.dto.Project.ProjectFilterRangeDTO;
-import com.lancestack.dto.User.UserDTO;
 import com.lancestack.entities.Contract;
 import com.lancestack.entities.ContractStatus;
 import com.lancestack.entities.Project;
@@ -42,20 +41,17 @@ public class ProjectServiceImpl implements ProjectService {
 	// Need to look when integrating if we need user ID then provide it.
 	@Override
 	public ApiResponse postProject(PostProjectDTO projectDTO) {
-//		User user = projectDTO.getUser();
-//		User user = userRepo.findByEmail(projectDTO.getUser().getEmail());
-//		projectDTO.setUser(user);
-//		Project project = modelMapper.map(projectDTO, Project.class);
-//		projectRepo.save(project);
-//		return new ApiResponse("Project Successfully Added.");
-		
-//		UserDTO userDTO = projectDTO.getUser();
-		User user = userRepo.findByEmail(projectDTO.getUser().getEmail());
-		UserDTO userDTO1 = modelMapper.map(user, UserDTO.class);
-	    projectDTO.setUser(userDTO1);
+		User user = userRepo.findById(projectDTO.getUser())
+	            .orElseThrow(() -> new ResourceNotFound(HttpStatus.BAD_REQUEST, "User is Null"));
+	    
+	    projectDTO.setUser(user.getId()); // Set the user ID here
+	    
 	    Project project = modelMapper.map(projectDTO, Project.class);
+	    project.setUser(user); // Set the user entity here
+	    
 	    projectRepo.save(project);
 	    return new ApiResponse("Project Successfully Added.");
+
 
 	}
 
