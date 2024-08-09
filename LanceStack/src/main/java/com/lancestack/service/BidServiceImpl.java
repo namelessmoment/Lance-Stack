@@ -74,11 +74,14 @@ public class BidServiceImpl implements BidService {
 //		return proj.getAllBids();
 		List<Bid> bids = bidRepo.findByProjectId(projectId);
 		List<BidDTO> bidDTOs = bids.stream()
-	            .map(bid -> modelMapper.map(bid, BidDTO.class))
-	            .collect(Collectors.toList());
-	    
-	    return bidDTOs;
-
+		        .map(bid -> {
+		            BidDTO bidDTO = modelMapper.map(bid, BidDTO.class);
+		            bidDTO.setProjectId(bid.getProject().getId());
+		            bidDTO.setFreelancerId(bid.getFreelancer().getId());
+		            return bidDTO;
+		        })
+		        .collect(Collectors.toList());
+		return bidDTOs;
 	}
 
 
