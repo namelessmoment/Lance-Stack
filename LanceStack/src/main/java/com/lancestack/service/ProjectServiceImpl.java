@@ -48,7 +48,7 @@ public class ProjectServiceImpl implements ProjectService {
 	    
 	    Project project = modelMapper.map(projectDTO, Project.class);
 	    project.setUser(user); // Set the user entity here
-	    
+	    project.setStatus(ProjectStatus.PENDING);
 	    projectRepo.save(project);
 	    return new ApiResponse("Project Successfully Added.");
 
