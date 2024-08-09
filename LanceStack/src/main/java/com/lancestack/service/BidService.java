@@ -12,7 +12,7 @@ public interface BidService {
 
 	ApiResponse postBid(BidDTO bidDTO);
 	
-	List<Bid> getAllBidsByProject(Long projectId);
+	List<BidDTO> getAllBidsByProject(Long projectId);
 
 	ApiResponse updateBid(Long id, UpdateBidDTO updatedBid);
 

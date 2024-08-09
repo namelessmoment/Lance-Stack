@@ -1,6 +1,7 @@
 package com.lancestack.service;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 import org.modelmapper.ModelMapper;
 import org.modelmapper.TypeToken;
@@ -67,10 +68,17 @@ public class BidServiceImpl implements BidService {
 
 
 	@Override
-	public List<Bid> getAllBidsByProject(Long projectId) {
-		Project proj = projectRepo.findById(projectId)
-				.orElseThrow(() -> new RuntimeException("Project not found"));
-		return proj.getAllBids();
+	public List<BidDTO> getAllBidsByProject(Long projectId) {
+//		Project proj = projectRepo.findById(projectId)
+//				.orElseThrow(() -> new RuntimeException("Project not found"));
+//		return proj.getAllBids();
+		List<Bid> bids = bidRepo.findByProjectId(projectId);
+		List<BidDTO> bidDTOs = bids.stream()
+	            .map(bid -> modelMapper.map(bid, BidDTO.class))
+	            .collect(Collectors.toList());
+	    
+	    return bidDTOs;
+
 	}
 
 
