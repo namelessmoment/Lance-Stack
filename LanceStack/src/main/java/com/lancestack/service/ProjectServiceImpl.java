@@ -5,6 +5,7 @@ import java.util.stream.Collectors;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import com.lancestack.custom_exception.ResourceNotFound;
@@ -69,7 +70,7 @@ public class ProjectServiceImpl implements ProjectService {
 
 	@Override
 	public ProjectDTO getProjectById(Long id) {
-		Project project = projectRepo.findById(id).orElseThrow(()-> new ResourceNotFound("Invalid Id"));
+		Project project = projectRepo.findById(id).orElseThrow(()-> new ResourceNotFound(HttpStatus.BAD_REQUEST,"Invalid Id"));
 		ProjectDTO projectDTO = modelMapper.map(project, ProjectDTO.class);
 		return projectDTO;
 	}
@@ -80,7 +81,7 @@ public class ProjectServiceImpl implements ProjectService {
 		String msg = "Updation Failed";
 		Project existingProject = projectRepo.findById(id).orElse(null);
 		if(existingProject==null) {
-			throw  new ResourceNotFound("Invalid Id");
+			throw  new ResourceNotFound(HttpStatus.BAD_REQUEST,"Invalid Id");
 		}
 		else {
 			existingProject.setTitle(proj.getTitle());
@@ -107,7 +108,7 @@ public class ProjectServiceImpl implements ProjectService {
 	@Override
 	public List<ProjectDTO> getAllProjectsByUser(Long userId) {
 	    User user = userRepo.findById(userId)
-	            .orElseThrow(() -> new ResourceNotFound("User not found"));
+	            .orElseThrow(() -> new ResourceNotFound(HttpStatus.NOT_FOUND,"User not found"));
 	    List<Project> projects = user.getAllProjects();
 	    return projects.stream()
 	            .map(project -> modelMapper.map(project, ProjectDTO.class))
@@ -117,7 +118,7 @@ public class ProjectServiceImpl implements ProjectService {
 
 	@Override
 	public ApiResponse updateStatusToInProcess(Long projectId) {
-		Project proj = projectRepo.findById(projectId).orElseThrow(()-> new ResourceNotFound("Invalid ProjectId"));
+		Project proj = projectRepo.findById(projectId).orElseThrow(()-> new ResourceNotFound(HttpStatus.BAD_REQUEST,"Invalid ProjectId"));
 		proj.setStatus(ProjectStatus.IN_PROGRESS);
 		projectRepo.save(proj);
 		return new ApiResponse("Project Status Updated Successfully");
@@ -125,7 +126,7 @@ public class ProjectServiceImpl implements ProjectService {
 	
 	@Override
 	public ApiResponse updateStatusToCompleted(Long projecId) {
-			Project proj = projectRepo.findById(projecId).orElseThrow(()-> new ResourceNotFound("Invalid ProjectId"));
+			Project proj = projectRepo.findById(projecId).orElseThrow(()-> new ResourceNotFound(HttpStatus.BAD_REQUEST,"Invalid ProjectId"));
 			proj.setStatus(ProjectStatus.COMPLETED);
 			projectRepo.save(proj);
 		return new ApiResponse("Project Status Updated Successfully");

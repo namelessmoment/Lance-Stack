@@ -5,6 +5,7 @@ import java.util.stream.Collectors;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import com.lancestack.custom_exception.ResourceNotFound;
@@ -43,7 +44,7 @@ public class ContractServiceImpl implements ContractService {
 		String msg = "Contract Creation Failed";
 		// Check if contract contains null
 		if(contractDTO == null) {
-			throw new ResourceNotFound("Contract is Null!");
+			throw new ResourceNotFound(HttpStatus.BAD_REQUEST,"Contract is Null!");
 		}
 		else {
 			Contract contract = modelMapper.map(contractDTO, Contract.class);
@@ -64,11 +65,11 @@ public class ContractServiceImpl implements ContractService {
 	public ApiResponse changeContractStatusToCompleted(Long contractId) {
 		String msg = "Contract Status change Failed!";
 		if(contractId == null) {
-			throw new ResourceNotFound("Contract Id is Null!");
+			throw new ResourceNotFound(HttpStatus.BAD_REQUEST,"Contract Id is Null!");
 		}
 		else {
 			Contract contract = contractRepo.findById(contractId)
-		            .orElseThrow(() -> new ResourceNotFound("Contract not found!"));
+		            .orElseThrow(() -> new ResourceNotFound(HttpStatus.NOT_FOUND,"Contract not found!"));
 			Project project = contract.getProject();
 			project.setStatus(ProjectStatus.COMPLETED);
 			contract.setStatus(ContractStatus.COMPLETED);
@@ -81,11 +82,11 @@ public class ContractServiceImpl implements ContractService {
 	public ApiResponse changeContractDuration(Long contractId,Integer days) {
 		String msg = "Contract Duration change Failed!";
 		if(days == null) {
-			throw new ResourceNotFound("Days provided Null!");
+			throw new ResourceNotFound(HttpStatus.BAD_REQUEST,"Days provided Null!");
 		}
 		else {
 			Contract contract = contractRepo.findById(contractId)
-		            .orElseThrow(() -> new ResourceNotFound("Contract not found!"));
+		            .orElseThrow(() -> new ResourceNotFound(HttpStatus.NOT_FOUND,"Contract not found!"));
 			contract.setEndDate(contract.getStartDate().plusDays(days));
 			msg = "Contract Duration change Success";
 		}

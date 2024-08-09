@@ -17,4 +17,5 @@ public interface FreelancerService {
 	public FreelancerDTO getFreelancerByEmail(String fEmail);
 	public FreelancerDTO getFreelancerByEmailAndPassword(FreelancerLoginDTO freelancerLoginDTO);
 	public ApiResponse forgetPassWord(ForgetPassFreelancerDTO freelancerDTO);
+	ApiResponse deleteUser(Long id);
 }

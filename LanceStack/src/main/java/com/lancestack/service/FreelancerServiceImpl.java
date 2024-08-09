@@ -15,9 +15,11 @@ import com.lancestack.dto.Freelancer.FreelancerDTO;
 import com.lancestack.dto.Freelancer.FreelancerLoginDTO;
 import com.lancestack.dto.Freelancer.FreelancerRegistrationDTO;
 import com.lancestack.entities.Freelancer;
+import com.lancestack.entities.User;
 import com.lancestack.repository.FreelancerRepository;
 
 import jakarta.transaction.Transactional;
+
 
 @Service
 @Transactional
@@ -40,13 +42,14 @@ public class FreelancerServiceImpl implements FreelancerService {
 	@Override
 	public ApiResponse registerFreelancer(FreelancerRegistrationDTO freelancer) {
 		String msg = "Freelancer not valid!";
-		if(freelancer == null) {
-			msg = "Freelancer contains Null!";
-			throw new ResourceNotFound(HttpStatus.BAD_REQUEST,"Freelancer is Invalid!");
+		Freelancer existingFreelancerByEmail = freelancerRepo.findByEmail(freelancer.getEmail());
+		
+		if(existingFreelancerByEmail != null ) {
+			throw new ResourceNotFound(HttpStatus.BAD_REQUEST, "Email Already Exists!");
 		}
-		Freelancer existingFreelancer = freelancerRepo.findByEmail(freelancer.getEmail());
-		if(existingFreelancer != null && freelancerRepo.existsById(existingFreelancer.getId())) {
-			throw new ResourceNotFound(HttpStatus.BAD_REQUEST, "Freelancer Already Exists!");
+		Freelancer existingFreelancerByMobileNumber = freelancerRepo.findByMobileNumber(freelancer.getMobileNumber());
+		if(existingFreelancerByMobileNumber != null ) {
+			throw new ResourceNotFound(HttpStatus.BAD_REQUEST, "Mobile Already Exists!");
 		}
 		Freelancer freelancer1 = modelMapper.map(freelancer, Freelancer.class);
 		freelancerRepo.save(freelancer1);
@@ -58,7 +61,7 @@ public class FreelancerServiceImpl implements FreelancerService {
 	public ApiResponse updateFreelancerDetails(Long id, FreelancerRegistrationDTO freelancer) {
 		String msg = "Invalid Freelancer Id";
 		Freelancer existingFreelancer = freelancerRepo.findById(id)
-				.orElseThrow(()-> new ResourceNotFound("Invalid Freelancer Id"));
+				.orElseThrow(()-> new ResourceNotFound(HttpStatus.NOT_FOUND,"Invalid Freelancer Id"));
 		
 		if(existingFreelancer != null) {
 			existingFreelancer.setFreelancerName(freelancer.getFreelancerName());
@@ -75,7 +78,7 @@ public class FreelancerServiceImpl implements FreelancerService {
 
 	@Override
 	public FreelancerDTO getFreelancerById(Long id) {
-		Freelancer freelancer = freelancerRepo.findById(id).orElseThrow(() -> new ResourceNotFound("Freelancer Id Not Found!"));
+		Freelancer freelancer = freelancerRepo.findById(id).orElseThrow(() -> new ResourceNotFound(HttpStatus.NOT_FOUND,"Freelancer Id Not Found!"));
 		FreelancerDTO freelancerDto = modelMapper.map(freelancer, FreelancerDTO.class);
 		return freelancerDto;
 	}
@@ -84,7 +87,7 @@ public class FreelancerServiceImpl implements FreelancerService {
 	public FreelancerDTO getFreelancerByEmail(String fEmail) {
 		Freelancer freelancer = freelancerRepo.findByEmail(fEmail);
 		if(freelancer == null) {
-			throw new ResourceNotFound("Freelancer email not found!");
+			throw new ResourceNotFound(HttpStatus.NOT_FOUND,"Freelancer email not found!");
 		}
 		FreelancerDTO freelancerDto = modelMapper.map(freelancer, FreelancerDTO.class);
 		return freelancerDto;
@@ -101,7 +104,6 @@ public class FreelancerServiceImpl implements FreelancerService {
 	    }
 	    FreelancerDTO freelancerDto = modelMapper.map(freelancer, FreelancerDTO.class);
 	    return freelancerDto;
-
 	}
 
 	@Override
@@ -115,6 +117,13 @@ public class FreelancerServiceImpl implements FreelancerService {
 	    freelancerRepo.save(existingUser);
 	    msg = "Password Changed Successfully!";
 	    return new ApiResponse(msg);
+	}
+	
+	@Override
+	public ApiResponse deleteUser(Long id) {
+		Freelancer freelancer = freelancerRepo.findById(id).orElseThrow(()-> new ResourceNotFound(HttpStatus.BAD_REQUEST,"Invalid Id"));
+		freelancerRepo.delete(freelancer);
+		return new ApiResponse("Freelancer Deleted Successfully");
 	}
 	
 //	// Method to convert Freelancer entity to FreelancerDTO

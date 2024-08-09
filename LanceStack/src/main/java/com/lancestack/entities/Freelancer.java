@@ -28,14 +28,14 @@ import lombok.ToString;
 public class Freelancer extends BaseEntity {
 	@Column(length = 40)
 	private String freelancerName;
-	@Column
+	@Column(unique = true)
 	@Email(message = "Please enter a valid email address")
 	@NotBlank(message = "Enter Email")
 	private String email;
 	@Column
 	@NotBlank(message = "Enter Password")
 	private String password;
-	@Column
+	@Column(unique = true)
 	private String mobileNumber;
 	@Column
 	private String profileDescription;

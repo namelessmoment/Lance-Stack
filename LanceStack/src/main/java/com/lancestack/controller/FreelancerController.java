@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -25,7 +26,7 @@ import com.lancestack.service.FreelancerService;
 import io.swagger.v3.oas.annotations.Operation;
 
 @RestController
-@CrossOrigin(origins = "http://localhost:3000")
+//@CrossOrigin("http://localhost:3000")
 @RequestMapping("freelancers")
 public class FreelancerController {
 	
@@ -42,14 +43,14 @@ public class FreelancerController {
 	@Operation(description = "Registeration Endpoint for Freelancer.")
 	@PostMapping
 	public ResponseEntity<?> registerFreelancer(@RequestBody FreelancerRegistrationDTO freelancer){
-		try {
+//		try {
 			return ResponseEntity
 				.status(HttpStatus.CREATED)
 				.body(freelancerService.registerFreelancer(freelancer));
-		}
-		catch (RuntimeException e) {
-			return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new ApiResponse(e.getMessage()));
-		}
+//		}
+//		catch (RuntimeException e) {
+//			return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new ApiResponse(e.getMessage()));
+//		}
 	}
 	
 	@Operation(description = "Updating Freelancer Details.")
@@ -102,6 +103,17 @@ public class FreelancerController {
 					.body(freelancerService.forgetPassWord(freelancerDTO));
 		}
 		catch (RuntimeException e) {
+			return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new ApiResponse(e.getMessage()));
+		}
+	}
+	
+	@Operation(description = "Freelancer Delete Endpoint")
+	@DeleteMapping("/{freelancerId}")
+	public ResponseEntity<?> deleteFreelancer(@PathVariable Long freelancerId){
+		try {
+			return ResponseEntity.ok(freelancerService.deleteUser(freelancerId));
+		}
+		catch(RuntimeException e) {
 			return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new ApiResponse(e.getMessage()));
 		}
 	}

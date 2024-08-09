@@ -61,7 +61,7 @@ public class UserServiceImpl implements UserService {
 
 	@Override
 	public UserDTO getUser(Long id) {
-		User user = userRepo.findById(id).orElseThrow(() -> new ResourceNotFound("Invalid Id"));
+		User user = userRepo.findById(id).orElseThrow(() -> new ResourceNotFound(HttpStatus.BAD_REQUEST,"Invalid Id"));
 			
 		return modelMapper.map(user, UserDTO.class);
 	}
@@ -71,7 +71,7 @@ public class UserServiceImpl implements UserService {
 		String msg = "Updation Failed";
 			User existingUser = userRepo.findById(id).orElse(null);
 			if(existingUser==null) {
-				throw new ResourceNotFound("Invalid User ID!!!");
+				throw new ResourceNotFound(HttpStatus.BAD_REQUEST,"Invalid User ID!!!");
 			}
 			else {
 			existingUser.setEmail(user.getEmail());

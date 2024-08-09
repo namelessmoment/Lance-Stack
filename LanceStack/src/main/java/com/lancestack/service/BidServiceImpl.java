@@ -5,6 +5,7 @@ import java.util.List;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.TypeToken;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import com.lancestack.custom_exception.ResourceNotFound;
@@ -47,12 +48,12 @@ public class BidServiceImpl implements BidService {
 			Bid bid = modelMapper.map(bidDTO, Bid.class);
 		    
 		    Project project = projectRepo.findById(bidDTO.getProjectId())
-		            .orElseThrow(() -> new ResourceNotFound("Project not found"));
+		            .orElseThrow(() -> new ResourceNotFound(HttpStatus.NOT_FOUND,"Project not found"));
 //		    bid.setProject(project);    //If not used Helper methods
 		    project.addBid(bid);
 		    
 		    Freelancer freelancer = freelancerRepo.findById(bidDTO.getFreelancerId())
-		            .orElseThrow(() -> new ResourceNotFound("Freelancer not found"));
+		            .orElseThrow(() -> new ResourceNotFound(HttpStatus.NOT_FOUND,"Freelancer not found"));
 //		    bid.setFreelancer(freelancer);
 		    freelancer.addBid(bid);
 		    
@@ -77,13 +78,13 @@ public class BidServiceImpl implements BidService {
 	public ApiResponse updateBid(Long bidId, UpdateBidDTO updatedBid) {
 		String msg = "Bid Update Failed!";
 		if(updatedBid == null) {
-			throw new ResourceNotFound("Bid is Null");
+			throw new ResourceNotFound(HttpStatus.NOT_FOUND,"Bid is Null");
 		}
 		
 		Bid existingBid = bidRepo.findById(bidId)
-	            .orElseThrow(() -> new ResourceNotFound("Bid not found"));
+	            .orElseThrow(() -> new ResourceNotFound(HttpStatus.NOT_FOUND,"Bid not found"));
 	    if(existingBid == null) {
-	    	throw new ResourceNotFound("Bid not found");
+	    	throw new ResourceNotFound(HttpStatus.NOT_FOUND,"Bid not found");
 	    }
 	    modelMapper.map(updatedBid, existingBid);
 	    bidRepo.save(existingBid);
@@ -97,7 +98,7 @@ public class BidServiceImpl implements BidService {
 		String msg = "Bid Not Found!";
 		if(bidRepo.existsById(bidId)) {
 			Bid deleteBid = bidRepo.findById(bidId)
-		            .orElseThrow(() -> new ResourceNotFound("Bid not found"));
+		            .orElseThrow(() -> new ResourceNotFound(HttpStatus.NOT_FOUND,"Bid not found"));
 			bidRepo.delete(deleteBid);
 			msg = "Bid is Deleted";
 		}
@@ -110,7 +111,7 @@ public class BidServiceImpl implements BidService {
 		List<Bid> freelancerAssocaitedBids = null;
 		if(freelancerRepo.existsById(freelancerId)) {
 			Freelancer freelancer = freelancerRepo.findById(freelancerId)
-		            .orElseThrow(() -> new ResourceNotFound("Freelancer not found"));
+		            .orElseThrow(() -> new ResourceNotFound(HttpStatus.NOT_FOUND,"Freelancer not found"));
 			freelancerAssocaitedBids = bidRepo.findByFreelancer(freelancer);
 		}
 		return modelMapper.map(freelancerAssocaitedBids, new TypeToken<List<FreelancerBidDTO>>() {}.getType());
