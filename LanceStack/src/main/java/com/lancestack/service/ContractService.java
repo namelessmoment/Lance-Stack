@@ -20,4 +20,6 @@ public interface ContractService {
 	
 	List<ContractDTO> getAllCompletedContractsByFreelancerId(Long FreelancerId);
 
+	List<ContractDTO> getAllContractsByUser(Long userId);
+
 }

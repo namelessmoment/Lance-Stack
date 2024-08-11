@@ -17,9 +17,11 @@ import com.lancestack.entities.Contract;
 import com.lancestack.entities.ContractStatus;
 import com.lancestack.entities.Project;
 import com.lancestack.entities.ProjectStatus;
+import com.lancestack.entities.User;
 import com.lancestack.repository.ContractRepository;
 import com.lancestack.repository.FreelancerRepository;
 import com.lancestack.repository.ProjectRepository;
+import com.lancestack.repository.UserRepository;
 
 import jakarta.transaction.Transactional;
 
@@ -35,6 +37,9 @@ public class ContractServiceImpl implements ContractService {
 	
 	@Autowired
 	FreelancerRepository freelancerRepo;
+	
+	@Autowired
+	UserRepository userRepo;
 	
 	@Autowired
 	ModelMapper modelMapper;
@@ -155,5 +160,14 @@ public class ContractServiceImpl implements ContractService {
                 return contractDTO;
             })
             .collect(Collectors.toList());
+	}
+	
+	public List<ContractDTO> getAllContractsByUser(Long userId) {
+		User user = userRepo.findById(userId)
+				.orElseThrow(()-> new ResourceNotFound(HttpStatus.NOT_FOUND, "User Id is Invalid"));
+		List<Contract> contracts = contractRepo.findContractsByUser(user);
+	    return contracts.stream()
+	            .map(contract -> modelMapper.map(contract, ContractDTO.class))
+	            .collect(Collectors.toList());
 	}
 }

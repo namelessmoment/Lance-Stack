@@ -9,7 +9,7 @@ import com.lancestack.dto.Freelancer.FreelancerLoginDTO;
 import com.lancestack.dto.Freelancer.FreelancerRegistrationDTO;
 import com.lancestack.dto.Freelancer.GetFreelancerMobilePasswordDTO;
 import com.lancestack.dto.Freelancer.UpdateProfileFreelancer;
-import com.lancestack.entities.Freelancer;
+import com.lancestack.dto.Project.ProjectDTO;
 
 public interface FreelancerService {
 	public List<FreelancerDTO> getAllFreelancers();
@@ -22,4 +22,6 @@ public interface FreelancerService {
 	ApiResponse deleteUser(Long id);
 	GetFreelancerMobilePasswordDTO sendMobilePassword(Long id);
 	ApiResponse updateFreelancerProfile(Long freelancerId ,UpdateProfileFreelancer updateProfileFreelancer);
+	List<ProjectDTO> getAllocatedProjectsInProgress(Long freelancerId);
+	public List<ProjectDTO> getAllocatedProjectsCompleted(Long freelancerId);
 }
