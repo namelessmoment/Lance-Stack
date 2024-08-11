@@ -111,6 +111,59 @@ public class ContractServiceImpl implements ContractService {
 	}
 
 	@Override
+	public List<ContractDTO> getAllInProcessContractsByFreelancerId(Long FreelancerId) {
+		
+		 List<Contract> contracts = contractRepo.findAllContractsInProgressByFreelancerId(FreelancerId);
+
+	        // Map the list of Contract entities to ContractDTO
+	        return contracts.stream()
+	            .map(contract -> {
+	                ProjectDTO projectDTO = new ProjectDTO();
+	                projectDTO.setTitle(contract.getProject().getTitle());
+	                projectDTO.setProjType(contract.getProject().getProjType());
+	                projectDTO.setDescription(contract.getProject().getDescription());
+	                projectDTO.setStatus(contract.getProject().getStatus());
+	                projectDTO.setBudget(contract.getProject().getBudget());
+
+	                ContractDTO contractDTO = new ContractDTO();
+	                contractDTO.setStartDate(contract.getStartDate());
+	                contractDTO.setEndDate(contract.getEndDate());
+	                contractDTO.setPaymentAmount(contract.getPaymentAmount());
+	                contractDTO.setStatus(contract.getStatus());
+	                contractDTO.setProject(projectDTO);  // Include ProjectDTO
+
+	                return contractDTO;
+	            })
+	            .collect(Collectors.toList());
+	    }
+
+	@Override
+	public List<ContractDTO> getAllCompletedContractsByFreelancerId(Long FreelancerId) {
+		// TODO Auto-generated method stub
+		List<Contract> contracts = contractRepo.findAllContractsCompletedByFreelancerId(FreelancerId);
+
+        // Map the list of Contract entities to ContractDTO
+        return contracts.stream()
+            .map(contract -> {
+                ProjectDTO projectDTO = new ProjectDTO();
+                projectDTO.setTitle(contract.getProject().getTitle());
+                projectDTO.setProjType(contract.getProject().getProjType());
+                projectDTO.setDescription(contract.getProject().getDescription());
+                projectDTO.setStatus(contract.getProject().getStatus());
+                projectDTO.setBudget(contract.getProject().getBudget());
+
+                ContractDTO contractDTO = new ContractDTO();
+                contractDTO.setStartDate(contract.getStartDate());
+                contractDTO.setEndDate(contract.getEndDate());
+                contractDTO.setPaymentAmount(contract.getPaymentAmount());
+                contractDTO.setStatus(contract.getStatus());
+                contractDTO.setProject(projectDTO);  // Include ProjectDTO
+
+                return contractDTO;
+            })
+            .collect(Collectors.toList());
+	}
+	
 	public List<FindContractByUserResponseDTO> getAllContractsByUser(Long userId) {
 		User user = userRepo.findById(userId)
 	            .orElseThrow(() -> new ResourceNotFoundException(HttpStatus.NOT_FOUND, "User Id is Invalid"));

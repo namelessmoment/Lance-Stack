@@ -29,7 +29,6 @@ import com.lancestack.service.FreelancerService;
 import io.swagger.v3.oas.annotations.Operation;
 
 @RestController
-//@CrossOrigin("http://localhost:3000")
 @RequestMapping("freelancers")
 public class FreelancerController {
 	

@@ -3,6 +3,7 @@ package com.lancestack.dto.Contract;
 import java.time.LocalDate;
 
 import com.lancestack.dto.BaseEntity;
+import com.lancestack.dto.Project.ProjectDTO;
 import com.lancestack.entities.ContractStatus;
 
 import lombok.AllArgsConstructor;
@@ -15,6 +16,7 @@ import lombok.Setter;
 @AllArgsConstructor
 @NoArgsConstructor
 public class ContractDTO extends BaseEntity{
+	private ProjectDTO project;
     private LocalDate startDate;
     private LocalDate endDate;
     private double paymentAmount;

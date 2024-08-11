@@ -16,6 +16,10 @@ public interface ContractService {
 	ApiResponse changeContractDuration(Long contractId, Integer days);
 
 	List<ContractDTO> getAllInProcessContracts();
+	
+	List<ContractDTO> getAllInProcessContractsByFreelancerId(Long FreelancerId);
+	
+	List<ContractDTO> getAllCompletedContractsByFreelancerId(Long FreelancerId);
 
 	List<FindContractByUserResponseDTO> getAllContractsByUser(Long userId);
 

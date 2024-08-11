@@ -86,6 +86,26 @@ public class ContractController {
 	    List<ProjectDTO> projects = projectService.getProjectsByCompletedContracts();
 	    return ResponseEntity.ok(projects);
 	}
+	
+	@Operation(description = "Get all IN_PROCESS Contracts by freelancerId")
+    @GetMapping("/inProgress/freelancer/{freelancerId}")
+    public ResponseEntity<List<ContractDTO>> getAllInProgressContractsByFreelancerId(@PathVariable Long freelancerId) {
+        // Call the service method to get the contracts
+        List<ContractDTO> contracts = contractService.getAllInProcessContractsByFreelancerId(freelancerId);
+
+        // Return the list of contracts
+        return ResponseEntity.ok(contracts);
+    }
+	
+	@Operation(description = "Get all COMPLETED Contracts by freelancerId")
+    @GetMapping("/completed/freelancer/{freelancerId}")
+    public ResponseEntity<List<ContractDTO>> getAllCompletedContractsByFreelancerId(@PathVariable Long freelancerId) {
+        // Call the service method to get the contracts
+        List<ContractDTO> contracts = contractService.getAllCompletedContractsByFreelancerId(freelancerId);
+
+        // Return the list of contracts
+        return ResponseEntity.ok(contracts);
+    }
 
 	
 	@Operation(description = "Find the contracts relatedd to user.")

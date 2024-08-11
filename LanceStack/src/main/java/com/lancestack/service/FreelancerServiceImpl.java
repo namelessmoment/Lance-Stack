@@ -173,7 +173,7 @@ public class FreelancerServiceImpl implements FreelancerService {
             freelancer.setSkills(updateProfileFreelancer.getSkills());
             profileUpdated = true;
         }
-        if (updateProfileFreelancer.getNewPassword() != null && 
+        if (updateProfileFreelancer.getNewPassword() != null && !updateProfileFreelancer.getNewPassword().isEmpty() && 
         		updateProfileFreelancer.getOldPassword().equals(freelancer.getPassword())) {
             freelancer.setPassword(updateProfileFreelancer.getNewPassword());
             profileUpdated = true;
