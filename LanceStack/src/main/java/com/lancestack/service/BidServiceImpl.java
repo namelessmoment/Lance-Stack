@@ -75,10 +75,20 @@ public class BidServiceImpl implements BidService {
 
 
 	@Override
-	public List<Bid> getAllBidsByProject(Long projectId) {
-		Project proj = projectRepo.findById(projectId)
-				.orElseThrow(() -> new RuntimeException("Project not found"));
-		return proj.getAllBids();
+	public List<BidDTO> getAllBidsByProject(Long projectId) {
+//		Project proj = projectRepo.findById(projectId)
+//				.orElseThrow(() -> new RuntimeException("Project not found"));
+//		return proj.getAllBids();
+		List<Bid> bids = bidRepo.findByProjectId(projectId);
+		List<BidDTO> bidDTOs = bids.stream()
+		        .map(bid -> {
+		            BidDTO bidDTO = modelMapper.map(bid, BidDTO.class);
+		            bidDTO.setProjectId(bid.getProject().getId());
+		            bidDTO.setFreelancerId(bid.getFreelancer().getId());
+		            return bidDTO;
+		        })
+		        .collect(Collectors.toList());
+		return bidDTOs;
 	}
 
 

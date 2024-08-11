@@ -42,7 +42,12 @@ public class UserServiceImpl implements UserService {
 	    if(existingUser != null) {
 	    	msg = "User Already Exists!";
 	        throw new ResourceNotFound(HttpStatus.BAD_REQUEST, "User Already Exists!");
-	    } else {
+	    }
+	    User existingUserByMobileNumber = userRepo.findByMobileNumber(user.getMobileNumber());
+	    if(existingUserByMobileNumber != null) {
+	    	throw new ResourceNotFound(HttpStatus.BAD_REQUEST, "User Mobile Number Already Exists!");
+	    }
+	    else {
 	        User user1 = modelMapper.map(user, User.class);
 	        userRepo.save(user1);
 	        msg = "User Registered Successfully.";

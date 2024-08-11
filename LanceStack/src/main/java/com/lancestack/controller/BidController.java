@@ -46,8 +46,8 @@ public class BidController {
 
 	@Operation(description = "For get the bids by Project ID.")
     @GetMapping("/project/{projectId}")
-    public ResponseEntity<List<Bid>> getAllBidsByProject(@PathVariable Long projectId) {
-        List<Bid> bids = bidService.getAllBidsByProject(projectId);
+    public ResponseEntity<List<BidDTO>> getAllBidsByProject(@PathVariable Long projectId) {
+        List<BidDTO> bids = bidService.getAllBidsByProject(projectId);
         return ResponseEntity.ok(bids);
 	}
         
