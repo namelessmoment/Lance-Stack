@@ -12,6 +12,7 @@ import com.lancestack.custom_exception.ResourceNotFound;
 import com.lancestack.dto.ApiResponse;
 import com.lancestack.dto.Contract.ContractDTO;
 import com.lancestack.dto.Contract.ContractRegistrationDTO;
+import com.lancestack.dto.Project.ProjectDTO;
 import com.lancestack.entities.Contract;
 import com.lancestack.entities.ContractStatus;
 import com.lancestack.entities.Project;
@@ -100,5 +101,59 @@ public class ContractServiceImpl implements ContractService {
 	            .map(contract -> modelMapper.map(contract, ContractDTO.class))
 	            .collect(Collectors.toList());
 
+	}
+
+	@Override
+	public List<ContractDTO> getAllInProcessContractsByFreelancerId(Long FreelancerId) {
+		
+		 List<Contract> contracts = contractRepo.findAllContractsInProgressByFreelancerId(FreelancerId);
+
+	        // Map the list of Contract entities to ContractDTO
+	        return contracts.stream()
+	            .map(contract -> {
+	                ProjectDTO projectDTO = new ProjectDTO();
+	                projectDTO.setTitle(contract.getProject().getTitle());
+	                projectDTO.setProjType(contract.getProject().getProjType());
+	                projectDTO.setDescription(contract.getProject().getDescription());
+	                projectDTO.setStatus(contract.getProject().getStatus());
+	                projectDTO.setBudget(contract.getProject().getBudget());
+
+	                ContractDTO contractDTO = new ContractDTO();
+	                contractDTO.setStartDate(contract.getStartDate());
+	                contractDTO.setEndDate(contract.getEndDate());
+	                contractDTO.setPaymentAmount(contract.getPaymentAmount());
+	                contractDTO.setStatus(contract.getStatus());
+	                contractDTO.setProject(projectDTO);  // Include ProjectDTO
+
+	                return contractDTO;
+	            })
+	            .collect(Collectors.toList());
+	    }
+
+	@Override
+	public List<ContractDTO> getAllCompletedContractsByFreelancerId(Long FreelancerId) {
+		// TODO Auto-generated method stub
+		List<Contract> contracts = contractRepo.findAllContractsCompletedByFreelancerId(FreelancerId);
+
+        // Map the list of Contract entities to ContractDTO
+        return contracts.stream()
+            .map(contract -> {
+                ProjectDTO projectDTO = new ProjectDTO();
+                projectDTO.setTitle(contract.getProject().getTitle());
+                projectDTO.setProjType(contract.getProject().getProjType());
+                projectDTO.setDescription(contract.getProject().getDescription());
+                projectDTO.setStatus(contract.getProject().getStatus());
+                projectDTO.setBudget(contract.getProject().getBudget());
+
+                ContractDTO contractDTO = new ContractDTO();
+                contractDTO.setStartDate(contract.getStartDate());
+                contractDTO.setEndDate(contract.getEndDate());
+                contractDTO.setPaymentAmount(contract.getPaymentAmount());
+                contractDTO.setStatus(contract.getStatus());
+                contractDTO.setProject(projectDTO);  // Include ProjectDTO
+
+                return contractDTO;
+            })
+            .collect(Collectors.toList());
 	}
 }

@@ -18,6 +18,10 @@ public interface ContractRepository extends JpaRepository<Contract, Long> {
 	List<Contract> findByStatus(ContractStatus status);
 	
 	List<Contract> findByFreelancerIdAndStatus(Long freelancerId, ContractStatus status);
+	
+	@Query(value = "SELECT * FROM contracts  WHERE status = 'IN_PROGRESS' AND freelancer_id = :freelancerId", nativeQuery = true)
+    List<Contract> findAllContractsInProgressByFreelancerId(Long freelancerId);
 
-
+	@Query(value = "SELECT * FROM contracts  WHERE status = 'COMPLETED' AND freelancer_id = :freelancerId", nativeQuery = true)
+    List<Contract> findAllContractsCompletedByFreelancerId(Long freelancerId);
 }
