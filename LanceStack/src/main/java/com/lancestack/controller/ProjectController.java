@@ -170,7 +170,8 @@ public class ProjectController {
 	@Operation(description = "To get Project Desc from the ProjectID")
 	@GetMapping("/projectDesc/{projectId}")
 	public ResponseEntity<String> getProjectDescByProjectId(@PathVariable Long projectId){
-			return ResponseEntity.status(HttpStatus.OK).body(projectService.getProjectDescByProjectId(projectId));
+			return ResponseEntity
+					.status(HttpStatus.OK)
+					.body(projectService.getProjectDescByProjectId(projectId));
 	}
-
 }

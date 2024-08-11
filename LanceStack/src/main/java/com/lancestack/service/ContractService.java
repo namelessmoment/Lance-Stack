@@ -16,4 +16,6 @@ public interface ContractService {
 
 	List<ContractDTO> getAllInProcessContracts();
 
+	List<ContractDTO> getAllContractsByUser(Long userId);
+
 }

@@ -16,7 +16,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.lancestack.custom_exception.ResourceNotFound;
 import com.lancestack.dto.ApiResponse;
 import com.lancestack.dto.Freelancer.ForgetPassFreelancerDTO;
 import com.lancestack.dto.Freelancer.FreelancerDTO;
@@ -24,6 +23,7 @@ import com.lancestack.dto.Freelancer.FreelancerLoginDTO;
 import com.lancestack.dto.Freelancer.FreelancerRegistrationDTO;
 import com.lancestack.dto.Freelancer.GetFreelancerMobilePasswordDTO;
 import com.lancestack.dto.Freelancer.UpdateProfileFreelancer;
+import com.lancestack.dto.Project.ProjectDTO;
 import com.lancestack.service.FreelancerService;
 
 import io.swagger.v3.oas.annotations.Operation;
@@ -138,9 +138,21 @@ public class FreelancerController {
 	@Operation(description = "Update Freelancer profile by freelancer id Endpoint.")
     @PutMapping("/updateProfile/{freelancerId}")
     public ResponseEntity<String> updateFreelancerProfile(@PathVariable Long freelancerId, @RequestBody UpdateProfileFreelancer updateProfileDto) {
-            // Call the service method to update the freelancer profile
             freelancerService.updateFreelancerProfile(freelancerId, updateProfileDto);
             return ResponseEntity.ok("Profile updated successfully");
         
     }
+	
+	@Operation(description = "Freelancer In_progress project List")
+	@GetMapping("/{freelancerId}/allocatedIn_Progress")
+    public List<ProjectDTO> getAllocatedProjectsInProgress(@PathVariable Long freelancerId) {
+        return freelancerService.getAllocatedProjectsInProgress(freelancerId);
+    }
+	
+	@Operation(description = "Freelancer In_progress project List")
+	@GetMapping("/{freelancerId}/allocated_Completed")
+    public List<ProjectDTO> getAllocatedProjectsCompleted(@PathVariable Long freelancerId) {
+        return freelancerService.getAllocatedProjectsCompleted(freelancerId);
+    }
+
 }

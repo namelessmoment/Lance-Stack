@@ -1,5 +1,6 @@
 package com.lancestack.service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -16,9 +17,14 @@ import com.lancestack.dto.Freelancer.FreelancerLoginDTO;
 import com.lancestack.dto.Freelancer.FreelancerRegistrationDTO;
 import com.lancestack.dto.Freelancer.GetFreelancerMobilePasswordDTO;
 import com.lancestack.dto.Freelancer.UpdateProfileFreelancer;
+import com.lancestack.dto.Project.ProjectDTO;
+import com.lancestack.entities.Bid;
 import com.lancestack.entities.Freelancer;
-import com.lancestack.entities.User;
+import com.lancestack.entities.Project;
+import com.lancestack.entities.ProjectStatus;
+import com.lancestack.repository.BidRepository;
 import com.lancestack.repository.FreelancerRepository;
+import com.lancestack.repository.ProjectRepository;
 
 import jakarta.transaction.Transactional;
 
@@ -29,6 +35,12 @@ public class FreelancerServiceImpl implements FreelancerService {
 
 	@Autowired
 	FreelancerRepository freelancerRepo;
+	
+	@Autowired
+	BidRepository bidRepo;
+	
+	@Autowired
+	ProjectRepository projectRepo;
 	
 	@Autowired
 	ModelMapper modelMapper;
@@ -174,16 +186,38 @@ public class FreelancerServiceImpl implements FreelancerService {
             return new ApiResponse("No changes made to the profile");
         }
 	}
-	
-//	// Method to convert Freelancer entity to FreelancerDTO
-//    private FreelancerRegistrationDTO mapToDTO(Freelancer freelancer) {
-//    	FreelancerRegistrationDTO dto = new FreelancerRegistrationDTO();
-//        dto.setFreelancerName(freelancer.getFreelancerName());
-//        dto.setEmail(freelancer.getEmail());
-//        dto.setMobileNumber(freelancer.getMobileNumber());
-//        dto.setProfileDescription(freelancer.getProfileDescription());
-//        dto.setSkills(freelancer.getSkills());
-//        return dto;
-//    }
-	
+
+	@Override
+	public List<ProjectDTO> getAllocatedProjectsInProgress(Long freelancerId) {
+		Freelancer freelancer = freelancerRepo.findById(freelancerId)
+				.orElseThrow(()-> new ResourceNotFound(HttpStatus.NOT_FOUND, "Invalid freelancer Id."));
+		List<Bid> bids = bidRepo.findByFreelancer(freelancer);
+	    List<Project> projects = new ArrayList<>();
+	    for (Bid bid : bids) {
+	        Project project = bid.getProject();
+	        if (project.getStatus() == ProjectStatus.IN_PROGRESS) {
+	            projects.add(project);
+	        }
+	    }	
+	    return projects.stream()
+	            .map(project -> modelMapper.map(project, ProjectDTO.class))
+	            .collect(Collectors.toList());
+	}
+
+	@Override
+	public List<ProjectDTO> getAllocatedProjectsCompleted(Long freelancerId) {
+		Freelancer freelancer = freelancerRepo.findById(freelancerId)
+				.orElseThrow(()-> new ResourceNotFound(HttpStatus.NOT_FOUND, "Invalid freelancer Id."));
+		List<Bid> bids = bidRepo.findByFreelancer(freelancer);
+	    List<Project> projects = new ArrayList<>();
+	    for (Bid bid : bids) {
+	        Project project = bid.getProject();
+	        if (project.getStatus() == ProjectStatus.COMPLETED) {
+	            projects.add(project);
+	        }
+	    }	
+	    return projects.stream()
+	            .map(project -> modelMapper.map(project, ProjectDTO.class))
+	            .collect(Collectors.toList());
+	}	
 }

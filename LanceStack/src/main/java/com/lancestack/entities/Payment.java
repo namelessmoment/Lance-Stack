@@ -1,11 +1,11 @@
 package com.lancestack.entities;
 
-import java.time.LocalDate;
+import java.time.LocalDateTime;
+
+import org.hibernate.annotations.CreationTimestamp;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
-import jakarta.persistence.EnumType;
-import jakarta.persistence.Enumerated;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
@@ -26,19 +26,26 @@ public class Payment extends BaseEntity {
 	
 	@ManyToOne
 	@JoinColumn(name = "contract_id", nullable = false)
-	private Contract contract;
+	private Contract contractId;
 	
 	@Column
-	private LocalDate paymentDate;
+	@CreationTimestamp
+	private LocalDateTime paymentDate;
 	
 	@Column
-	private double paymentAmount;
+	private Integer paymentAmount;
 	
 	@Column
-	@Enumerated(EnumType.STRING)
-	private PaymentMethod paymentMethod;
+//	@Enumerated(EnumType.STRING)
+	private String paymentMethod;
 	
 	@Column
-	@Enumerated(EnumType.STRING)
-	private PaymentStatus paymentStatus;
+//	@Enumerated(EnumType.STRING)
+	private String paymentStatus;
+	
+	@Column
+	private String razorPayOrderId;
+	
+//	@Column
+//	private String razorpayPaymentId;
 }

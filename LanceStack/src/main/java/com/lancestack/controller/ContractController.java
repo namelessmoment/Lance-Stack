@@ -86,4 +86,11 @@ public class ContractController {
 	    return ResponseEntity.ok(projects);
 	}
 
+	
+	@Operation(description = "Find the contracts relatedd to user.")
+	@GetMapping("/{userId}/getAllContracts")
+	public ResponseEntity<List<ContractDTO>> getAllContractsByUser(@PathVariable Long userId){
+		List<ContractDTO> contracts = contractService.getAllContractsByUser(userId);
+		return ResponseEntity.ok(contracts);
+	}
 }
