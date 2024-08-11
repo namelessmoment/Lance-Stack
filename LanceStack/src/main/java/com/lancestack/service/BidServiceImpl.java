@@ -1,6 +1,7 @@
 package com.lancestack.service;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 import org.modelmapper.ModelMapper;
 import org.modelmapper.TypeToken;
@@ -45,6 +46,7 @@ public class BidServiceImpl implements BidService {
 			msg = "Bid is Null!";
 		}
 		else {
+			try {
 			Bid bid = modelMapper.map(bidDTO, Bid.class);
 		    
 		    Project project = projectRepo.findById(bidDTO.getProjectId())
@@ -59,6 +61,12 @@ public class BidServiceImpl implements BidService {
 		    
 		    bidRepo.save(bid);
 		    msg = "Bid is Posted successfully";
+			}catch (RuntimeException e) {
+	            // Log the exception for debugging
+	            e.printStackTrace();
+	            msg = "An error occurred: " + e.getMessage();
+	        }
+			
 		}
 		
 //	    return modelMapper.map(savedBid, BidDTO.class);
@@ -114,9 +122,19 @@ public class BidServiceImpl implements BidService {
 		            .orElseThrow(() -> new ResourceNotFound(HttpStatus.NOT_FOUND,"Freelancer not found"));
 			freelancerAssocaitedBids = bidRepo.findByFreelancer(freelancer);
 		}
-		return modelMapper.map(freelancerAssocaitedBids, new TypeToken<List<FreelancerBidDTO>>() {}.getType());
-
+		return freelancerAssocaitedBids.stream().map(bid -> {
+	        FreelancerBidDTO dto = new FreelancerBidDTO();
+	        dto.setId(bid.getId());
+	        dto.setBidAmount(bid.getBidAmount());
+	        dto.setDaysWillTake(bid.getDaysWillTake());
+	        dto.setBidDescription(bid.getBidDescription());
+	        dto.setProjectId(bid.getProject().getId()); // Set projectId from associated project
+	        dto.setFreelancerId(bid.getFreelancer().getId()); // Set freelancerId from associated freelancer
+	        return dto;
+	    }).collect(Collectors.toList());
 	}
+	
+	//after return in above code " modelMapper.map(freelancerAssocaitedBids, new TypeToken<List<FreelancerBidDTO>>() {}.getType());"
 
 	
 //	@Override

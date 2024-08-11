@@ -37,5 +37,8 @@ public interface ProjectService {
 
 	List<ProjectDTO> getOnGoingProjectsByFreelancerId(Long freelancerId);
 
+	String getProjectTitleByProjectId(Long projectId);
+	
+	String getProjectDescByProjectId(Long projectId);
 	ApiResponse updateStatusToInProcess(Long projectId);
 }

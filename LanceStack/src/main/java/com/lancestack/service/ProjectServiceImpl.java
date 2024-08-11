@@ -56,7 +56,6 @@ public class ProjectServiceImpl implements ProjectService {
 	    Project project = modelMapper.map(projectDTO, Project.class);
 	    projectRepo.save(project);
 	    return new ApiResponse("Project Successfully Added.");
-
 	}
 
 	@Override
@@ -190,5 +189,19 @@ public class ProjectServiceImpl implements ProjectService {
 	    return projects.stream()
 	            .map(project -> modelMapper.map(project, ProjectDTO.class))
 	            .collect(Collectors.toList());
+	}
+
+	@Override
+	public String getProjectTitleByProjectId(Long projectId) {
+		Project project = projectRepo.findById(projectId).orElseThrow(()-> new ResourceNotFound(HttpStatus.BAD_REQUEST,"Invalid ProjectId"));
+		String projectTitle = project.getTitle();
+		return projectTitle;
+	}
+
+	@Override
+	public String getProjectDescByProjectId(Long projectId) {
+		Project project = projectRepo.findById(projectId).orElseThrow(()-> new ResourceNotFound(HttpStatus.BAD_REQUEST,"Invalid ProjectId"));
+		String projectDesc = project.getDescription();
+		return projectDesc;
 	}	
 }

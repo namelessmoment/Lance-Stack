@@ -7,6 +7,8 @@ import com.lancestack.dto.Freelancer.ForgetPassFreelancerDTO;
 import com.lancestack.dto.Freelancer.FreelancerDTO;
 import com.lancestack.dto.Freelancer.FreelancerLoginDTO;
 import com.lancestack.dto.Freelancer.FreelancerRegistrationDTO;
+import com.lancestack.dto.Freelancer.GetFreelancerMobilePasswordDTO;
+import com.lancestack.dto.Freelancer.UpdateProfileFreelancer;
 import com.lancestack.entities.Freelancer;
 
 public interface FreelancerService {
@@ -18,4 +20,6 @@ public interface FreelancerService {
 	public FreelancerDTO getFreelancerByEmailAndPassword(FreelancerLoginDTO freelancerLoginDTO);
 	public ApiResponse forgetPassWord(ForgetPassFreelancerDTO freelancerDTO);
 	ApiResponse deleteUser(Long id);
+	GetFreelancerMobilePasswordDTO sendMobilePassword(Long id);
+	ApiResponse updateFreelancerProfile(Long freelancerId ,UpdateProfileFreelancer updateProfileFreelancer);
 }

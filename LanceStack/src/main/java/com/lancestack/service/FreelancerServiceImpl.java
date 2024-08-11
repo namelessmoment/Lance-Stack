@@ -14,6 +14,8 @@ import com.lancestack.dto.Freelancer.ForgetPassFreelancerDTO;
 import com.lancestack.dto.Freelancer.FreelancerDTO;
 import com.lancestack.dto.Freelancer.FreelancerLoginDTO;
 import com.lancestack.dto.Freelancer.FreelancerRegistrationDTO;
+import com.lancestack.dto.Freelancer.GetFreelancerMobilePasswordDTO;
+import com.lancestack.dto.Freelancer.UpdateProfileFreelancer;
 import com.lancestack.entities.Freelancer;
 import com.lancestack.entities.User;
 import com.lancestack.repository.FreelancerRepository;
@@ -124,6 +126,53 @@ public class FreelancerServiceImpl implements FreelancerService {
 		Freelancer freelancer = freelancerRepo.findById(id).orElseThrow(()-> new ResourceNotFound(HttpStatus.BAD_REQUEST,"Invalid Id"));
 		freelancerRepo.delete(freelancer);
 		return new ApiResponse("Freelancer Deleted Successfully");
+	}
+
+	@Override
+	public GetFreelancerMobilePasswordDTO sendMobilePassword(Long id) {
+		Freelancer freelancer = freelancerRepo.findById(id).orElseThrow(()-> new ResourceNotFound(HttpStatus.BAD_REQUEST,"Invalid Id"));
+		GetFreelancerMobilePasswordDTO freelancerMobilePasswordDTO = modelMapper.map(freelancer, GetFreelancerMobilePasswordDTO.class);
+		return freelancerMobilePasswordDTO;
+	}
+
+	@Override
+	public ApiResponse updateFreelancerProfile(Long freelancerId ,UpdateProfileFreelancer updateProfileFreelancer) {
+		Freelancer freelancer = freelancerRepo.findById(freelancerId)
+                .orElseThrow(() -> new ResourceNotFound(HttpStatus.BAD_REQUEST,"Freelancer not found"));
+	    boolean profileUpdated = false;
+		// Map the changes from UpdateProfileFreelancerDto to the Freelancer entity
+        if (updateProfileFreelancer.getFreelancerName() != null) {
+            freelancer.setFreelancerName(updateProfileFreelancer.getFreelancerName());
+            profileUpdated = true;
+        }
+        if (updateProfileFreelancer.getEmail() != null) {
+            freelancer.setEmail(updateProfileFreelancer.getEmail());
+            profileUpdated = true;
+        }
+        if (updateProfileFreelancer.getMobileNumber() != null) {
+            freelancer.setMobileNumber(updateProfileFreelancer.getMobileNumber());
+            profileUpdated = true;
+        }
+        if (updateProfileFreelancer.getProfileDescription() != null) {
+            freelancer.setProfileDescription(updateProfileFreelancer.getProfileDescription());
+            profileUpdated = true;
+        }
+        if (updateProfileFreelancer.getSkills() != null) {
+            freelancer.setSkills(updateProfileFreelancer.getSkills());
+            profileUpdated = true;
+        }
+        if (updateProfileFreelancer.getNewPassword() != null && 
+        		updateProfileFreelancer.getOldPassword().equals(freelancer.getPassword())) {
+            freelancer.setPassword(updateProfileFreelancer.getNewPassword());
+            profileUpdated = true;
+        }
+        // Save the updated freelancer entity
+        if (profileUpdated) {
+            freelancerRepo.save(freelancer);
+            return new ApiResponse("Profile updated successfully");
+        } else {
+            return new ApiResponse("No changes made to the profile");
+        }
 	}
 	
 //	// Method to convert Freelancer entity to FreelancerDTO

@@ -16,11 +16,14 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.lancestack.custom_exception.ResourceNotFound;
 import com.lancestack.dto.ApiResponse;
 import com.lancestack.dto.Freelancer.ForgetPassFreelancerDTO;
 import com.lancestack.dto.Freelancer.FreelancerDTO;
 import com.lancestack.dto.Freelancer.FreelancerLoginDTO;
 import com.lancestack.dto.Freelancer.FreelancerRegistrationDTO;
+import com.lancestack.dto.Freelancer.GetFreelancerMobilePasswordDTO;
+import com.lancestack.dto.Freelancer.UpdateProfileFreelancer;
 import com.lancestack.service.FreelancerService;
 
 import io.swagger.v3.oas.annotations.Operation;
@@ -117,4 +120,27 @@ public class FreelancerController {
 			return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new ApiResponse(e.getMessage()));
 		}
 	}
+	
+	@Operation(description = "Freelancer mobile password by freelancer id Endpoint.")
+	@PostMapping("/freelancerMobilePassword/{freelancerId}")
+	public ResponseEntity<?> sendMobilePassword(@PathVariable Long freelancerId){
+		try {
+			GetFreelancerMobilePasswordDTO feelancerMobilePasswordDTO = freelancerService.sendMobilePassword(freelancerId);
+		    return ResponseEntity.ok(feelancerMobilePasswordDTO);
+		}
+		catch (RuntimeException e) {
+			return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new ApiResponse(e.getMessage()));
+		}
+	    
+	}
+	
+	
+	@Operation(description = "Update Freelancer profile by freelancer id Endpoint.")
+    @PutMapping("/updateProfile/{freelancerId}")
+    public ResponseEntity<String> updateFreelancerProfile(@PathVariable Long freelancerId, @RequestBody UpdateProfileFreelancer updateProfileDto) {
+            // Call the service method to update the freelancer profile
+            freelancerService.updateFreelancerProfile(freelancerId, updateProfileDto);
+            return ResponseEntity.ok("Profile updated successfully");
+        
+    }
 }

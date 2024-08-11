@@ -160,5 +160,17 @@ public class ProjectController {
 	    List<ProjectDTO> projects = projectService.getOnGoingProjectsByFreelancerId(freelancerId);
 	    return ResponseEntity.ok(projects);
 	}
+	
+	@Operation(description = "To get Project Title from the ProjectID")
+	@GetMapping("/projectTitle/{projectId}")
+	public ResponseEntity<String> getProjectTitleByProjectId(@PathVariable Long projectId){
+			return ResponseEntity.status(HttpStatus.OK).body(projectService.getProjectTitleByProjectId(projectId));
+	}
+	
+	@Operation(description = "To get Project Desc from the ProjectID")
+	@GetMapping("/projectDesc/{projectId}")
+	public ResponseEntity<String> getProjectDescByProjectId(@PathVariable Long projectId){
+			return ResponseEntity.status(HttpStatus.OK).body(projectService.getProjectDescByProjectId(projectId));
+	}
 
 }
