@@ -5,6 +5,7 @@ import java.util.List;
 import com.lancestack.dto.ApiResponse;
 import com.lancestack.dto.Contract.ContractDTO;
 import com.lancestack.dto.Contract.ContractRegistrationDTO;
+import com.lancestack.dto.Contract.FindContractByUserResponseDTO;
 
 public interface ContractService {
 
@@ -20,6 +21,6 @@ public interface ContractService {
 	
 	List<ContractDTO> getAllCompletedContractsByFreelancerId(Long FreelancerId);
 
-	List<ContractDTO> getAllContractsByUser(Long userId);
+	List<FindContractByUserResponseDTO> getAllContractsByUser(Long userId);
 
 }

@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.lancestack.dto.ApiResponse;
 import com.lancestack.dto.Contract.ContractDTO;
 import com.lancestack.dto.Contract.ContractRegistrationDTO;
+import com.lancestack.dto.Contract.FindContractByUserResponseDTO;
 import com.lancestack.dto.Project.ProjectDTO;
 import com.lancestack.service.ContractService;
 import com.lancestack.service.ProjectService;
@@ -108,9 +109,9 @@ public class ContractController {
 
 	
 	@Operation(description = "Find the contracts relatedd to user.")
-	@GetMapping("/{userId}/getAllContracts")
-	public ResponseEntity<List<ContractDTO>> getAllContractsByUser(@PathVariable Long userId){
-		List<ContractDTO> contracts = contractService.getAllContractsByUser(userId);
+	@GetMapping("/{userId}/getAllContractsByUser")
+	public ResponseEntity<List<FindContractByUserResponseDTO>> getAllContractsByUser(@PathVariable Long userId){
+		List<FindContractByUserResponseDTO> contracts = contractService.getAllContractsByUser(userId);
 		return ResponseEntity.ok(contracts);
 	}
 }

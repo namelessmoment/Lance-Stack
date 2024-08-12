@@ -8,7 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
-import com.lancestack.custom_exception.ResourceNotFound;
+import com.lancestack.custom_exception.ResourceNotFoundException;
 import com.lancestack.dto.ApiResponse;
 import com.lancestack.dto.Project.PostProjectDTO;
 import com.lancestack.dto.Project.ProjectDTO;
@@ -42,7 +42,7 @@ public class ProjectServiceImpl implements ProjectService {
 	@Override
 	public ApiResponse postProject(PostProjectDTO projectDTO) {
 		User user = userRepo.findById(projectDTO.getUser())
-	            .orElseThrow(() -> new ResourceNotFound(HttpStatus.BAD_REQUEST, "User is Null"));
+	            .orElseThrow(() -> new ResourceNotFoundException(HttpStatus.BAD_REQUEST, "User is Null"));
 	    
 	    projectDTO.setUser(user.getId()); // Set the user ID here
 	    
@@ -64,7 +64,7 @@ public class ProjectServiceImpl implements ProjectService {
 
 	@Override
 	public ProjectDTO getProjectById(Long id) {
-		Project project = projectRepo.findById(id).orElseThrow(()-> new ResourceNotFound(HttpStatus.BAD_REQUEST,"Invalid Id"));
+		Project project = projectRepo.findById(id).orElseThrow(()-> new ResourceNotFoundException(HttpStatus.BAD_REQUEST,"Invalid Id"));
 		ProjectDTO projectDTO = modelMapper.map(project, ProjectDTO.class);
 		return projectDTO;
 	}
@@ -75,7 +75,7 @@ public class ProjectServiceImpl implements ProjectService {
 		String msg = "Updation Failed";
 		Project existingProject = projectRepo.findById(id).orElse(null);
 		if(existingProject==null) {
-			throw  new ResourceNotFound(HttpStatus.BAD_REQUEST,"Invalid Id");
+			throw  new ResourceNotFoundException(HttpStatus.BAD_REQUEST,"Invalid Id");
 		}
 		else {
 			existingProject.setTitle(proj.getTitle());
@@ -102,7 +102,7 @@ public class ProjectServiceImpl implements ProjectService {
 	@Override
 	public List<ProjectDTO> getAllProjectsByUser(Long userId) {
 	    User user = userRepo.findById(userId)
-	            .orElseThrow(() -> new ResourceNotFound(HttpStatus.NOT_FOUND,"User not found"));
+	            .orElseThrow(() -> new ResourceNotFoundException(HttpStatus.NOT_FOUND,"User not found"));
 	    List<Project> projects = user.getAllProjects();
 	    return projects.stream()
 	            .map(project -> modelMapper.map(project, ProjectDTO.class))
@@ -112,7 +112,7 @@ public class ProjectServiceImpl implements ProjectService {
 
 	@Override
 	public ApiResponse updateStatusToInProcess(Long projectId) {
-		Project proj = projectRepo.findById(projectId).orElseThrow(()-> new ResourceNotFound(HttpStatus.BAD_REQUEST,"Invalid ProjectId"));
+		Project proj = projectRepo.findById(projectId).orElseThrow(()-> new ResourceNotFoundException(HttpStatus.BAD_REQUEST,"Invalid ProjectId"));
 		proj.setStatus(ProjectStatus.IN_PROGRESS);
 		projectRepo.save(proj);
 		return new ApiResponse("Project Status Updated Successfully");
@@ -120,7 +120,7 @@ public class ProjectServiceImpl implements ProjectService {
 	
 	@Override
 	public ApiResponse updateStatusToCompleted(Long projecId) {
-			Project proj = projectRepo.findById(projecId).orElseThrow(()-> new ResourceNotFound(HttpStatus.BAD_REQUEST,"Invalid ProjectId"));
+			Project proj = projectRepo.findById(projecId).orElseThrow(()-> new ResourceNotFoundException(HttpStatus.BAD_REQUEST,"Invalid ProjectId"));
 			proj.setStatus(ProjectStatus.COMPLETED);
 			projectRepo.save(proj);
 		return new ApiResponse("Project Status Updated Successfully");
@@ -188,14 +188,14 @@ public class ProjectServiceImpl implements ProjectService {
 
 	@Override
 	public String getProjectTitleByProjectId(Long projectId) {
-		Project project = projectRepo.findById(projectId).orElseThrow(()-> new ResourceNotFound(HttpStatus.BAD_REQUEST,"Invalid ProjectId"));
+		Project project = projectRepo.findById(projectId).orElseThrow(()-> new ResourceNotFoundException(HttpStatus.BAD_REQUEST,"Invalid ProjectId"));
 		String projectTitle = project.getTitle();
 		return projectTitle;
 	}
 
 	@Override
 	public String getProjectDescByProjectId(Long projectId) {
-		Project project = projectRepo.findById(projectId).orElseThrow(()-> new ResourceNotFound(HttpStatus.BAD_REQUEST,"Invalid ProjectId"));
+		Project project = projectRepo.findById(projectId).orElseThrow(()-> new ResourceNotFoundException(HttpStatus.BAD_REQUEST,"Invalid ProjectId"));
 		String projectDesc = project.getDescription();
 		return projectDesc;
 	}	

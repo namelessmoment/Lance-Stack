@@ -8,7 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
-import com.lancestack.custom_exception.ResourceNotFound;
+import com.lancestack.custom_exception.ResourceNotFoundException;
 import com.lancestack.dto.ApiResponse;
 import com.lancestack.dto.User.UserDTO;
 import com.lancestack.dto.User.UserForgetPassword;
@@ -36,16 +36,16 @@ public class UserServiceImpl implements UserService {
 		String msg = "User not valid!";
 	    if(user == null) {
 	        msg = "User contains Null!";
-	        throw new ResourceNotFound(HttpStatus.BAD_REQUEST, "User is Null");
+	        throw new ResourceNotFoundException(HttpStatus.BAD_REQUEST, "User is Null");
 	    }
 	    User existingUser = userRepo.findByEmail(user.getEmail());
 	    if(existingUser != null) {
 	    	msg = "User Already Exists!";
-	        throw new ResourceNotFound(HttpStatus.BAD_REQUEST, "User Already Exists!");
+	        throw new ResourceNotFoundException(HttpStatus.BAD_REQUEST, "User Already Exists!");
 	    }
 	    User existingUserByMobileNumber = userRepo.findByMobileNumber(user.getMobileNumber());
 	    if(existingUserByMobileNumber != null) {
-	    	throw new ResourceNotFound(HttpStatus.BAD_REQUEST, "User Mobile Number Already Exists!");
+	    	throw new ResourceNotFoundException(HttpStatus.BAD_REQUEST, "User Mobile Number Already Exists!");
 	    }
 	    else {
 	        User user1 = modelMapper.map(user, User.class);
@@ -66,7 +66,7 @@ public class UserServiceImpl implements UserService {
 
 	@Override
 	public UserDTO getUser(Long id) {
-		User user = userRepo.findById(id).orElseThrow(() -> new ResourceNotFound(HttpStatus.BAD_REQUEST,"Invalid Id"));
+		User user = userRepo.findById(id).orElseThrow(() -> new ResourceNotFoundException(HttpStatus.BAD_REQUEST,"Invalid Id"));
 			
 		return modelMapper.map(user, UserDTO.class);
 	}
@@ -76,7 +76,7 @@ public class UserServiceImpl implements UserService {
 		String msg = "Updation Failed";
 			User existingUser = userRepo.findById(id).orElse(null);
 			if(existingUser==null) {
-				throw new ResourceNotFound(HttpStatus.BAD_REQUEST,"Invalid User ID!!!");
+				throw new ResourceNotFoundException(HttpStatus.BAD_REQUEST,"Invalid User ID!!!");
 			}
 			else {
 			existingUser.setEmail(user.getEmail());
@@ -90,7 +90,7 @@ public class UserServiceImpl implements UserService {
 
 	@Override
 	public ApiResponse deleteUser(Long id) {
-		User user = userRepo.findById(id).orElseThrow(()-> new ResourceNotFound(HttpStatus.BAD_REQUEST,"Invalid Id"));
+		User user = userRepo.findById(id).orElseThrow(()-> new ResourceNotFoundException(HttpStatus.BAD_REQUEST,"Invalid Id"));
 		userRepo.delete(user);
 		return new ApiResponse("User Deleted Successfully");
 	}
@@ -99,10 +99,10 @@ public class UserServiceImpl implements UserService {
 	public UserDTO getUserByEmailAndPassword(UserLoginDTO userLoginDTO) {
 		User user = userRepo.findByEmail(userLoginDTO.getEmail());
 	    if(user == null) {
-	        throw new ResourceNotFound(HttpStatus.NOT_FOUND, "User not found with email: " + userLoginDTO.getEmail());
+	        throw new ResourceNotFoundException(HttpStatus.NOT_FOUND, "User not found with email: " + userLoginDTO.getEmail());
 	    }
 	    if(!user.getPassword().equals(userLoginDTO.getPassword())) {
-	        throw new ResourceNotFound(HttpStatus.NOT_FOUND, "Incorrect User Password!");
+	        throw new ResourceNotFoundException(HttpStatus.NOT_FOUND, "Incorrect User Password!");
 	    }
 	    UserDTO userDto = modelMapper.map(user, UserDTO.class);
 	    return userDto;
@@ -114,7 +114,7 @@ public class UserServiceImpl implements UserService {
 		String msg = "Password Not Changed!";
 	    User existingUser = userRepo.findByEmail(user.getEmail());
 	    if (existingUser == null) {
-	        throw new ResourceNotFound(HttpStatus.BAD_REQUEST, "User Not Exists!");
+	        throw new ResourceNotFoundException(HttpStatus.BAD_REQUEST, "User Not Exists!");
 	    }
 	    existingUser.setPassword(user.getPassword());
 	    userRepo.save(existingUser);

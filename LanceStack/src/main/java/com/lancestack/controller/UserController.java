@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.lancestack.custom_exception.ResourceNotFound;
+import com.lancestack.custom_exception.ResourceNotFoundException;
 import com.lancestack.dto.ApiResponse;
 import com.lancestack.dto.User.UserDTO;
 import com.lancestack.dto.User.UserForgetPassword;
@@ -41,7 +41,7 @@ public class UserController {
 	        return ResponseEntity
 	                .status(HttpStatus.CREATED)
 	                .body(userService.registerUser(user));
-	    } catch (ResourceNotFound e) {
+	    } catch (ResourceNotFoundException e) {
 	        return ResponseEntity
 	                .status(HttpStatus.BAD_REQUEST)
 	                .body(new ApiResponse(e.getMessage()));
