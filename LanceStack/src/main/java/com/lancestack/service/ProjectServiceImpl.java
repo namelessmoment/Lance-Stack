@@ -13,6 +13,7 @@ import com.lancestack.dto.ApiResponse;
 import com.lancestack.dto.Project.PostProjectDTO;
 import com.lancestack.dto.Project.ProjectDTO;
 import com.lancestack.dto.Project.ProjectFilterRangeDTO;
+import com.lancestack.dto.Project.ProjectTitleStatus;
 import com.lancestack.entities.Contract;
 import com.lancestack.entities.ContractStatus;
 import com.lancestack.entities.Project;
@@ -198,5 +199,12 @@ public class ProjectServiceImpl implements ProjectService {
 		Project project = projectRepo.findById(projectId).orElseThrow(()-> new ResourceNotFoundException(HttpStatus.BAD_REQUEST,"Invalid ProjectId"));
 		String projectDesc = project.getDescription();
 		return projectDesc;
+	}
+
+	@Override
+	public ProjectTitleStatus getProjectTitleStatusByProjId(Long projectId) {
+		Project project = projectRepo.findById(projectId).orElseThrow(()-> new ResourceNotFoundException(HttpStatus.BAD_REQUEST,"Invalid ProjectId"));
+		ProjectTitleStatus projectTitleStatus = new ProjectTitleStatus(project.getTitle(), project.getStatus());
+		return projectTitleStatus;
 	}	
 }

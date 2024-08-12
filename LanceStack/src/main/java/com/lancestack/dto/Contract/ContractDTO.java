@@ -3,6 +3,7 @@ package com.lancestack.dto.Contract;
 import java.time.LocalDate;
 
 import com.lancestack.dto.BaseEntity;
+import com.lancestack.dto.Freelancer.FreelancerDTO;
 import com.lancestack.dto.Project.ProjectDTO;
 import com.lancestack.entities.ContractStatus;
 
@@ -21,4 +22,5 @@ public class ContractDTO extends BaseEntity{
     private LocalDate endDate;
     private double paymentAmount;
 	private ContractStatus status;
+	private FreelancerDTO freelancer;
 }

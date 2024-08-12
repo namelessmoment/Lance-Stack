@@ -21,12 +21,16 @@ public interface ContractRepository extends JpaRepository<Contract, Long> {
 	
 	List<Contract> findByFreelancerIdAndStatus(Long freelancerId, ContractStatus status);
 	
-	@Query(value = "SELECT * FROM contracts  WHERE status = 'IN_PROGRESS' AND freelancer_id = :freelancerId", nativeQuery = true)
-    List<Contract> findAllContractsInProgressByFreelancerId(Long freelancerId);
-
-	@Query(value = "SELECT * FROM contracts  WHERE status = 'COMPLETED' AND freelancer_id = :freelancerId", nativeQuery = true)
-    List<Contract> findAllContractsCompletedByFreelancerId(Long freelancerId);
+	@Query(value = "SELECT c.* FROM contracts c " +
+            "JOIN projects p ON c.project_id = p.id " +
+            "WHERE c.status = 'IN_PROGRESS' AND p.user_id = :userId", nativeQuery = true)
+	List<Contract> findAllContractsInProgressByUserId(Long userId);
 	
-	@Query("SELECT c FROM Contract c JOIN c.project p JOIN p.user u WHERE u = :user")
-    List<Contract> findContractsByUser(@Param("user") User user);
+	@Query(value = "SELECT c.* FROM contracts c " +
+            "JOIN projects p ON c.project_id = p.id " +
+            "WHERE c.status = 'COMPLETED' AND p.user_id = :userId", nativeQuery = true)
+	List<Contract> findAllContractsCompletedByUserId(Long userId);
+
+//	@Query("SELECT c FROM Contract c JOIN c.project p JOIN p.user u WHERE u = :user")
+//    List<Contract> findContractsByUser(@Param("user") User user);
 }

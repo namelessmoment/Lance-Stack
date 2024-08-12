@@ -6,7 +6,7 @@ import com.lancestack.dto.ApiResponse;
 import com.lancestack.dto.Bid.BidDTO;
 import com.lancestack.dto.Bid.UpdateBidDTO;
 import com.lancestack.dto.Freelancer.FreelancerBidDTO;
-import com.lancestack.entities.Bid;
+import com.lancestack.dto.Freelancer.FreelancerDTO;
 
 public interface BidService {
 
@@ -20,5 +20,5 @@ public interface BidService {
 
 	List<FreelancerBidDTO> getAllBidsByFreelancerId(Long freelancerId);
 	
-	
+	FreelancerDTO getFreelanerByBidId(Long bidId);
 }

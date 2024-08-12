@@ -18,6 +18,7 @@ import com.lancestack.dto.ApiResponse;
 import com.lancestack.dto.Bid.BidDTO;
 import com.lancestack.dto.Bid.UpdateBidDTO;
 import com.lancestack.dto.Freelancer.FreelancerBidDTO;
+import com.lancestack.dto.Freelancer.FreelancerDTO;
 import com.lancestack.entities.Bid;
 import com.lancestack.service.BidService;
 
@@ -84,5 +85,11 @@ public class BidController {
 		return ResponseEntity
 				.status(HttpStatus.OK)
 				.body(bidService.getAllBidsByFreelancerId(freelancerId));
+	}
+	
+	@Operation(description =  "Get freelancer by Bid Id")
+	@GetMapping("/getFreelancerByBidId/{bidId}")
+	public ResponseEntity<FreelancerDTO> getFreelancerByBidId(@PathVariable Long bidId){
+		return ResponseEntity.status(HttpStatus.OK).body(bidService.getFreelanerByBidId(bidId));
 	}
 }

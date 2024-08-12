@@ -10,10 +10,15 @@ import org.springframework.stereotype.Service;
 
 import com.lancestack.custom_exception.ResourceNotFoundException;
 import com.lancestack.dto.ApiResponse;
+import com.lancestack.dto.Freelancer.GetFreelancerMobilePasswordDTO;
+import com.lancestack.dto.Freelancer.UpdateProfileFreelancer;
+import com.lancestack.dto.User.GetUserMobilePasswordDTO;
+import com.lancestack.dto.User.UpdateProfileUser;
 import com.lancestack.dto.User.UserDTO;
 import com.lancestack.dto.User.UserForgetPassword;
 import com.lancestack.dto.User.UserLoginDTO;
 import com.lancestack.dto.User.UserRegistrationDTO;
+import com.lancestack.entities.Freelancer;
 import com.lancestack.entities.User;
 import com.lancestack.repository.UserRepository;
 //import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -121,7 +126,47 @@ public class UserServiceImpl implements UserService {
 	    msg = "Password Changed Successfully!";
 	    return new ApiResponse(msg);
 	}
+	
+	@Override
+	public GetUserMobilePasswordDTO sendMobilePassword(Long id) {
+		User user = userRepo.findById(id).orElseThrow(()-> new ResourceNotFoundException(HttpStatus.BAD_REQUEST,"Invalid Id"));
+		GetUserMobilePasswordDTO userMobilePasswordDTO = modelMapper.map(user, GetUserMobilePasswordDTO.class);
+		return userMobilePasswordDTO;
+	}
 
+	
+	@Override
+	public ApiResponse updateUserProfile(Long freelancerId ,UpdateProfileUser updateProfileUser) {
+		User user = userRepo.findById(freelancerId)
+                .orElseThrow(() -> new ResourceNotFoundException(HttpStatus.BAD_REQUEST,"Freelancer not found"));
+	    boolean profileUpdated = false;
+		// Map the changes from UpdateProfileFreelancerDto to the Freelancer entity
+        if (updateProfileUser.getUserName() != null) {
+            user.setUserName(updateProfileUser.getUserName());;
+            profileUpdated = true;
+        }
+        if (updateProfileUser.getEmail() != null) {
+            user.setEmail(updateProfileUser.getEmail());
+            profileUpdated = true;
+        }
+        if (updateProfileUser.getMobileNumber() != null) {
+            user.setMobileNumber(updateProfileUser.getMobileNumber());
+            profileUpdated = true;
+        }
+        if (updateProfileUser.getNewPassword() != null && !updateProfileUser.getNewPassword().isEmpty() && 
+        		updateProfileUser.getOldPassword().equals(user.getPassword())) {
+            user.setPassword(updateProfileUser.getNewPassword());
+            profileUpdated = true;
+        }
+        // Save the updated freelancer entity
+        if (profileUpdated) {
+            userRepo.save(user);
+            return new ApiResponse("Profile updated successfully");
+        } else {
+            return new ApiResponse("No changes made to the profile");
+        }
+	}
+	
 	
 //	private String hashPassword(String password) {
 //	    BCryptPasswordEncoder bCryptPasswordEncoder = new BCryptPasswordEncoder();

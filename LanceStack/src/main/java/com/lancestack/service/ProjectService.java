@@ -6,6 +6,7 @@ import com.lancestack.dto.ApiResponse;
 import com.lancestack.dto.Project.PostProjectDTO;
 import com.lancestack.dto.Project.ProjectDTO;
 import com.lancestack.dto.Project.ProjectFilterRangeDTO;
+import com.lancestack.dto.Project.ProjectTitleStatus;
 import com.lancestack.entities.Project;
 import com.lancestack.entities.ProjectType;
 
@@ -41,4 +42,6 @@ public interface ProjectService {
 	
 	String getProjectDescByProjectId(Long projectId);
 	ApiResponse updateStatusToInProcess(Long projectId);
+	
+	ProjectTitleStatus getProjectTitleStatusByProjId(Long projectId);
 }

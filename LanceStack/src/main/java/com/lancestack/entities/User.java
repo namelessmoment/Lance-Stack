@@ -42,7 +42,6 @@ public class User extends BaseEntity {
 	@NotBlank(message = "Enter Password")
 	private String password;
 	@Column
-	@Pattern(regexp = "^\\d{10}$", message = "Invalid mobile number. It must be a 10-digit number.")
 	private String mobileNumber;
 	
 	// Check endpoints.

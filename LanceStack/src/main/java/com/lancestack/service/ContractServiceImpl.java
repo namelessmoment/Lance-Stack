@@ -14,6 +14,8 @@ import com.lancestack.dto.ApiResponse;
 import com.lancestack.dto.Contract.ContractDTO;
 import com.lancestack.dto.Contract.ContractRegistrationDTO;
 import com.lancestack.dto.Contract.FindContractByUserResponseDTO;
+import com.lancestack.dto.Contract.FindInProgressContractByUserResponseDTO;
+import com.lancestack.dto.Freelancer.FreelancerDTO;
 import com.lancestack.dto.Project.ProjectDTO;
 import com.lancestack.entities.Contract;
 import com.lancestack.entities.ContractStatus;
@@ -111,9 +113,9 @@ public class ContractServiceImpl implements ContractService {
 	}
 
 	@Override
-	public List<ContractDTO> getAllInProcessContractsByFreelancerId(Long FreelancerId) {
+	public List<ContractDTO> getAllInProcessContractsByUserId(Long UserId) {
 		
-		 List<Contract> contracts = contractRepo.findAllContractsInProgressByFreelancerId(FreelancerId);
+		 List<Contract> contracts = contractRepo.findAllContractsInProgressByUserId(UserId);
 
 	        // Map the list of Contract entities to ContractDTO
 	        return contracts.stream()
@@ -124,6 +126,10 @@ public class ContractServiceImpl implements ContractService {
 	                projectDTO.setDescription(contract.getProject().getDescription());
 	                projectDTO.setStatus(contract.getProject().getStatus());
 	                projectDTO.setBudget(contract.getProject().getBudget());
+	                
+	                FreelancerDTO freelancerDto = new FreelancerDTO();
+	                freelancerDto.setFreelancerName(contract.getFreelancer().getFreelancerName());
+	                // other details left null as they are not needed.
 
 	                ContractDTO contractDTO = new ContractDTO();
 	                contractDTO.setStartDate(contract.getStartDate());
@@ -131,6 +137,7 @@ public class ContractServiceImpl implements ContractService {
 	                contractDTO.setPaymentAmount(contract.getPaymentAmount());
 	                contractDTO.setStatus(contract.getStatus());
 	                contractDTO.setProject(projectDTO);  // Include ProjectDTO
+	                contractDTO.setFreelancer(freelancerDto); // include freelancerDto
 
 	                return contractDTO;
 	            })
@@ -138,9 +145,9 @@ public class ContractServiceImpl implements ContractService {
 	    }
 
 	@Override
-	public List<ContractDTO> getAllCompletedContractsByFreelancerId(Long FreelancerId) {
+	public List<ContractDTO> getAllCompletedContractsByUserId(Long UserId) {
 		// TODO Auto-generated method stub
-		List<Contract> contracts = contractRepo.findAllContractsCompletedByFreelancerId(FreelancerId);
+		List<Contract> contracts = contractRepo.findAllContractsCompletedByUserId(UserId);
 
         // Map the list of Contract entities to ContractDTO
         return contracts.stream()
@@ -152,47 +159,69 @@ public class ContractServiceImpl implements ContractService {
                 projectDTO.setStatus(contract.getProject().getStatus());
                 projectDTO.setBudget(contract.getProject().getBudget());
 
+                FreelancerDTO freelancerDto = new FreelancerDTO();
+                freelancerDto.setFreelancerName(contract.getFreelancer().getFreelancerName());
+                
                 ContractDTO contractDTO = new ContractDTO();
                 contractDTO.setStartDate(contract.getStartDate());
                 contractDTO.setEndDate(contract.getEndDate());
                 contractDTO.setPaymentAmount(contract.getPaymentAmount());
                 contractDTO.setStatus(contract.getStatus());
                 contractDTO.setProject(projectDTO);  // Include ProjectDTO
+                contractDTO.setFreelancer(freelancerDto);
 
                 return contractDTO;
             })
             .collect(Collectors.toList());
 	}
 	
-	public List<FindContractByUserResponseDTO> getAllContractsByUser(Long userId) {
-		User user = userRepo.findById(userId)
-	            .orElseThrow(() -> new ResourceNotFoundException(HttpStatus.NOT_FOUND, "User Id is Invalid"));
-	    List<Contract> contracts = contractRepo.findContractsByUser(user);
-	    List<FindContractByUserResponseDTO> contractsDTO = new ArrayList<>();
-	    for (Contract contract : contracts) {
-	        contractsDTO.add(mapContractToResponseDTO(contract));
-	    }
-	    return contractsDTO;
-
-	}
+//	public List<FindInProgressContractByUserResponseDTO> getAllContractsByUserInProgress(Long userId) {
+//		User user = userRepo.findById(userId)
+//	            .orElseThrow(() -> new ResourceNotFoundException(HttpStatus.NOT_FOUND, "User Id is Invalid"));
+//	    List<Contract> contracts = contractRepo.findContractsByUser(user);
+//	    List<FindInProgressContractByUserResponseDTO> contractsDTO = new ArrayList<>();
+//	    for (Contract contract : contracts) {
+//	    	if(contract.getStatus() == ContractStatus.IN_PROGRESS)
+//	    		contractsDTO.add(mapContractToResponseDTO(contract));
+//	    }
+//	    return contractsDTO;
+//	}
 	
-	public FindContractByUserResponseDTO mapContractToResponseDTO(Contract contract) {
-	    FindContractByUserResponseDTO responseDTO = new FindContractByUserResponseDTO();
+//	@Override
+//	public List<FindInProgressContractByUserResponseDTO> getAllContractsByUserCompleted(Long userId) {
+//		User user = userRepo.findById(userId)
+//	            .orElseThrow(() -> new ResourceNotFoundException(HttpStatus.NOT_FOUND, "User Id is Invalid"));
+//	    List<Contract> contracts = contractRepo.findContractsByUser(user);
+//	    List<FindInProgressContractByUserResponseDTO> contractsDTO = new ArrayList<>();
+//	    for (Contract contract : contracts) {
+//	    	if(contract.getStatus() == ContractStatus.COMPLETED)
+//	    		contractsDTO.add(mapContractToResponseDTO(contract));
+//	    }
+//	    return contractsDTO;
+//	}
+	
+	public FindInProgressContractByUserResponseDTO mapContractToResponseDTO(Contract contract) {
+		FindInProgressContractByUserResponseDTO responseDTO = new FindInProgressContractByUserResponseDTO();
 	    responseDTO.setId(contract.getId());
-	    responseDTO.setStartDate(contract.getStartDate());
-	    responseDTO.setEndDate(contract.getEndDate());
 	    responseDTO.setPaymentAmount(contract.getPaymentAmount());
 	    responseDTO.setStatus(contract.getStatus());
 	    
-	    // Manual mapping for ProjectDTO
-	    ProjectDTO projectDTO = new ProjectDTO();
-	    projectDTO.setId(contract.getProject().getId());
-	    projectDTO.setTitle(contract.getProject().getTitle());
-	    projectDTO.setDescription(contract.getProject().getDescription());
-	    // Add more fields as needed
-	    
-	    responseDTO.setProjectDTO(projectDTO);
+	    FreelancerDTO freelancerDTO = new FreelancerDTO();
+	    freelancerDTO.setFreelancerName(contract.getFreelancer().getFreelancerName());
+	    freelancerDTO.setEmail(contract.getFreelancer().getEmail());
+	    freelancerDTO.setProfileDescription(contract.getFreelancer().getProfileDescription());
+	    freelancerDTO.setSkills(contract.getFreelancer().getSkills());
+	    // setting freelancer
+	    responseDTO.setFreelancer(freelancerDTO);
 	    return responseDTO;
+	}
+
+	@Override
+	public ApiResponse deleteContract(Long contractId) {
+		
+		Contract contract = contractRepo.findById(contractId).orElseThrow(() -> new ResourceNotFoundException(HttpStatus.NOT_FOUND,"Invalid COntract Id"));
+		contractRepo.delete(contract);
+		return  new ApiResponse("User Deleted Successfully");
 	}
 
 }

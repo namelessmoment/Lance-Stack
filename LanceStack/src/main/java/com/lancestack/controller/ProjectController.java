@@ -18,6 +18,7 @@ import com.lancestack.dto.ApiResponse;
 import com.lancestack.dto.Project.PostProjectDTO;
 import com.lancestack.dto.Project.ProjectDTO;
 import com.lancestack.dto.Project.ProjectFilterRangeDTO;
+import com.lancestack.dto.Project.ProjectTitleStatus;
 import com.lancestack.entities.Project;
 import com.lancestack.entities.ProjectType;
 import com.lancestack.service.ProjectService;
@@ -176,4 +177,10 @@ public class ProjectController {
 					.body(projectService.getProjectDescByProjectId(projectId));
 	}
 
+	@Operation(description = "Get project title and status from project Id")
+	@GetMapping("/projectTitleStatus/{projectId}")
+	public ResponseEntity<ProjectTitleStatus> getProjectTitleStatus(@PathVariable Long projectId){
+		return ResponseEntity.status(HttpStatus.OK)
+				.body(projectService.getProjectTitleStatusByProjId(projectId));
+	}
 }

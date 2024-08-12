@@ -14,6 +14,7 @@ import com.lancestack.dto.ApiResponse;
 import com.lancestack.dto.Bid.BidDTO;
 import com.lancestack.dto.Bid.UpdateBidDTO;
 import com.lancestack.dto.Freelancer.FreelancerBidDTO;
+import com.lancestack.dto.Freelancer.FreelancerDTO;
 import com.lancestack.entities.Bid;
 import com.lancestack.entities.Freelancer;
 import com.lancestack.entities.Project;
@@ -142,6 +143,15 @@ public class BidServiceImpl implements BidService {
 	        dto.setFreelancerId(bid.getFreelancer().getId()); // Set freelancerId from associated freelancer
 	        return dto;
 	    }).collect(Collectors.toList());
+	}
+
+
+	@Override
+	public FreelancerDTO getFreelanerByBidId(Long bidId) {
+		Bid bid  = bidRepo.findById(bidId).orElseThrow(() -> new ResourceNotFoundException(HttpStatus.NOT_FOUND,"Invalid Bid ID"));
+		Freelancer freelancer  = bid.getFreelancer();
+		FreelancerDTO freelancerDTO = modelMapper.map(freelancer, FreelancerDTO.class); 
+		return freelancerDTO;
 	}
 	
 	//after return in above code " modelMapper.map(freelancerAssocaitedBids, new TypeToken<List<FreelancerBidDTO>>() {}.getType());"

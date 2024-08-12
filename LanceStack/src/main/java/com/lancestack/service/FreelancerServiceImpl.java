@@ -224,7 +224,7 @@ public class FreelancerServiceImpl implements FreelancerService {
 	@Override
 	public void markProjectAsCompleted(Long projectId) {
 		Project project = projectRepo.findById(projectId)
-	            .orElseThrow(() -> new ResourceNotFound(HttpStatus.NOT_FOUND, "Invalid project Id."));
+	            .orElseThrow(() -> new ResourceNotFoundException(HttpStatus.NOT_FOUND, "Invalid project Id."));
 	    
 	    if (project.getStatus() == ProjectStatus.IN_PROGRESS) {
 	        project.setStatus(ProjectStatus.COMPLETED);

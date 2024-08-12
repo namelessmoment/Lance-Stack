@@ -139,8 +139,7 @@ public class FreelancerController {
     public ResponseEntity<String> updateFreelancerProfile(@PathVariable Long freelancerId, @RequestBody UpdateProfileFreelancer updateProfileDto) {
             freelancerService.updateFreelancerProfile(freelancerId, updateProfileDto);
             return ResponseEntity.ok("Profile updated successfully");
-        
-    }
+            }
 	
 	@Operation(description = "Freelancer In_progress project List")
 	@GetMapping("/{freelancerId}/allocatedIn_Progress")

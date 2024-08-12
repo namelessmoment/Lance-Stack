@@ -18,6 +18,10 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.lancestack.custom_exception.ResourceNotFoundException;
 import com.lancestack.dto.ApiResponse;
+import com.lancestack.dto.Freelancer.GetFreelancerMobilePasswordDTO;
+import com.lancestack.dto.Freelancer.UpdateProfileFreelancer;
+import com.lancestack.dto.User.GetUserMobilePasswordDTO;
+import com.lancestack.dto.User.UpdateProfileUser;
 import com.lancestack.dto.User.UserDTO;
 import com.lancestack.dto.User.UserForgetPassword;
 import com.lancestack.dto.User.UserLoginDTO;
@@ -117,5 +121,25 @@ public class UserController {
 			return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new ApiResponse(e.getMessage()));
 		}
 	}
+	
+	@Operation(description = "User mobile password by user id Endpoint.")
+	@PostMapping("/userMobilePassword/{userId}")
+	public ResponseEntity<?> sendMobilePassword(@PathVariable Long userId){
+		try {
+			GetUserMobilePasswordDTO userMobilePasswordDTO = userService.sendMobilePassword(userId);
+		    return ResponseEntity.ok(userMobilePasswordDTO);
+		}
+		catch (RuntimeException e) {
+			return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new ApiResponse(e.getMessage()));
+		}
+	    
+	}
+	
+	@Operation(description = "Update User profile by user id Endpoint.")
+    @PutMapping("/updateProfile/{userId}")
+    public ResponseEntity<String> updateUserProfile(@PathVariable Long userId, @RequestBody UpdateProfileUser updateProfileDto) {
+            userService.updateUserProfile(userId, updateProfileDto);
+            return ResponseEntity.ok("Profile updated successfully");
+            }
 
 }
