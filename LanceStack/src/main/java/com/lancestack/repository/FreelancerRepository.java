@@ -10,4 +10,5 @@ import com.lancestack.entities.Freelancer;
 public interface FreelancerRepository extends JpaRepository<Freelancer, Long> {
 	Freelancer findByEmail(String email);
 	Freelancer findByMobileNumber(String mobileNumber);
+	boolean existsByEmail(String email);
 }

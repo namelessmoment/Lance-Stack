@@ -1,3 +1,4 @@
+
 package com.lancestack.controller;
 
 import java.util.List;
@@ -18,7 +19,6 @@ import com.lancestack.dto.ApiResponse;
 import com.lancestack.dto.Bid.BidDTO;
 import com.lancestack.dto.Bid.UpdateBidDTO;
 import com.lancestack.dto.Freelancer.FreelancerBidDTO;
-import com.lancestack.entities.Bid;
 import com.lancestack.service.BidService;
 
 import io.swagger.v3.oas.annotations.Operation;
