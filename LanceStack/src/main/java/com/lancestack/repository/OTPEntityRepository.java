@@ -14,4 +14,10 @@ public interface OTPEntityRepository extends JpaRepository<OTPEntity, Long> {
 
 	OTPEntity findByOtp(String otp);
 
+//	@Transactional
+//    @Modifying
+//    @Query("DELETE FROM OTPEntity o WHERE o.expiryTime < CURRENT_TIMESTAMP")
+//    void deleteExpiredOtps();
+
+
 }

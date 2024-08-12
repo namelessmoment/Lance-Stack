@@ -1,6 +1,7 @@
 package com.lancestack.service;
 
 import java.security.SecureRandom;
+import java.time.LocalDateTime;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -38,6 +39,7 @@ public class OTPEntityServiceImpl implements OTPEntityService {
     private JavaMailSender mailSender;
 	
 	private static final SecureRandom random = new SecureRandom();
+	private static final long OTP_EXPIRATION_MINUTES = 1;
 	
 	@Override
 	public ApiResponse sendOtpForPasswordReset(String email) {
@@ -63,8 +65,8 @@ public class OTPEntityServiceImpl implements OTPEntityService {
 	
 	
 	@Override
-	public ApiResponse verifyOtpAndResetPassword(VerifyOTPDTO verifyOtpDTO) {
-		// Check if OTP is null
+    public ApiResponse verifyOtpAndResetPassword(VerifyOTPDTO verifyOtpDTO) {
+        // Check if OTP is null
         if (verifyOtpDTO.getOtp() == null) {
             return new ApiResponse("OTP must not be null");
         }
@@ -82,25 +84,34 @@ public class OTPEntityServiceImpl implements OTPEntityService {
             return new ApiResponse("Invalid OTP");
         }
 
-        // Verify OTP and reset password logic here
+        OTPEntity entity = otpEntityOptional.get();
+
+        // OTP expiration check
+        if (isOtpExpired(entity)) {
+            otpRepo.delete(entity); // Delete expired OTP
+            return new ApiResponse("OTP is expired!");
+        }
+
+        // Verify password matching logic
         if (!verifyOtpDTO.getNewPassword().equals(verifyOtpDTO.getConfirmPassword())) {
             return new ApiResponse("Passwords do not match");
         }
-        OTPEntity entity = otpRepo.findByOtp(verifyOtpDTO.getOtp());
-        if(!verifyOtpDTO.getOtp().equals(entity.getOtp())) {
-        	return new ApiResponse("OTP Invalid.");
+
+        // Find the user by email
+        User existingUser = userRepo.findByEmail(verifyOtpDTO.getEmail());
+        if (existingUser == null) {
+            return new ApiResponse("User does not exist!");
         }
-        else {
-        	User existingUser = userRepo.findByEmail(verifyOtpDTO.getEmail());
-        	if (existingUser == null) {
-    	        throw new ResourceNotFoundException(HttpStatus.BAD_REQUEST, "User Not Exists!");
-    	    }
-        	existingUser.setPassword(verifyOtpDTO.getNewPassword());
-    	    userRepo.save(existingUser);
-    	    otpRepo.delete(entity);
-    	    return new ApiResponse("Password Changed Successfully!");
-        }
-	}
+
+        // Update password and save user
+        existingUser.setPassword(verifyOtpDTO.getNewPassword());
+        userRepo.save(existingUser);
+
+        // Delete the OTP after successful password reset
+        otpRepo.delete(entity);
+
+        return new ApiResponse("Password changed successfully!");
+    }
 	
 	private  static String generateOtp() {
         int otp = 1000 + random.nextInt(9000); 
@@ -139,41 +150,56 @@ public class OTPEntityServiceImpl implements OTPEntityService {
 
 	@Override
 	public ApiResponse verifyOtpAndResetPasswordFreelancer(VerifyOTPDTO verifyOtpDTO) {
-		// Check if OTP is null
-        if (verifyOtpDTO.getOtp() == null) {
-            return new ApiResponse("OTP must not be null");
-        }
+	    // Check if OTP is null
+	    if (verifyOtpDTO.getOtp() == null) {
+	        return new ApiResponse("OTP must not be null");
+	    }
 
-        // Validate OTP length manually if needed (assuming OTP should be 4 digits)
-        String otpString = String.valueOf(verifyOtpDTO.getOtp());
-        if (otpString.length() != 4) {
-            return new ApiResponse("Invalid OTP length. It should be 4 digits.");
-        }
+	    // Validate OTP length manually if needed (assuming OTP should be 4 digits)
+	    String otpString = String.valueOf(verifyOtpDTO.getOtp());
+	    if (otpString.length() != 4) {
+	        return new ApiResponse("Invalid OTP length. It should be 4 digits.");
+	    }
 
-        // Find OTP by email and OTP
-        Optional<OTPEntity> otpEntityOptional = otpRepo.findByEmailAndOtp(verifyOtpDTO.getEmail(), verifyOtpDTO.getOtp());
+	    // Find OTP by email and OTP
+	    Optional<OTPEntity> otpEntityOptional = otpRepo.findByEmailAndOtp(verifyOtpDTO.getEmail(), verifyOtpDTO.getOtp());
 
-        if (otpEntityOptional.isEmpty()) {
-            return new ApiResponse("Invalid OTP");
-        }
+	    if (otpEntityOptional.isEmpty()) {
+	        return new ApiResponse("Invalid OTP");
+	    }
 
-        // Verify OTP and reset password logic here
-        if (!verifyOtpDTO.getNewPassword().equals(verifyOtpDTO.getConfirmPassword())) {
-            return new ApiResponse("Passwords do not match");
-        }
-        OTPEntity entity = otpRepo.findByOtp(verifyOtpDTO.getOtp());
-        if(!verifyOtpDTO.getOtp().equals(entity.getOtp())) {
-        	return new ApiResponse("OTP Invalid.");
-        }
-        else {
-        	Freelancer existingFreelancer = freelancerRepo.findByEmail(verifyOtpDTO.getEmail());
-        	if (existingFreelancer == null) {
-    	        throw new ResourceNotFoundException(HttpStatus.BAD_REQUEST, "User Not Exists!");
-    	    }
-        	existingFreelancer.setPassword(verifyOtpDTO.getNewPassword());
-    	    freelancerRepo.save(existingFreelancer);
-    	    otpRepo.delete(entity);
-    	    return new ApiResponse("Password Changed Successfully!");
-        }
+	    OTPEntity entity = otpEntityOptional.get();
+
+	    // OTP expiration check
+	    if (isOtpExpired(entity)) {
+	        otpRepo.delete(entity); // Delete expired OTP
+	        return new ApiResponse("OTP is expired!");
+	    }
+
+	    // Verify password matching logic
+	    if (!verifyOtpDTO.getNewPassword().equals(verifyOtpDTO.getConfirmPassword())) {
+	        return new ApiResponse("Passwords do not match");
+	    }
+
+	    // Find the freelancer by email
+	    Freelancer existingFreelancer = freelancerRepo.findByEmail(verifyOtpDTO.getEmail());
+	    if (existingFreelancer == null) {
+	        return new ApiResponse("User does not exist!");
+	    }
+
+	    // Update password and save freelancer
+	    existingFreelancer.setPassword(verifyOtpDTO.getNewPassword());
+	    freelancerRepo.save(existingFreelancer);
+
+	    // Delete the OTP after successful password reset
+	    otpRepo.delete(entity);
+
+	    return new ApiResponse("Password changed successfully!");
 	}
+	
+	// Check if OTP is expired
+    private boolean isOtpExpired(OTPEntity otpEntity) {
+        LocalDateTime expiryTime = otpEntity.getCreatedAt().plusMinutes(OTP_EXPIRATION_MINUTES);
+        return LocalDateTime.now().isAfter(expiryTime);
+    }
 }
