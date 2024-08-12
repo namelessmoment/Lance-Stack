@@ -153,5 +153,12 @@ public class FreelancerController {
     public List<ProjectDTO> getAllocatedProjectsCompleted(@PathVariable Long freelancerId) {
         return freelancerService.getAllocatedProjectsCompleted(freelancerId);
     }
+	
+	@Operation(description = "Mark project as completed")
+	@PatchMapping("/projects/complete/{projectId}")
+	public ResponseEntity<String> markProjectAsCompleted(@PathVariable Long projectId) {
+		freelancerService.markProjectAsCompleted(projectId);
+	    return ResponseEntity.ok("Project marked as completed successfully.");
+	}
 
 }

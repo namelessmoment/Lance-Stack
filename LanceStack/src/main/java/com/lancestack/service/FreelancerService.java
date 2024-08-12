@@ -24,4 +24,5 @@ public interface FreelancerService {
 	ApiResponse updateFreelancerProfile(Long freelancerId ,UpdateProfileFreelancer updateProfileFreelancer);
 	List<ProjectDTO> getAllocatedProjectsInProgress(Long freelancerId);
 	public List<ProjectDTO> getAllocatedProjectsCompleted(Long freelancerId);
+	void markProjectAsCompleted(Long projectId);
 }

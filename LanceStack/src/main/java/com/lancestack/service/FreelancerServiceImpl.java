@@ -219,5 +219,19 @@ public class FreelancerServiceImpl implements FreelancerService {
 	    return projects.stream()
 	            .map(project -> modelMapper.map(project, ProjectDTO.class))
 	            .collect(Collectors.toList());
+	}
+
+	@Override
+	public void markProjectAsCompleted(Long projectId) {
+		Project project = projectRepo.findById(projectId)
+	            .orElseThrow(() -> new ResourceNotFound(HttpStatus.NOT_FOUND, "Invalid project Id."));
+	    
+	    if (project.getStatus() == ProjectStatus.IN_PROGRESS) {
+	        project.setStatus(ProjectStatus.COMPLETED);
+	        projectRepo.save(project);
+	    } else {
+	        throw new IllegalStateException("Project is not in progress or has already been completed.");
+	    }
+		
 	}	
 }
