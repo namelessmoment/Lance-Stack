@@ -132,6 +132,7 @@ public class ContractServiceImpl implements ContractService {
 	                // other details left null as they are not needed.
 
 	                ContractDTO contractDTO = new ContractDTO();
+	                contractDTO.setId(contract.getId());
 	                contractDTO.setStartDate(contract.getStartDate());
 	                contractDTO.setEndDate(contract.getEndDate());
 	                contractDTO.setPaymentAmount(contract.getPaymentAmount());

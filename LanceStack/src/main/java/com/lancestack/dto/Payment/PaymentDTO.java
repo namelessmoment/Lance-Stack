@@ -8,7 +8,7 @@ import lombok.Setter;
 @Getter
 @Setter
 public class PaymentDTO {
-	private Long contractId;
+//	private Long contractId;
 	private LocalDateTime paymentDate;
 	private Integer paymentAmount;
 	private String paymentMethod;

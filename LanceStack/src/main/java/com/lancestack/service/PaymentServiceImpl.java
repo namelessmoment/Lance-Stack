@@ -39,10 +39,10 @@ public class PaymentServiceImpl implements PaymentService {
 	private String razorPaySecret;
 	
 	private RazorpayClient client;
-
+	
 	@Override
 	public PaymentDTO createOrder(CreateOrderRequestPaymentDTO order) throws RazorpayException {
-	    JSONObject orderReq = new JSONObject();
+		JSONObject orderReq = new JSONObject();
 	    orderReq.put("amount", order.getPaymentAmount() * 100);
 	    orderReq.put("currency", "INR");
 	    orderReq.put("receipt", "receipt_id");
@@ -56,7 +56,7 @@ public class PaymentServiceImpl implements PaymentService {
 	    payment.setPaymentStatus(razorPayOrder.get("status"));
 	    payment.setPaymentMethod(razorPayOrder.get("method"));
 
-	    Contract contract = contractRepo.findById(order.getContractId()).orElseThrow(null);
+	    Contract contract = contractRepo.findById(order.getContractId()).orElseThrow(() -> new RuntimeException("Contract not found"));
 	    payment.setContractId(contract);
 	    paymentRepo.save(payment);
 
