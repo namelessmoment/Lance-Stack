@@ -30,7 +30,7 @@ public class Payment extends BaseEntity {
 	
 	@Column
 	@CreationTimestamp
-	private LocalDateTime paymentDate;
+	private LocalDateTime paymentDateTime;
 	
 	@Column
 	private Integer paymentAmount;
