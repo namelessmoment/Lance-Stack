@@ -35,9 +35,9 @@ public class PaymentController {
 		return new ResponseEntity<>(paymentOrder, HttpStatus.CREATED);
 	}
 	
-	@Operation(description = "To update the order details after payment.")
-	@PostMapping("/handle-payment-callback")
-	public ResponseEntity<?> updateOrder(@RequestParam Map<String, String> responsePayload) {
+	@Operation(description = "To update success the order details after payment.")
+	@PostMapping("/handle-payment-callback-success")
+	public ResponseEntity<?> updateOrderForSuccess(@RequestParam Map<String, String> responsePayload) {
 	    // Validate response payload
 	    if (responsePayload == null || responsePayload.isEmpty()) {
 	        return ResponseEntity.badRequest().body("Invalid response payload");
@@ -52,6 +52,30 @@ public class PaymentController {
 	    // Call service method to update order
 	    try {
 	        PaymentDTO updatedDTO = paymentService.updateOrder(responsePayload);
+	        return ResponseEntity.ok(updatedDTO);
+	    } catch (Exception e) {
+	        return ResponseEntity.internalServerError().body("Error updating order: " + e.getMessage());
+	    }
+	}
+	
+	
+	@Operation(description = "To update the order failure details after payment.")
+	@PostMapping("/handle-payment-callback-failure")
+	public ResponseEntity<?> updateOrderForFailure(@RequestParam Map<String, String> responsePayload) {
+	    // Validate response payload
+	    if (responsePayload == null || responsePayload.isEmpty()) {
+	        return ResponseEntity.badRequest().body("Invalid response payload");
+	    }
+
+	    // Validate Razorpay order ID
+	    String razorPayOrderId = responsePayload.get("razor_pay_order_id");
+	    if (StringUtils.isEmpty(razorPayOrderId)) {
+	        return ResponseEntity.badRequest().body("Razorpay order ID is missing");
+	    }
+
+	    // Call service method to update order
+	    try {
+	        PaymentDTO updatedDTO = paymentService.updateOrderForFailure(responsePayload);
 	        return ResponseEntity.ok(updatedDTO);
 	    } catch (Exception e) {
 	        return ResponseEntity.internalServerError().body("Error updating order: " + e.getMessage());

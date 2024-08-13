@@ -10,4 +10,5 @@ public interface PaymentService {
 	
 	PaymentDTO createOrder(CreateOrderRequestPaymentDTO amount) throws RazorpayException;
 	PaymentDTO updateOrder(Map<String, String> responsePayload);
+	PaymentDTO updateOrderForFailure(Map<String, String> responsePayload);
 }

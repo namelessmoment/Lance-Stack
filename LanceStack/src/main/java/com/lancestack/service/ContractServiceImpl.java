@@ -1,6 +1,5 @@
 package com.lancestack.service;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -13,7 +12,6 @@ import com.lancestack.custom_exception.ResourceNotFoundException;
 import com.lancestack.dto.ApiResponse;
 import com.lancestack.dto.Contract.ContractDTO;
 import com.lancestack.dto.Contract.ContractRegistrationDTO;
-import com.lancestack.dto.Contract.FindContractByUserResponseDTO;
 import com.lancestack.dto.Contract.FindInProgressContractByUserResponseDTO;
 import com.lancestack.dto.Freelancer.FreelancerDTO;
 import com.lancestack.dto.Project.ProjectDTO;
@@ -21,7 +19,6 @@ import com.lancestack.entities.Contract;
 import com.lancestack.entities.ContractStatus;
 import com.lancestack.entities.Project;
 import com.lancestack.entities.ProjectStatus;
-import com.lancestack.entities.User;
 import com.lancestack.repository.ContractRepository;
 import com.lancestack.repository.FreelancerRepository;
 import com.lancestack.repository.ProjectRepository;

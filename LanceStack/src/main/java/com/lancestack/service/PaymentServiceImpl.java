@@ -1,5 +1,6 @@
 package com.lancestack.service;
 
+import java.time.LocalDateTime;
 import java.util.Map;
 
 import org.json.JSONObject;
@@ -8,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
+import com.lancestack.dto.Contract.ContractDTO;
 import com.lancestack.dto.Payment.CreateOrderRequestPaymentDTO;
 import com.lancestack.dto.Payment.PaymentDTO;
 import com.lancestack.entities.Contract;
@@ -56,12 +58,16 @@ public class PaymentServiceImpl implements PaymentService {
 	    payment.setPaymentStatus(razorPayOrder.get("status"));
 	    payment.setPaymentMethod(razorPayOrder.get("method"));
 
-	    Contract contract = contractRepo.findById(order.getContractId()).orElseThrow(() -> new RuntimeException("Contract not found"));
+	    Contract contract = contractRepo.findById(order.getContractId())
+	    		.orElseThrow(() -> new RuntimeException("Contract not found"));
 	    payment.setContractId(contract);
 	    paymentRepo.save(payment);
 
-	    // Map the saved payment entity to PaymentDTO
+//	    // Map the saved payment entity to PaymentDTO
+//	    PaymentDTO paymentDTO = modelMapper.map(payment, PaymentDTO.class);
 	    PaymentDTO paymentDTO = modelMapper.map(payment, PaymentDTO.class);
+	    paymentDTO.setContract(modelMapper.map(contract, ContractDTO.class));
+//	    paymentDTO.setPaymentDateTime(payment.setPaymentDateTime(LocalDateTime.now()));
 	    return paymentDTO;
 	}
 
@@ -70,7 +76,20 @@ public class PaymentServiceImpl implements PaymentService {
 	public PaymentDTO updateOrder(Map<String, String> responsePayload) {
 		String razorPayOrderId = responsePayload.get("razor_pay_order_id");
 		Payment order = paymentRepo.findByRazorPayOrderId(razorPayOrderId);
+//		ContractService contractService = new ContractServiceImpl();
+//		contractService.changeContractStatusToCompleted(null);
 		order.setPaymentStatus("Paid");
+		Payment updatedOrder = paymentRepo.save(order);
+		PaymentDTO updatedDTO = modelMapper.map(updatedOrder, PaymentDTO.class);
+		return updatedDTO;
+	}
+
+
+	@Override
+	public PaymentDTO updateOrderForFailure(Map<String, String> responsePayload) {
+		String razorPayOrderId = responsePayload.get("razor_pay_order_id");
+		Payment order = paymentRepo.findByRazorPayOrderId(razorPayOrderId);
+		order.setPaymentStatus("Failed");
 		Payment updatedOrder = paymentRepo.save(order);
 		PaymentDTO updatedDTO = modelMapper.map(updatedOrder, PaymentDTO.class);
 		return updatedDTO;
