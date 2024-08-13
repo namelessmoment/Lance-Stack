@@ -5,7 +5,7 @@ import java.util.List;
 import com.lancestack.dto.ApiResponse;
 import com.lancestack.dto.Contract.ContractDTO;
 import com.lancestack.dto.Contract.ContractRegistrationDTO;
-import com.lancestack.dto.Contract.FindInProgressContractByUserResponseDTO;
+import com.lancestack.dto.Contract.FindInProgressContractByFreelancerResponseDTO;
 
 public interface ContractService {
 
@@ -21,10 +21,10 @@ public interface ContractService {
 	
 	List<ContractDTO> getAllCompletedContractsByUserId(Long UserId);
 
-//	List<FindInProgressContractByUserResponseDTO> getAllContractsByUserInProgress(Long userId);
+	List<FindInProgressContractByFreelancerResponseDTO> getAllContractsByFreelancerInProgress(Long freelancerId);
 	
 	ApiResponse deleteContract(Long contractId);
 
-//	List<FindInProgressContractByUserResponseDTO> getAllContractsByUserCompleted(Long userId);
+	List<FindInProgressContractByFreelancerResponseDTO> getAllContractsByFreelancerCompleted(Long freelancerId);
 
 }

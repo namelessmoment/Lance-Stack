@@ -17,7 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.lancestack.dto.ApiResponse;
 import com.lancestack.dto.Contract.ContractDTO;
 import com.lancestack.dto.Contract.ContractRegistrationDTO;
-import com.lancestack.dto.Contract.FindInProgressContractByUserResponseDTO;
+import com.lancestack.dto.Contract.FindInProgressContractByFreelancerResponseDTO;
 import com.lancestack.dto.Project.ProjectDTO;
 import com.lancestack.service.ContractService;
 import com.lancestack.service.ProjectService;
@@ -89,7 +89,7 @@ public class ContractController {
 	    return ResponseEntity.ok(projects);
 	}
 	
-	@Operation(description = "Get all IN_PROCESS Contracts by UserId")
+	@Operation(description = "Get all IN_PROCESS Contracts by UserId")             //USED IN USER INTE
     @GetMapping("/inProgress/{UserId}")
     public ResponseEntity<List<ContractDTO>> getAllInProgressContractsByUserId(@PathVariable Long UserId) {
         // Call the service method to get the contracts
@@ -99,7 +99,7 @@ public class ContractController {
         return ResponseEntity.ok(contracts);
     }
 	
-	@Operation(description = "Get all COMPLETED Contracts by UserId")
+	@Operation(description = "Get all COMPLETED Contracts by UserId")               //USED IN USER INTE
     @GetMapping("/completed/{UserId}")
     public ResponseEntity<List<ContractDTO>> getAllCompletedContractsByUserId(@PathVariable Long UserId) {
         // Call the service method to get the contracts
@@ -110,11 +110,19 @@ public class ContractController {
     }
 
 	
-//	@Operation(description = "Find the contracts relatedd to user.")
-//	@GetMapping("/{userId}/getAllContractsByUserInProgress")
-//	public ResponseEntity<List<?>> getAllContractsByUserInProgress(@PathVariable Long userId){
-//		List<FindInProgressContractByUserResponseDTO> contracts = contractService.getAllContractsByUserInProgress(userId);
-//		return ResponseEntity.ok(contracts);
+	@Operation(description = "Find the in-progress contracts related to a freelancer.")         //USED IN FREELANCER INTE
+	@GetMapping("/{freelancerId}/getAllInProgressContractsByFreelancer")
+	public ResponseEntity<List<?>> getAllInProgressContractsByFreelancer(@PathVariable Long freelancerId) {
+	    List<FindInProgressContractByFreelancerResponseDTO> contracts = contractService.getAllContractsByFreelancerInProgress(freelancerId);
+	    return ResponseEntity.ok(contracts);
+	}
+
+	@Operation(description = "Find the completed contracts related to a freelancer.")           //USED IN FREELANCER INTE
+	@GetMapping("/{freelancerId}/getAllCompletedContractsByFreelancer")
+	public ResponseEntity<List<?>> getAllContractsByFreelancerCompleted(@PathVariable Long freelancerId) {         
+	    List<FindInProgressContractByFreelancerResponseDTO> contracts = contractService.getAllContractsByFreelancerCompleted(freelancerId);
+	    return ResponseEntity.ok(contracts);
+	}
 //	}
 	
 //	@Operation(description = "Find the contracts relatedd to user.")

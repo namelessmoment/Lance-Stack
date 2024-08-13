@@ -13,15 +13,14 @@ import com.lancestack.custom_exception.ResourceNotFoundException;
 import com.lancestack.dto.ApiResponse;
 import com.lancestack.dto.Contract.ContractDTO;
 import com.lancestack.dto.Contract.ContractRegistrationDTO;
-import com.lancestack.dto.Contract.FindContractByUserResponseDTO;
-import com.lancestack.dto.Contract.FindInProgressContractByUserResponseDTO;
+import com.lancestack.dto.Contract.FindInProgressContractByFreelancerResponseDTO;
 import com.lancestack.dto.Freelancer.FreelancerDTO;
 import com.lancestack.dto.Project.ProjectDTO;
 import com.lancestack.entities.Contract;
 import com.lancestack.entities.ContractStatus;
+import com.lancestack.entities.Freelancer;
 import com.lancestack.entities.Project;
 import com.lancestack.entities.ProjectStatus;
-import com.lancestack.entities.User;
 import com.lancestack.repository.ContractRepository;
 import com.lancestack.repository.FreelancerRepository;
 import com.lancestack.repository.ProjectRepository;
@@ -176,36 +175,39 @@ public class ContractServiceImpl implements ContractService {
             .collect(Collectors.toList());
 	}
 	
-//	public List<FindInProgressContractByUserResponseDTO> getAllContractsByUserInProgress(Long userId) {
-//		User user = userRepo.findById(userId)
-//	            .orElseThrow(() -> new ResourceNotFoundException(HttpStatus.NOT_FOUND, "User Id is Invalid"));
-//	    List<Contract> contracts = contractRepo.findContractsByUser(user);
-//	    List<FindInProgressContractByUserResponseDTO> contractsDTO = new ArrayList<>();
-//	    for (Contract contract : contracts) {
-//	    	if(contract.getStatus() == ContractStatus.IN_PROGRESS)
-//	    		contractsDTO.add(mapContractToResponseDTO(contract));
-//	    }
-//	    return contractsDTO;
-//	}
+	public List<FindInProgressContractByFreelancerResponseDTO> getAllContractsByFreelancerInProgress(Long freelancerId) {
+	    Freelancer freelancer = freelancerRepo.findById(freelancerId)
+	            .orElseThrow(() -> new ResourceNotFoundException(HttpStatus.NOT_FOUND, "Freelancer Id is Invalid"));
+	    List<Contract> contracts = contractRepo.findInProgressContractsByFreelancer(freelancer);
+	    List<FindInProgressContractByFreelancerResponseDTO> contractsDTO = new ArrayList<>();
+	    for (Contract contract : contracts) {
+	        if (contract.getStatus() == ContractStatus.IN_PROGRESS)
+	            contractsDTO.add(mapContractToResponseDTO(contract));
+	    }
+	    return contractsDTO;
+	}
+
 	
-//	@Override
-//	public List<FindInProgressContractByUserResponseDTO> getAllContractsByUserCompleted(Long userId) {
-//		User user = userRepo.findById(userId)
-//	            .orElseThrow(() -> new ResourceNotFoundException(HttpStatus.NOT_FOUND, "User Id is Invalid"));
-//	    List<Contract> contracts = contractRepo.findContractsByUser(user);
-//	    List<FindInProgressContractByUserResponseDTO> contractsDTO = new ArrayList<>();
-//	    for (Contract contract : contracts) {
-//	    	if(contract.getStatus() == ContractStatus.COMPLETED)
-//	    		contractsDTO.add(mapContractToResponseDTO(contract));
-//	    }
-//	    return contractsDTO;
-//	}
+	@Override
+	public List<FindInProgressContractByFreelancerResponseDTO> getAllContractsByFreelancerCompleted(Long freelancerId) {
+		 Freelancer freelancer = freelancerRepo.findById(freelancerId)
+		            .orElseThrow(() -> new ResourceNotFoundException(HttpStatus.NOT_FOUND, "Freelancer Id is Invalid"));
+	    List<Contract> contracts = contractRepo.findCompletedContractsByFreelancer(freelancer);
+	    List<FindInProgressContractByFreelancerResponseDTO> contractsDTO = new ArrayList<>();
+	    for (Contract contract : contracts) {
+	    	if(contract.getStatus() == ContractStatus.COMPLETED)
+	    		contractsDTO.add(mapContractToResponseDTO(contract));
+	    }
+	    return contractsDTO;
+	}
 	
-	public FindInProgressContractByUserResponseDTO mapContractToResponseDTO(Contract contract) {
-		FindInProgressContractByUserResponseDTO responseDTO = new FindInProgressContractByUserResponseDTO();
+	public FindInProgressContractByFreelancerResponseDTO mapContractToResponseDTO(Contract contract) {
+		FindInProgressContractByFreelancerResponseDTO responseDTO = new FindInProgressContractByFreelancerResponseDTO();
 	    responseDTO.setId(contract.getId());
 	    responseDTO.setPaymentAmount(contract.getPaymentAmount());
 	    responseDTO.setStatus(contract.getStatus());
+	    responseDTO.setStartDate(contract.getStartDate());
+	    responseDTO.setEndDate(contract.getEndDate());
 	    
 	    FreelancerDTO freelancerDTO = new FreelancerDTO();
 	    freelancerDTO.setFreelancerName(contract.getFreelancer().getFreelancerName());
@@ -214,6 +216,15 @@ public class ContractServiceImpl implements ContractService {
 	    freelancerDTO.setSkills(contract.getFreelancer().getSkills());
 	    // setting freelancer
 	    responseDTO.setFreelancer(freelancerDTO);
+	    
+	    ProjectDTO projectDTO = new ProjectDTO();
+	    projectDTO.setId(contract.getProject().getId());
+	    projectDTO.setProjType(contract.getProject().getProjType());
+	    projectDTO.setDescription(contract.getProject().getDescription());
+	    projectDTO.setTitle(contract.getProject().getTitle());
+	    projectDTO.setStatus(contract.getProject().getStatus());
+	    // setting the project into responseDTO
+	    responseDTO.setProject(projectDTO);
 	    return responseDTO;
 	}
 
