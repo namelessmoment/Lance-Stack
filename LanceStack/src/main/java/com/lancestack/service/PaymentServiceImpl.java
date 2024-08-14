@@ -7,8 +7,10 @@ import org.json.JSONObject;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
+import com.lancestack.custom_exception.ResourceNotFoundException;
 import com.lancestack.dto.Contract.ContractDTO;
 import com.lancestack.dto.Payment.CreateOrderRequestPaymentDTO;
 import com.lancestack.dto.Payment.PaymentDTO;
@@ -31,6 +33,9 @@ public class PaymentServiceImpl implements PaymentService {
 	
 	@Autowired
 	ContractRepository contractRepo;
+	
+	@Autowired
+	ContractServiceImpl contractService;
 	
 	@Autowired
 	ModelMapper modelMapper;
@@ -76,9 +81,12 @@ public class PaymentServiceImpl implements PaymentService {
 	public PaymentDTO updateOrder(Map<String, String> responsePayload) {
 		String razorPayOrderId = responsePayload.get("razor_pay_order_id");
 		Payment order = paymentRepo.findByRazorPayOrderId(razorPayOrderId);
-//		ContractService contractService = new ContractServiceImpl();
-//		contractService.changeContractStatusToCompleted(null);
-		order.setPaymentStatus("Paid");
+//		ContractService contractService = new ContractServiceImpl(); // this will not work
+	    String contractId = responsePayload.get("contractId"); // Get contractId as a String
+	    Contract contract = contractRepo.findById(Long.parseLong(contractId))
+	    		.orElseThrow(()-> new ResourceNotFoundException(HttpStatus.NOT_FOUND, "Contract Id Not found!")); // Parse contractId to Long
+	    contractService.changeContractStatusToCompleted(contract.getId());
+	    order.setPaymentStatus("Paid");
 		Payment updatedOrder = paymentRepo.save(order);
 		PaymentDTO updatedDTO = modelMapper.map(updatedOrder, PaymentDTO.class);
 		return updatedDTO;

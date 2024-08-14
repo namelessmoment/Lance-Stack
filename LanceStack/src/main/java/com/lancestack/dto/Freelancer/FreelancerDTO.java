@@ -12,4 +12,5 @@ public class FreelancerDTO extends BaseEntity {
 	private String email;
 	private String profileDescription;
 	private String skills;
+	private String mobileNumber;
 }
