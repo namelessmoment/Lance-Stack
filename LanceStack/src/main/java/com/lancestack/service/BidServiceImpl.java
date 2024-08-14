@@ -4,7 +4,6 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import org.modelmapper.ModelMapper;
-import org.modelmapper.TypeToken;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
@@ -19,6 +18,7 @@ import com.lancestack.entities.Bid;
 import com.lancestack.entities.Freelancer;
 import com.lancestack.entities.Project;
 import com.lancestack.repository.BidRepository;
+import com.lancestack.repository.ContractRepository;
 import com.lancestack.repository.FreelancerRepository;
 import com.lancestack.repository.ProjectRepository;
 
@@ -36,6 +36,9 @@ public class BidServiceImpl implements BidService {
 	
 	@Autowired
 	FreelancerRepository freelancerRepo;
+	
+	@Autowired
+	ContractRepository contractRepo;
 	
 	@Autowired
 	ModelMapper modelMapper;
@@ -127,23 +130,52 @@ public class BidServiceImpl implements BidService {
 
 	@Override
 	public List<FreelancerBidDTO> getAllBidsByFreelancerId(Long freelancerId) {
-		List<Bid> freelancerAssocaitedBids = null;
-		if(freelancerRepo.existsById(freelancerId)) {
-			Freelancer freelancer = freelancerRepo.findById(freelancerId)
-		            .orElseThrow(() -> new ResourceNotFoundException(HttpStatus.NOT_FOUND,"Freelancer not found"));
-			freelancerAssocaitedBids = bidRepo.findByFreelancer(freelancer);
-		}
-		return freelancerAssocaitedBids.stream().map(bid -> {
-	        FreelancerBidDTO dto = new FreelancerBidDTO();
-	        dto.setId(bid.getId());
-	        dto.setBidAmount(bid.getBidAmount());
-	        dto.setDaysWillTake(bid.getDaysWillTake());
-	        dto.setBidDescription(bid.getBidDescription());
-	        dto.setProjectId(bid.getProject().getId()); // Set projectId from associated project
-	        dto.setFreelancerId(bid.getFreelancer().getId()); // Set freelancerId from associated freelancer
-	        return dto;
-	    }).collect(Collectors.toList());
+	    List<Bid> freelancerAssociatedBids = null;
+	    if (freelancerRepo.existsById(freelancerId)) {
+	        Freelancer freelancer = freelancerRepo.findById(freelancerId)
+	                .orElseThrow(() -> new ResourceNotFoundException(HttpStatus.NOT_FOUND, "Freelancer not found"));
+	        freelancerAssociatedBids = bidRepo.findByFreelancer(freelancer);
+	        
+	        // Filter out bids where the project is already in a contract
+	        freelancerAssociatedBids = freelancerAssociatedBids.stream()
+	                .filter(bid -> !contractRepo.existsByProject(bid.getProject()))
+	                .collect(Collectors.toList());
+	    }
+	    
+	    return freelancerAssociatedBids.stream()
+	            .map(bid -> {
+	                FreelancerBidDTO dto = new FreelancerBidDTO();
+	                dto.setId(bid.getId());
+	    	        dto.setBidAmount(bid.getBidAmount());
+	    	        dto.setDaysWillTake(bid.getDaysWillTake());
+	    	        dto.setBidDescription(bid.getBidDescription());
+	    	        dto.setProjectId(bid.getProject().getId()); // Set projectId from associated project
+	    	        dto.setFreelancerId(bid.getFreelancer().getId()); // Set freelancerId from associated freelancer
+	                return dto;
+	            })
+	            .collect(Collectors.toList());
 	}
+
+	
+//	@Override
+//	public List<FreelancerBidDTO> getAllBidsByFreelancerId(Long freelancerId) {
+//		List<Bid> freelancerAssocaitedBids = null;
+//		if(freelancerRepo.existsById(freelancerId)) {
+//			Freelancer freelancer = freelancerRepo.findById(freelancerId)
+//		            .orElseThrow(() -> new ResourceNotFoundException(HttpStatus.NOT_FOUND,"Freelancer not found"));
+//			freelancerAssocaitedBids = bidRepo.findByFreelancer(freelancer);
+//		}
+//		return freelancerAssocaitedBids.stream().map(bid -> {
+//	        FreelancerBidDTO dto = new FreelancerBidDTO();
+//	        dto.setId(bid.getId());
+//	        dto.setBidAmount(bid.getBidAmount());
+//	        dto.setDaysWillTake(bid.getDaysWillTake());
+//	        dto.setBidDescription(bid.getBidDescription());
+//	        dto.setProjectId(bid.getProject().getId()); // Set projectId from associated project
+//	        dto.setFreelancerId(bid.getFreelancer().getId()); // Set freelancerId from associated freelancer
+//	        return dto;
+//	    }).collect(Collectors.toList());
+//	}
 
 
 	@Override
