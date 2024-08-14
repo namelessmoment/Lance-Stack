@@ -10,6 +10,7 @@ import org.springframework.stereotype.Repository;
 import com.lancestack.entities.Contract;
 import com.lancestack.entities.ContractStatus;
 import com.lancestack.entities.Freelancer;
+import com.lancestack.entities.Project;
 import com.lancestack.entities.User;
 
 @Repository
@@ -38,6 +39,8 @@ public interface ContractRepository extends JpaRepository<Contract, Long> {
 
 	@Query("SELECT c FROM Contract c WHERE c.freelancer = :freelancer AND c.status = 'COMPLETED'")
 	List<Contract> findCompletedContractsByFreelancer(@Param("freelancer") Freelancer freelancer);
+
+	boolean existsByProject(Project project);
 
 //	@Query("SELECT c FROM Contract c JOIN c.project p JOIN p.user u WHERE u = :user")
 //    List<Contract> findContractsByUser(@Param("user") User user);
