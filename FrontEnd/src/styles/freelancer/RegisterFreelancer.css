@@ -1,0 +1,53 @@
+.register {
+    display: flex;
+    justify-content: center;
+    padding-top: 10%;
+  }
+  
+  .register-container {
+    background-color: #fcfcfd;
+    padding: 20px;
+    border-radius: 8px;
+    align-items: center;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    width: 550px;
+  }
+  
+  .register-container h1 {
+    text-align: center;
+    margin-bottom: 20px;
+  }
+  
+  .register-container label {
+    display: block;
+    margin-bottom: 5px;
+  }
+  
+  .register-container input[type="text"],
+  .register-container input[type="email"],
+  .register-container input[type="password"],
+  .register-container textarea {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 15px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+  }
+  
+  .register-container textarea {
+    resize: vertical;
+  }
+  
+  .register-container button {
+    width: 100%;
+    padding: 10px;
+    background-color: #333;
+    color: #fff;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+  }
+  
+  .register-container button:hover {
+    background-color: #45a049;
+  }

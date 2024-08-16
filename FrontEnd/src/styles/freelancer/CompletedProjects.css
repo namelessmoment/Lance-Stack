@@ -1,0 +1,26 @@
+.completed-projects {
+    font-family: Arial, sans-serif;
+    padding: 20px;
+  }
+  
+  .completed-projects h2 {
+    margin-bottom: 20px;
+  }
+  
+  .project-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+    justify-content: center; /* Center the project cards */
+  }
+  
+  .project-card {
+    border: 1px solid #ddd;
+    padding: 20px;
+    width: 300px;
+    background-color: #fff9c4;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    text-align: center;
+  }
+  

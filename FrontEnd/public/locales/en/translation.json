@@ -1,0 +1,14 @@
+{
+    "title": "Simple Homepage",
+    "home": "Home",
+    "login": "Login",
+    "signup": "Sign Up",
+    "about": "About",
+    "welcome_message": "Your Freelance Partner for Cutting-Edge Tech Solutions.",
+    "learn_more": "Learn More",
+    "about_us": "About Us",
+    "about_us_text": "At Lancestack, we connect visionary tech projects with top-tier freelance talent. Founded on the principles of innovation and collaboration, our platform is designed to bring together skilled professionals and dynamic companies to create cutting-edge solutions. Our team is passionate about transforming ideas into reality. With a diverse pool of experts specializing in various tech domains, Lancestack is your go-to resource for finding the right fit for your project needs.",
+    "services": "Services",
+    "services_text": "At Lancestack, we specialize in connecting you with top-tier freelance talent for your tech projects. Our services include expert freelance matching to ensure you find the right skills for your needs, and custom tech solutions tailored to your project’s requirements. Along with access to specialized skillsets in areas like web development, our flexible engagement models and commitment to quality guarantee that you receive exceptional results and scalable solutions.",
+    "footer_text": "&copy; 2024 My Website. All rights reserved."
+  }
