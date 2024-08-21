@@ -1,0 +1,130 @@
+.body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+    line-height: 1.5;
+    color: #fefbfb;
+    display: flex;
+  flex-direction: column;
+}
+
+header {
+    background: #333;
+    color: #fff;
+    padding: 1.5rem 0;
+}
+
+header .container2 {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 15px;
+    justify-content: end;
+}
+.leftel{
+    font-family: Arial, sans-serif;
+    display: flex;
+    margin-left: 10px;
+    justify-content: left;
+}
+header h1 {
+    margin: 0;
+}
+
+header nav ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    justify-content: right;
+}
+
+header nav ul li {
+    margin: 0 0.5rem;
+    display: flex;
+    flex-direction: row;
+    justify-content: end;
+}
+
+header nav ul li a {
+    color: #fff;
+    text-decoration: none;
+    
+}
+.fl{
+  color: #000000;
+  margin-left: 20%;
+  margin-right: 20%;
+  margin-top: 20px;
+  justify-content: center;
+  padding-left: 20px;
+  padding-right: 20px;
+  padding-bottom: 20px;
+  border-radius: 10px;
+}
+.cards{
+    border-radius: 8px;
+    margin-left: 20%;
+    margin-right: 20%;
+    margin-top: 20px;
+
+}
+.card {
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(198, 188, 188, 0.921);
+    overflow: hidden;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+  }
+  
+  .card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 4px 8px rgba(192, 174, 174, 0.851);
+    background-color: #8e8a8a;
+  }
+  
+  .cardbody{
+    padding: 20px;
+    color: #fefbfb;
+    background-color: #4e4c4c;
+  }
+  .btn{
+    background-color: #d8dbde;
+    color: rgb(91, 84, 84);
+    margin-left: 300px;
+    margin-top: 25px;
+    cursor: pointer;
+  }
+  button{
+    width: 100px;
+  }
+  .projects{
+     background-image: url('https://cdn6.f-cdn.com/contestentries/1562160/33331481/5d4ed0c6cacac_thumb900.jpg');
+    background-size: cover;
+    background-repeat: no-repeat;
+    height: 722px;
+  }
+  .clienthome{
+    background-image: url('https://cdn6.f-cdn.com/contestentries/1562160/33331481/5d4ed0c6cacac_thumb900.jpg');
+    background-size: cover;
+    background-repeat: no-repeat;
+    height: 722px;
+  }
+  .freelancers{
+    background-image: url('https://cdn6.f-cdn.com/contestentries/1562160/33331481/5d4ed0c6cacac_thumb900.jpg');
+  
+    background-size: cover;
+    background-repeat: no-repeat;
+    height: 722px;
+  }
+  .clientprofile{
+    color: #504747;
+    margin-left: 20%;
+    margin-right: 20%;
+    margin-top: 20px;
+    justify-content: center;
+    padding-left: 20px;
+    padding-right: 20px;
+    padding-bottom: 20px;
+    border-radius: 10px;
+  }

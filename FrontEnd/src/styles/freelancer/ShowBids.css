@@ -1,0 +1,44 @@
+.show-bids {
+  font-family: Arial, sans-serif;
+  padding: 20px;
+}
+
+.show-bids h2 {
+  margin-bottom: 20px;
+}
+
+.bids-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+  justify-content: center; /* Center the bid cards */
+}
+
+.bid-card {
+  border: 1px solid #ddd;
+  padding: 20px;
+  width: 300px;
+  background-color: #fff9c4;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  text-align: center;
+}
+
+.update-button,
+.discard-button {
+  margin-top: 10px;
+  padding: 10px 20px;
+  cursor: pointer;
+  border: none;
+  border-radius: 4px;
+}
+
+.update-button {
+  background-color: #8bc34a;
+  color: white;
+}
+
+.discard-button {
+  background-color: #f44336;
+  color: white;
+}

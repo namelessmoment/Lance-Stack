@@ -1,0 +1,35 @@
+.contract-cards {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+  }
+  
+  .contract-card {
+    border: 1px solid #ddd;
+    padding: 20px;
+    border-radius: 10px;
+    width: 300px;
+  }
+  
+  .contract-card h3 {
+    font-weight: bold;
+    margin-bottom: 10px;
+  }
+  
+  .contract-card p {
+    margin-bottom: 10px;
+  }
+  
+  .contract-card button {
+    background-color: #4CAF50;
+    color: #fff;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+  }
+  
+  .contract-card button:hover {
+    background-color: #3e8e41;
+  }
+

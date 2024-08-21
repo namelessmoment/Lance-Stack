@@ -1,0 +1,99 @@
+/* MyProjects.css */
+.my-projects {
+  font-family: Arial, sans-serif;
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20px;
+  background-color: #333;
+  color: white;
+}
+
+.freelancer-name {
+  font-size: 24px;
+}
+
+.navbar {
+  display: flex;
+  gap: 20px; /* Spacing between the links */
+}
+
+.navbar a {
+  color: white;
+  text-decoration: none;
+  padding: 8px 16px;
+  border-radius: 4px;
+  transition: background-color 0.3s;
+}
+
+.navbar a:hover {
+  background-color: #555;
+}
+
+.projects-section {
+  padding: 20px;
+}
+
+.in-progress-section {
+  margin-bottom: 20px;
+}
+
+.project-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px; /* Spacing between cards */
+}
+
+.project-card {
+  border: 1px solid #ccc;
+  padding: 15px;
+  border-radius: 8px;
+  width: 200px; /* Set a fixed width for the cards */
+  box-sizing: border-box;
+  text-align: center; /* Center-align text within the card */
+  display: flex;
+  flex-direction: column; /* Stack items vertically */
+  align-items: center; /* Center items horizontally */
+  justify-content: space-between; /* Space out content vertically */
+}
+
+.project-card h3 {
+  margin: 0; /* Remove default margin from heading */
+}
+
+.project-card p {
+  margin: 10px 0; /* Add spacing above and below paragraph */
+}
+
+/* Button styling */
+.complete-button {
+  background-color: #28a745;
+  color: white;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+  margin-top: 10px; /* Add spacing above the button */
+}
+
+.complete-button:hover {
+  background-color: #218838;
+}
+
+.completed-projects-button {
+  background-color: #007bff;
+  color: white;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.completed-projects-button:hover {
+  background-color: #0056b3;
+}
