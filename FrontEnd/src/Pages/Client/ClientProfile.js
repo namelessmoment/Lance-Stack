@@ -3,8 +3,10 @@ import "../../styles/client/clientpage.css";
 import Navigation from "../../components/Navigation";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import { useAuth } from "../../components/useAuth";
 
 export default function ClientProfile() {
+  useAuth();
   const [formData, setFormData] = useState({
     name: '',
     email: '',

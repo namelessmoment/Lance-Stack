@@ -3,8 +3,10 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import '../../styles/client/projectform.css';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
+import { useAuth } from '../../components/useAuth';
 
 const PostProjectQuery = () => {
+  useAuth();
   const [formData, setFormData] = useState({
     projectTitle: '',
     projectType: 'WEB_APPLICATION', // Default value set to one of the enum options

@@ -1,6 +1,8 @@
 import React, { useEffect } from 'react';
+import { useAuth } from '../../components/useAuth';
 
 function PaymentComponent() {
+  useAuth();
   useEffect(() => {
     // Include the Razorpay checkout script
     const script = document.createElement('script');

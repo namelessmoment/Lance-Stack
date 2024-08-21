@@ -4,8 +4,10 @@ import axios from 'axios';
 import Fl from '../../components/Fl';
 import "../../styles/client/clientpage.css";
 import Navigation from "../../components/Navigation";
+import { useAuth } from '../../components/useAuth';
 
 export default function FreelancerProfile() {
+  useAuth();
   const [freelancers, setFreelancers] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');

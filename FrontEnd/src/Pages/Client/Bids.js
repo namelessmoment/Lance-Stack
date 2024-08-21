@@ -1,8 +1,10 @@
 import React, { useState, useEffect, useCallback } from "react";
 import { useParams, Link ,useNavigate} from "react-router-dom"; // Import useParams and Link
+import { useAuth } from "../../components/useAuth";
 import '../../styles/client/bids.css';
 
 const BidList = () => {
+  useAuth();
   const { projectId } = useParams(); // Get projectId from URL parameters
   const [bids, setBids] = useState([]);
   const navigate = useNavigate();

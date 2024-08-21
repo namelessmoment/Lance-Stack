@@ -3,8 +3,9 @@ import axios from "axios";
 import "../../styles/client/clientpage.css";
 import Navigation from "../../components/Navigation";
 import { Link } from "react-router-dom";
-
+import {useAuth} from "../../components/useAuth";
 export default function Projects() {
+  useAuth();
   const [projects, setProjects] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');

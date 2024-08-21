@@ -5,6 +5,7 @@ import { useNavigate } from "react-router-dom";
 import { useLocation } from "react-router-dom";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "../../styles/client/contract.css";
+import { useAuth } from "../../components/useAuth";
 
 const contract = {
   projectTitle: "Website Development",
@@ -15,6 +16,7 @@ const contract = {
   endDate: "2024-09-01",
 };
 const ContractDetails = () => {
+  useAuth();
   const [freelancer, setFreelancer] = useState({});
   const [bid, setBid] = useState({});
   const [project, setProject] = useState({});

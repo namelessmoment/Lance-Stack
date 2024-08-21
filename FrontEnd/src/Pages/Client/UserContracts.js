@@ -2,9 +2,11 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import "../../styles/client/UserContracts.css"
+import {useAuth} from "../../components/useAuth";
 axios.defaults.baseURL = 'http://localhost:8080'; // Ensure base URL is set
 
 function UserContracts() {
+  useAuth();
   const [allContracts, setAllContracts] = useState([]);
   const [showCompleted, setShowCompleted] = useState(false);
   const clientData = JSON.parse(sessionStorage.getItem('clientData'));
